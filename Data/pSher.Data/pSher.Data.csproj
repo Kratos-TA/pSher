@@ -60,6 +60,7 @@
     <Compile Include="EfGenericRepository.cs" />
     <Compile Include="Contracts\IPSherDbContext.cs" />
     <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSherDbContext.cs" />
   </ItemGroup>

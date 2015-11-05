@@ -15,11 +15,6 @@
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public int OwnerId { get; set; }
-
-        public virtual User Owner { get; set; }
-
         public virtual ICollection<Album> Albums
         {
             get { return this.albums; }
