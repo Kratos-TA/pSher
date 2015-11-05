@@ -1,4 +1,4 @@
-namespace pSher.Api.Areas.HelpPage
+namespace PSher.Api.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

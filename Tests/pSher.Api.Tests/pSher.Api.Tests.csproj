@@ -9,8 +9,8 @@
     <ProjectGuid>{90E7D41F-219A-47BD-AD9E-7BEAC9C6FDAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>pSher.Api.Tests</RootNamespace>
-    <AssemblyName>pSher.Api.Tests</AssemblyName>
+    <RootNamespace>PSher.Api.Tests</RootNamespace>
+    <AssemblyName>PSher.Api.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -33,6 +33,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -99,26 +115,29 @@
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\pSher.Data\pSher.Data.csproj">
+    <ProjectReference Include="..\..\Data\pSher.Data\PSher.Data.csproj">
       <Project>{6914eed5-adf6-41c8-9346-c1d34e43e5f4}</Project>
-      <Name>pSher.Data</Name>
+      <Name>PSher.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Data\pSher.Models\pSher.Models.csproj">
+    <ProjectReference Include="..\..\Data\pSher.Models\PSher.Models.csproj">
       <Project>{92294abd-2550-4783-9331-7fadb440c04a}</Project>
-      <Name>pSher.Models</Name>
+      <Name>PSher.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\pSher.Api\pSher.Api.csproj">
+    <ProjectReference Include="..\..\Server\pSher.Api\PSher.Api.csproj">
       <Project>{36db54c3-8e72-40f5-95a2-01985ca40e2c}</Project>
-      <Name>pSher.Api</Name>
+      <Name>PSher.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Services\pSher.Services.Data\pSher.Services.Data.csproj">
+    <ProjectReference Include="..\..\Services\pSher.Services.Data\PSher.Services.Data.csproj">
       <Project>{fbe1c1a6-cccd-447a-9d45-cf9461a2e54b}</Project>
-      <Name>pSher.Services.Data</Name>
+      <Name>PSher.Services.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\UI\WPF\pSher.UI.WPF\pSher.UI.WPF.csproj">
+    <ProjectReference Include="..\..\UI\WPF\pSher.UI.WPF\PSher.UI.WPF.csproj">
       <Project>{9cbd0a88-5ead-4fe5-a1b8-b2e84eda8136}</Project>
-      <Name>pSher.UI.WPF</Name>
+      <Name>PSher.UI.WPF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

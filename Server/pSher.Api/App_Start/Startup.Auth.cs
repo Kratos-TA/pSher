@@ -8,10 +8,10 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using pSher.Api.Providers;
-using pSher.Api.Models;
+using PSher.Api.Providers;
+using PSher.Api.Models;
 
-namespace pSher.Api
+namespace PSher.Api
 {
     public partial class Startup
     {

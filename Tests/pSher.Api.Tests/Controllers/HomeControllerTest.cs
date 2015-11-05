@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using pSher.Api;
-using pSher.Api.Controllers;
+using PSher.Api;
+using PSher.Api.Controllers;
 
-namespace pSher.Api.Tests.Controllers
+namespace PSher.Api.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest

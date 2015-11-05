@@ -6,7 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 
-namespace pSher.Api
+namespace PSher.Api
 {
     public static class WebApiConfig
     {

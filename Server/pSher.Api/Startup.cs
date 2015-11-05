@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(pSher.Api.Startup))]
+[assembly: OwinStartup(typeof(PSher.Api.Startup))]
 
-namespace pSher.Api
+namespace PSher.Api
 {
     public partial class Startup
     {

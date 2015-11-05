@@ -13,11 +13,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using pSher.Api.Models;
-using pSher.Api.Providers;
-using pSher.Api.Results;
+using PSher.Api.Models;
+using PSher.Api.Providers;
+using PSher.Api.Results;
 
-namespace pSher.Api.Controllers
+namespace PSher.Api.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]

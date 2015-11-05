@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace pSher.UI.WPF
+namespace PSher.UI.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

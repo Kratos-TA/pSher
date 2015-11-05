@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace pSher.Api.Controllers
+namespace PSher.Api.Controllers
 {
     [Authorize]
     public class ValuesController : ApiController

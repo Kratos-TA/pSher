@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using pSher.Api.Areas.HelpPage.ModelDescriptions;
+using PSher.Api.Areas.HelpPage.ModelDescriptions;
 
-namespace pSher.Api.Areas.HelpPage.Models
+namespace PSher.Api.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

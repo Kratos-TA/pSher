@@ -1,6 +1,6 @@
 using System;
 
-namespace pSher.Api.Areas.HelpPage.ModelDescriptions
+namespace PSher.Api.Areas.HelpPage.ModelDescriptions
 {
     /// <summary>
     /// Describes a type model.

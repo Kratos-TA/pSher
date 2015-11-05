@@ -13,19 +13,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{41C4659A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{C3893050-6F47-4DC3-A5D9-5E06385FAA82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pSher.Data", "Data\pSher.Data\pSher.Data.csproj", "{6914EED5-ADF6-41C8-9346-C1D34E43E5F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSher.Data", "Data\pSher.Data\PSher.Data.csproj", "{6914EED5-ADF6-41C8-9346-C1D34E43E5F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pSher.Models", "Data\pSher.Models\pSher.Models.csproj", "{92294ABD-2550-4783-9331-7FADB440C04A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSher.Models", "Data\pSher.Models\PSher.Models.csproj", "{92294ABD-2550-4783-9331-7FADB440C04A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pSher.Services.Data", "Services\pSher.Services.Data\pSher.Services.Data.csproj", "{FBE1C1A6-CCCD-447A-9D45-CF9461A2E54B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSher.Services.Data", "Services\pSher.Services.Data\PSher.Services.Data.csproj", "{FBE1C1A6-CCCD-447A-9D45-CF9461A2E54B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{1B9CED99-B30F-433A-92EB-339ED795E967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pSher.UI.WPF", "UI\WPF\pSher.UI.WPF\pSher.UI.WPF.csproj", "{9CBD0A88-5EAD-4FE5-A1B8-B2E84EDA8136}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSher.UI.WPF", "UI\WPF\pSher.UI.WPF\PSher.UI.WPF.csproj", "{9CBD0A88-5EAD-4FE5-A1B8-B2E84EDA8136}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pSher.Api", "Server\pSher.Api\pSher.Api.csproj", "{36DB54C3-8E72-40F5-95A2-01985CA40E2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSher.Api", "Server\pSher.Api\PSher.Api.csproj", "{36DB54C3-8E72-40F5-95A2-01985CA40E2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pSher.Api.Tests", "Tests\pSher.Api.Tests\pSher.Api.Tests.csproj", "{90E7D41F-219A-47BD-AD9E-7BEAC9C6FDAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSher.Api.Tests", "Tests\pSher.Api.Tests\PSher.Api.Tests.csproj", "{90E7D41F-219A-47BD-AD9E-7BEAC9C6FDAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

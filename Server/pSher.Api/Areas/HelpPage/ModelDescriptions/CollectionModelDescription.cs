@@ -1,4 +1,4 @@
-namespace pSher.Api.Areas.HelpPage.ModelDescriptions
+namespace PSher.Api.Areas.HelpPage.ModelDescriptions
 {
     public class CollectionModelDescription : ModelDescription
     {

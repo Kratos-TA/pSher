@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace pSher.Api.Models
+namespace PSher.Api.Models
 {
     // Models returned by AccountController actions.
 

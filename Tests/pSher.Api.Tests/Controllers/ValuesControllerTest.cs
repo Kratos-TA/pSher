@@ -5,10 +5,10 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using pSher.Api;
-using pSher.Api.Controllers;
+using PSher.Api;
+using PSher.Api.Controllers;
 
-namespace pSher.Api.Tests.Controllers
+namespace PSher.Api.Tests.Controllers
 {
     [TestClass]
     public class ValuesControllerTest

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace pSher.Api.Models
+namespace PSher.Api.Models
 {
     // Models used as parameters to AccountController actions.
 
