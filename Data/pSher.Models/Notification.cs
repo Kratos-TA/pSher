@@ -15,10 +15,5 @@
         public DateTime? SeenOn { get; set; }
 
         public DateTime SendOn { get; set; }
-
-        [Required]
-        public int UserId { get; set; }
-
-        public virtual User User { get; set; }
     }
 }

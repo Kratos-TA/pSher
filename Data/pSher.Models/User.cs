@@ -29,8 +29,6 @@
         [MaxLength(25)]
         public string LastName { get; set; }
 
-        public int GalleryId { get; set; }
-
         public Gallery Gallery { get; set; }
 
         public virtual ICollection<Notification> Notifications
