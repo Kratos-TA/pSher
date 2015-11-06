@@ -7,6 +7,7 @@
     public class Image
     {
         private ICollection<Album> albums;
+        private ICollection<Tag> tags;
 
         public Image()
         {
@@ -51,6 +52,12 @@
         {
             get { return this.albums; }
             set { this.albums = value; }
+        }
+
+        public virtual ICollection<Tag> Tags
+        {
+            get { return this.tags; }
+            set { this.tags = value; }
         }
     }
 }
