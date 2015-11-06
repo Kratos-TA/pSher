@@ -8,10 +8,12 @@
     public class Tag
     {
         private ICollection<Image> images;
+        private ICollection<Album> albums;
 
         public Tag()
         {
             this.images = new HashSet<Image>();
+            this.albums = new HashSet<Album>();
         }
 
         [Key]
@@ -26,6 +28,12 @@
         {
             get { return this.images; }
             set { this.images = value; }
+        }
+
+        public virtual ICollection<Album> Albums
+        {
+            get { return this.albums; }
+            set { this.albums = value; }
         }
     }
 }
