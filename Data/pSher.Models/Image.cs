@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using PSher.Common.Constants;
+
     public class Image
     {
         private ICollection<Album> albums;
@@ -18,18 +20,18 @@
         public int Id { get; set; }
 
         [Required]
-        [MinLength(2)]
-        [MaxLength(100)]
+        [MinLength(ValidationConstants.MinImageTitle)]
+        [MaxLength(ValidationConstants.MaxImageTitle)]
         public string Title { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(ValidationConstants.MaxImageDescription)]
         public string Description { get; set; }
         
         [Required]
         public virtual User Author { get; set; }
 
         [Required]
-        [MaxLength(2000)]
+        [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
         public string DropboxUrl { get; set; }
 
         public DateTime UploadedOn { get; set; }

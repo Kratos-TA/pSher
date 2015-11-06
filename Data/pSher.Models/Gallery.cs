@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using PSher.Common.Constants;
+
     public class Gallery
     {
         private ICollection<Album> albums;
@@ -16,8 +18,8 @@
         public int Id { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(64)]
+        [MinLength(ValidationConstants.MinGalleryName)]
+        [MaxLength(ValidationConstants.MaxGalleryName)]
         public string Name { get; set; }
 
         public virtual ICollection<Album> Albums

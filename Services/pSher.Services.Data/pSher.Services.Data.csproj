@@ -57,11 +57,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAlbumsService.cs" />
+    <Compile Include="Contracts\IGalleriesService.cs" />
+    <Compile Include="Contracts\IImagesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\PSher.Common\PSher.Common.csproj">
+      <Project>{f007c32e-43dc-448d-a1a6-a962a51930f0}</Project>
+      <Name>PSher.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\pSher.Data\PSher.Data.csproj">
+      <Project>{6914eed5-adf6-41c8-9346-c1d34e43e5f4}</Project>
+      <Name>PSher.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\pSher.Models\PSher.Models.csproj">
+      <Project>{92294abd-2550-4783-9331-7fadb440c04a}</Project>
+      <Name>PSher.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

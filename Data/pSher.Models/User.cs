@@ -7,6 +7,8 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    using PSher.Common.Constants;
+
     public class User : IdentityUser
     {
         private ICollection<Notification> notifications;
@@ -23,10 +25,12 @@
             this.notifications = new HashSet<Notification>();
         }
 
-        [MaxLength(25)]
+        [MaxLength(ValidationConstants.MaxUserRealName)]
+        [MinLength(ValidationConstants.MinUserRealName)]
         public string FirstName { get; set; }
 
-        [MaxLength(25)]
+        [MaxLength(ValidationConstants.MaxUserRealName)]
+        [MinLength(ValidationConstants.MinUserRealName)]
         public string LastName { get; set; }
 
         public Gallery Gallery { get; set; }

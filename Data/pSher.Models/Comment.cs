@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using PSher.Common.Constants;
+
     public class Comment
     {
         public int Id { get; set; }
@@ -10,8 +12,8 @@
         public virtual User Author { get; set; }
 
         [Required]
-        [MinLength(5)]
-        [MaxLength(248)]
+        [MinLength(ValidationConstants.MinCommentText)]
+        [MaxLength(ValidationConstants.MaxCommentText)]
         public string Text { get; set; }
 
         public int Likes { get; set; }

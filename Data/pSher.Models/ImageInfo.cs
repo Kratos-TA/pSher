@@ -3,17 +3,20 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using PSher.Common.Constants;
+
     public class ImageInfo
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(248)]
+        [MaxLength(ValidationConstants.MaxImageInfoOriginalName)]
         public string OriginalName { get; set; }
 
         [Required]
-        [MaxLength(6)]
+        [MaxLength(ValidationConstants.MaxImageInfoFileExtension)]
+        [MinLength(ValidationConstants.MaxImageInfoFileExtension)]
         public string OriginalExtension { get; set; }
 
         public DateTime? CreatedOn { get; set; }
