@@ -3,10 +3,10 @@
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Cors;
-    using AutoMapper.QueryableExtensions;
-    using Services.Data.Contracts;
 
+    using AutoMapper.QueryableExtensions;
     using PSher.Api.Models.Images;
+    using Services.Data.Contracts;
 
     [RoutePrefix("api/Images")]
     public class ImagesController : ApiController
@@ -41,8 +41,7 @@
                 model.AuthorUserName,
                 model.Description,
                 model.IsPrivate,
-                model.Tags
-                );
+                model.Tags);
 
             return this.Ok(createdProjectId);
         }

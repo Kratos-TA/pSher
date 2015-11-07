@@ -21,8 +21,5 @@
         public const int MaxTagName = 64;
         public const int MinUserRealName = 2;
         public const int MaxUserRealName = 32;
-
-
-
     }
 }

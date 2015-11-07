@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using PSher.Models;
     using PSher.Common.Constants;
+    using PSher.Models;
 
     public interface IImagesService
     {

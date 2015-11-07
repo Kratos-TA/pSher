@@ -218,17 +218,23 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\Mapping\IMapFrom.cs" />
     <Compile Include="Infrastructure\ObjectFactory.cs" />
-    <Compile Include="Models\Account\AccountBindingModels.cs" />
-    <Compile Include="Models\Account\AccountViewModels.cs" />
+    <Compile Include="Models\Account\AddExternalLoginBindingModel.cs" />
+    <Compile Include="Models\Account\ChangePasswordBindingModel.cs" />
+    <Compile Include="Models\Account\ExternalLoginViewModel.cs" />
+    <Compile Include="Models\Account\ManageInfoViewModel.cs" />
+    <Compile Include="Models\Account\RegisterBindingModel.cs" />
+    <Compile Include="Models\Account\RegisterExternalBindingModel.cs" />
+    <Compile Include="Models\Account\RemoveLoginBindingModel.cs" />
+    <Compile Include="Models\Account\SetPasswordBindingModel.cs" />
+    <Compile Include="Models\Account\UserInfoViewModel.cs" />
+    <Compile Include="Models\Account\UserLoginInfoViewModel.cs" />
     <Compile Include="Models\Images\ImageResponseModel.cs" />
     <Compile Include="Models\Images\SaveImageRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -266,7 +272,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Users\" />

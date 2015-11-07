@@ -26,7 +26,7 @@
 
         public IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize)
         {
-            var allImages =  this.images
+            var allImages = this.images
                    .All()
                    .OrderByDescending(pr => pr.UploadedOn)
                    .Skip((page - 1) * pageSize)
@@ -56,7 +56,7 @@
         }
 
         // TODO: Add albums
-        public int Add(string title, string authorUserName,  string description, bool isPrivate, ICollection<string> imageTags)
+        public int Add(string title, string authorUserName, string description, bool isPrivate, ICollection<string> imageTags)
         {
             var currentUser = this.users
                 .All()

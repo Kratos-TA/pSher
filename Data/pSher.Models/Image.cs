@@ -33,7 +33,7 @@
         [Required]
         public virtual User Author { get; set; }
 
-        //[Required]
+        // [Required]
         [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
         public string DropboxUrl { get; set; }
 

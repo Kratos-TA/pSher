@@ -9,16 +9,16 @@ namespace PSher.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            this.AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(PSher.Data.PSherDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            // This method will be called after migrating to the latest version.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
+            // You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            // to avoid creating duplicate seed data. E.g.
             //
             //    context.People.AddOrUpdate(
             //      p => p.FullName,
@@ -26,7 +26,6 @@ namespace PSher.Data.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
-            //
         }
     }
 }

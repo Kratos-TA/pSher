@@ -16,7 +16,7 @@
         {
             this.tags = new HashSet<string>();
         }
-        
+
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -25,7 +25,7 @@
 
         public bool IsPrvate { get; set; }
 
-        public string  AuthorId { get; set; }
+        public string AuthorId { get; set; }
 
         public string AuthorName { get; set; }
 

@@ -1,10 +1,10 @@
 ﻿namespace PSher.Api
 {
-    using PSher.Common.Constants;
     using System.Reflection;
     using System.Web;
     using System.Web.Http;
 
+    using PSher.Common.Constants;
 
     public class WebApiApplication : HttpApplication
     {

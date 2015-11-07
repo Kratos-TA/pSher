@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PSher.Models
+﻿namespace PSher.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using PSher.Common.Constants;
 

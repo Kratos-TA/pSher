@@ -7,7 +7,6 @@
     public class SaveImageRequestModel
     {
         // string title, string authorUserName, int albumId, string description, bool isPrivate, ICollection<string> imageTags
-
         private ICollection<string> tags;
 
         public SaveImageRequestModel()
@@ -29,13 +28,11 @@
         public string AuthorUserName { get; set; }
 
         // TODO: Set the ImageInfo !!!
-        //public virtual ImageInfo ImageInfo { get; set; }
-
+        // public virtual ImageInfo ImageInfo { get; set; }
         public virtual ICollection<string> Tags
         {
             get { return this.tags; }
             set { this.tags = value; }
         }
-
     }
 }

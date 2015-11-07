@@ -1,16 +1,15 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using PSher.Api.Models;
-using PSher.Data;
-using PSher.Models;
-
-namespace PSher.Api
+﻿namespace PSher.Api
 {
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
+    using System.Threading.Tasks;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin;
+    using PSher.Api.Models;
+    using PSher.Data;
+    using PSher.Models;
 
+    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<User>
     {
         public ApplicationUserManager(IUserStore<User> store)
@@ -21,12 +20,14 @@ namespace PSher.Api
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<User>(context.Get<PSherDbContext>()));
+
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<User>(manager)
             {
                 AllowOnlyAlphanumericUserNames = true,
                 RequireUniqueEmail = true
             };
+
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
@@ -36,11 +37,13 @@ namespace PSher.Api
                 RequireLowercase = false,
                 RequireUppercase = false,
             };
+
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider = new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
+
             return manager;
         }
     }
