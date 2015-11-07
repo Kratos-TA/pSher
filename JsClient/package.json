@@ -1,0 +1,31 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "Kratos-Team",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha -R spec tests --compilers js:babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kratos-TA/pSher.git"
+  },
+  "keywords": [
+    "Photos",
+    "Galery"
+  ],
+  "author": "Team_Kratos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kratos-TA/pSher/issues"
+  },
+  "homepage": "https://github.com/Kratos-TA/pSher",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "es6-module-loader": "^0.17.8",
+    "handlebars": "^3.0.3",
+    "jquery": "^2.1.4",
+    "sammy": "^0.7.6",
+    "traceur": "0.0.92"
+  }
+}

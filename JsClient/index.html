@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Photo sharing service">
+    <meta name="author" content="Kratos Telerik Academy team">
+
+    <link rel="icon" href="./img/photo.gif">
+    <title>PShare</title>
+    
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/indexPageCustomStyles.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/try.css">
+
+    <script src="node_modules/handlebars/dist/handlebars.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/sammy/lib/sammy.js"></script>
+    <script src="node_modules/traceur/bin/traceur.js"></script>
+    <script src="node_modules/es6-module-loader/dist/es6-module-loader-dev.js"></script>
+    <!-- <script src="scripts/app.js"></script> -->
+
+    <!-- Loading system.js -->
+    <!-- <script src="./node_modules/systemjs/dist/system.js" type="text/javascript"></script> -->
+    
+    <script type="text/javascript">
+        // System.config({
+        //     transpiler: 'babel',
+        //     balebOptions: {
+        //         optional: [
+        //             'runtime'
+        //         ]
+        //     },
+        //     map: {
+        //         // Load (map) the path to babel, jquery, bootstrap.js, handlebars and sammy
+        //         'babel': 'node_modules/babel/node_modules/babel-core/browser.js',
+        //         'jquery': 'node_modules/jquery/dist/jquery.js',
+        //         'bootstrapjs': 'node_modules/bootstrap/dist/js/bootstrap.min.js',
+        //         'handlebars': 'node_modules/handlebars/dist/handlebars.js',
+        //         'sammy': 'node_modules/sammy/lib/sammy.js'
+        //     }
+        // });
+        System.import('scripts/app.js');
+    </script>
+
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <div class="row" id="backgroundContainer">
+        </div>
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
+                <div id="container" class="cover">
+                        <!--insert pages here-->
+                </div>
+
+                <!-- <script src="templates/templates.js"></script> -->
+
+                <div class="masthead clearfix">
+                    <div class="inner">
+                        <h3 class="masthead-brand">
+                            <img src="./img/pshare_logo.png" alt="logo" height="30px">
+                            <span>PShare</span>
+                        </h3>
+                        <nav>
+                            <ul class="nav masthead-nav">
+                                <li class="active"><a href="#/">Home</a></li>
+                                <li><a href="#/profile:username">Profile</a></li>
+                                <li><a href="#/player">Galeries</a></li>
+                                <li><a id="log" href="#/login">Log in</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="mastfoot">
+                    <div class="inner">
+                        <p>Photo manager by <a href="https://github.com/Kratos-TA">Kratos team</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

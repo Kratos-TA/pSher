@@ -1,0 +1,236 @@
+#backgroundContainer {
+    opacity: 0.5;
+}
+.row div, #container>div {
+    padding: 1px;
+}
+
+.row {
+    width: 100%;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.searchSubmitForm {
+    padding-top: 20px;
+}
+
+.searchSubmitForm input, .searchSubmitForm div {
+    vertical-align: middle;
+    margin-bottom: 20px;
+}
+
+.searchSubmitForm input, .form-login input {
+    color: gray;
+    height: 45px;
+    margin-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 0;
+    font-size: 1.2em;
+}
+
+.form-login {
+    padding: 150px 20px 150px 20px;
+}
+
+.form-login h4 {
+    margin-bottom: 30px;
+    font-size: 1.5em;
+}
+
+.searchResultsContainer {
+    padding: 150px 20px 150px 20px;
+    position: absolute;
+}
+
+a,
+a:focus,
+a:hover {
+    color: #fff;
+}
+
+
+/* Custom default button */
+.searchBtn, #loginBtn {
+    color: #FFF;
+    text-shadow: none;
+    font-size: 1.2em;
+    width: 100px;
+    display: inline-block;
+    background-color: #FF1111;
+    border: 1px solid #DDD;
+    height: 45px;
+    padding-top: 10px;
+    font-weight: 600;
+    border-radius: 0;
+}
+
+.searchBtn:hover, #loginBtn:hover {
+    background-color: #fff;
+    color: #777;
+}
+
+
+/* Base structure */
+
+html,
+body {
+    height: 100%;
+    background-color: #333;
+}
+
+body {
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+}
+
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+
+.site-wrapper {
+    width: 100%;
+    height: 100%;
+    /* For at least Firefox */
+    min-height: 100%;
+    /*-webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);*/
+}
+
+.site-wrapper-inner {
+    vertical-align: top;
+}
+
+.cover-container {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+/* Padding for spacing */
+
+.inner {
+    padding: 30px;
+}
+
+
+/* Header */
+
+.masthead-brand {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+    display: inline-block;
+}
+
+.masthead-nav > li + li {
+    margin-left: 20px;
+}
+
+.masthead-nav > li > a {
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    /* IE8 proofing */
+    color: rgba(255, 255, 255, .75);
+    border-bottom: 2px solid transparent;
+}
+
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+    background-color: transparent;
+    border-bottom-color: #a9a9a9;
+    border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+@media (min-width: 768px) {
+    .masthead-brand {
+        float: left;
+    }
+    .masthead-nav {
+        float: right;
+    }
+}
+
+
+/* Cover */
+
+.cover {
+    padding: 0 20px;
+}
+
+.cover .btn-lg {
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+
+/* Footer */
+
+.mastfoot {
+    color: #999;
+    /* IE8 proofing */
+    color: rgba(255, 255, 255, .5);
+}
+
+
+/* Affix and center */
+
+@media (min-width: 300px) {
+    /* Pull out the header and footer */
+    .masthead {
+        position: fixed;
+        top: 0;
+    }
+    .mastfoot {
+        position: fixed;
+        bottom: 0;
+    }
+    .cover {
+        position: fixed;
+        top: 150px;
+    }
+    /* Start the vertical centering */
+    .site-wrapper-inner {
+        vertical-align: middle;
+    }
+    /* Handle the widths */
+    .masthead,
+    .mastfoot,
+    .cover-container,
+    .cover,
+    .searchResultsContainer {
+        width: 100%;
+        /* Must be percentage or pixels for horizontal alignment */
+    }
+}
+
+@media (min-width: 992px) {
+    .cover-container {
+        width: 100%;
+        margin: auto;
+    }
+    .site-wrapper-inner {
+        text-align: center;
+    }
+    .masthead,
+    .mastfoot,
+    .cover,
+    .searchResultsContainer {
+        margin-left: 15%;
+        width: 70%;
+    }
+}
