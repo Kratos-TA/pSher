@@ -14,6 +14,7 @@
         public Image()
         {
             this.albums = new HashSet<Album>();
+            this.tags = new HashSet<Tag>();
         }
 
         [Key]
@@ -26,11 +27,13 @@
 
         [MaxLength(ValidationConstants.MaxImageDescription)]
         public string Description { get; set; }
+
+        public bool IsPrivate { get; set; }
         
         [Required]
         public virtual User Author { get; set; }
 
-        [Required]
+        // [Required]
         [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
         public string DropboxUrl { get; set; }
 

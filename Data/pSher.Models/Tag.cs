@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using PSher.Common.Constants;
 
@@ -22,6 +23,7 @@
         [Required]
         [MinLength(ValidationConstants.MinTagName)]
         [MaxLength(ValidationConstants.MaxTagName)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }      
 
         public virtual ICollection<Image> Images

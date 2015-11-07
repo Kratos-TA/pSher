@@ -60,6 +60,7 @@
     <Compile Include="Contracts\IAlbumsService.cs" />
     <Compile Include="Contracts\IGalleriesService.cs" />
     <Compile Include="Contracts\IImagesService.cs" />
+    <Compile Include="ImagesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
