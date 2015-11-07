@@ -181,9 +181,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountBindingModels.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Account\AccountBindingModels.cs" />
+    <Compile Include="Models\Account\AccountViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -203,6 +202,10 @@
     <ProjectReference Include="..\..\Data\pSher.Data\PSher.Data.csproj">
       <Project>{6914eed5-adf6-41c8-9346-c1d34e43e5f4}</Project>
       <Name>PSher.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\pSher.Models\PSher.Models.csproj">
+      <Project>{92294ABD-2550-4783-9331-7FADB440C04A}</Project>
+      <Name>PSher.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\pSher.Services.Data\PSher.Services.Data.csproj">
       <Project>{fbe1c1a6-cccd-447a-9d45-cf9461a2e54b}</Project>
