@@ -1,39 +1,49 @@
-jQuery(document).ready(function($) {
-    var slideWidth = '100vw';
-    var slideHeight = '100vh';
-    var sliderUlWidth = '400vw';
-    var windowWidth = $(window).width();
+var slider = (function() {
+    function getSlider() {
+        var slideWidth = '100vw';
+        var slideHeight = '100vh';
+        var sliderUlWidth = '400vw';
+        var windowWidth = $(window).width();
 
-    $(window).resize(function() {
-        windowWidth = $(window).width();
+        selectSliderImages(windowWidth);
+
+        $('#slider').css({
+            width: slideWidth,
+            height: slideHeight
+        });
+
         $('#slider ul').css({
+            width: sliderUlWidth,
             marginLeft: -windowWidth
         });
-        selectSliderImages(windowWidth);
-    });
 
-    setInterval(function() {
-        moveRight();
-    }, 7000);
+        $('#slider ul li').css({
+            width: slideWidth,
+            height: slideHeight
+        });
 
-    selectSliderImages(windowWidth);
+        $('#slider ul li:last-child').prependTo('#slider ul');
 
-    $('#slider').css({
-        width: slideWidth,
-        height: slideHeight
-    });
+        $('a.control_prev').click(function() {
+            moveLeft(windowWidth);
+        });
 
-    $('#slider ul').css({
-        width: sliderUlWidth,
-        marginLeft: -windowWidth
-    });
+        $('a.control_next').click(function() {
+            moveRight(windowWidth);
+        });
 
-    $('#slider ul li').css({
-        width: slideWidth,
-        height: slideHeight
-    });
+        $(window).resize(function() {
+            windowWidth = $(window).width();
+            $('#slider ul').css({
+                marginLeft: -windowWidth
+            });
+            selectSliderImages(windowWidth);
+        });
 
-    $('#slider ul li:last-child').prependTo('#slider ul');
+        setInterval(function() {
+            moveRight(windowWidth);
+        }, 7000);
+    }
 
     function selectSliderImages(windowWidth) {
         var windowHeight = $(window).height();
@@ -44,11 +54,11 @@ jQuery(document).ready(function($) {
         var $slide4 = $("#slide4");
         var imagePath;
 
-        if (aspectRatio <= 1) {
+        if (aspectRatio < 1.34) {
             imagePath = "0_75";
-        } else if (aspectRatio <= 1.70) {
+        } else if (aspectRatio < 1.78) {
             imagePath = "1_33";
-        } else if (aspectRatio <= 2.25) {
+        } else if (aspectRatio < 2.3) {
             imagePath = "1_75";
         } else {
             imagePath = "2_30";
@@ -60,7 +70,7 @@ jQuery(document).ready(function($) {
         $slide4.css('background-image', 'url(' + './images/' + imagePath + '/image4.jpg' + ')');
     }
 
-    function moveLeft() {
+    function moveLeft(windowWidth) {
         $('#slider ul').animate({
             left: +windowWidth
         }, 600, function() {
@@ -69,7 +79,7 @@ jQuery(document).ready(function($) {
         });
     }
 
-    function moveRight() {
+    function moveRight(windowWidth) {
         $('#slider ul').animate({
             left: -windowWidth
         }, 600, function() {
@@ -78,12 +88,11 @@ jQuery(document).ready(function($) {
         });
     }
 
-    $('a.control_prev').click(function() {
-        moveLeft();
-    });
+    return {
+        get: getSlider
+    };
+}());
 
-    $('a.control_next').click(function() {
-        moveRight();
-    });
-
-});
+export {
+    slider
+};

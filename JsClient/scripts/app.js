@@ -1,9 +1,5 @@
- import {
-     templates
- }
- from '../templates/templates.js';
-
- // import { playlistControler } './Controllers/PlayGenreController.js';
+import { templates } from '../templates/templates.js';
+import { slider } from './slider.js';
 
  var appInitialize = (function() {
      // Checking if the module is successfully loaded
@@ -19,6 +15,7 @@
             var backgroundImageContainer = $('#backgroundContainer');
             //  backgroundImageContainer.html(template(imageUrlContainerObject));
              backgroundImageContainer.html(template());
+             jQuery(document).ready(slider.get());
          });
 
 

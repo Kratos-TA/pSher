@@ -1,77 +1,4 @@
-#backgroundContainer {
-    opacity: 0.5;
-}
-.row div, #container>div {
-    padding: 1px;
-}
-
-.row {
-    width: 100%;
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-}
-
-.searchSubmitForm {
-    padding-top: 20px;
-}
-
-.searchSubmitForm input, .searchSubmitForm div {
-    vertical-align: middle;
-    margin-bottom: 20px;
-}
-
-.searchSubmitForm input, .form-login input {
-    color: gray;
-    height: 45px;
-    margin-right: 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    border-radius: 0;
-    font-size: 1.2em;
-}
-
-.form-login {
-    padding: 150px 20px 150px 20px;
-}
-
-.form-login h4 {
-    margin-bottom: 30px;
-    font-size: 1.5em;
-}
-
-.searchResultsContainer {
-    padding: 150px 20px 150px 20px;
-    position: absolute;
-}
-
-a,
-a:focus,
-a:hover {
-    color: #fff;
-}
-
-
-/* Custom default button */
-.searchBtn, #loginBtn {
-    color: #FFF;
-    text-shadow: none;
-    font-size: 1.2em;
-    width: 100px;
-    display: inline-block;
-    background-color: #FF1111;
-    border: 1px solid #DDD;
-    height: 45px;
-    padding-top: 10px;
-    font-weight: 600;
-    border-radius: 0;
-}
-
-.searchBtn:hover, #loginBtn:hover {
-    background-color: #fff;
-    color: #777;
-}
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 
 /* Base structure */
 
@@ -85,6 +12,174 @@ body {
     color: #fff;
     text-align: center;
     text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+}
+
+html,
+body,
+#slider ul,
+#slider ul li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: 'Open Sans';
+}
+
+a,
+a:focus,
+a:hover {
+    color: #fff;
+}
+
+
+/*Styling background slider*/
+
+#backgroundContainer {
+    opacity: 0.9;
+}
+
+#slider,
+#slider ul,
+#slider ul li {
+    position: relative;
+}
+
+#slider,
+#slider ul,
+#slider ul li {
+    overflow: hidden;
+    margin: auto;
+}
+
+#slider ul {
+    list-style: none;
+}
+
+#slider ul li {
+    display: block;
+    float: left;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+a.control_prev,
+a.control_next {
+    position: absolute;
+    top: 45%;
+    z-index: 999;
+    display: block;
+    padding: 3% 3%;
+    width: auto;
+    height: auto;
+    background: #2a2a2a;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.5em;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+a.control_prev:hover,
+a.control_next:hover {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+}
+
+a.control_next {
+    right: 0;
+}
+
+
+/*Styling container*/
+
+.row div,
+#container>div {
+    padding: 1px;
+}
+
+.row {
+    width: 100%;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+/*Styling forms - search and login*/
+
+.searchSubmitForm,
+.form-login,
+.form-login input {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.searchSubmitForm,
+.form-login {
+    padding-top: 20px;
+}
+
+.searchSubmitForm input,
+.searchSubmitForm div {
+    vertical-align: middle;
+    margin-bottom: 20px;
+}
+
+.searchSubmitForm a {
+    display: block;
+    padding-top: 10px;
+}
+
+.searchSubmitForm input {
+    display: inline-block;
+    margin-right: 0px;
+}
+
+.searchSubmitForm input,
+.form-login input {
+    color: gray;
+    height: 45px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 0;
+    font-size: 1.2em;
+    width: 260px;
+}
+
+#container .cover-heading {
+    font-size: 1.8em;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.searchBtn,
+#loginBtn {
+    color: #FFF;
+    text-shadow: none;
+    font-size: 1.2em;
+    width: 100px;
+    display: inline-block;
+    background-color: #FF1111;
+    border: 1px solid #DDD;
+    height: 45px;
+    padding-top: 10px;
+    font-weight: 600;
+    border-radius: 0;
+}
+
+.searchBtn:hover,
+#loginBtn:hover {
+    background-color: #fff;
+    color: #777;
+}
+
+
+/*Styling search results container*/
+
+.searchResultsContainer {
+    padding: 150px 20px 150px 20px;
+    position: absolute;
 }
 
 
@@ -128,41 +223,31 @@ body {
 }
 
 .masthead-nav > li + li {
-    margin-left: 20px;
+    margin-left: 8px;
 }
 
 .masthead-nav > li > a {
-    padding-right: 0;
-    padding-left: 0;
-    font-size: 16px;
+    padding: 4px;
+    font-size: 1em;
     font-weight: bold;
-    color: #fff;
-    /* IE8 proofing */
     color: rgba(255, 255, 255, .75);
-    border-bottom: 2px solid transparent;
+    /* IE8 proofing */
+    border: 1px solid rgba(255, 255, 255, .75);
+    border-bottom: 5px solid rgba(255, 255, 255, .75);
 }
 
 .masthead-nav > li > a:hover,
 .masthead-nav > li > a:focus {
     background-color: transparent;
-    border-bottom-color: #a9a9a9;
-    border-bottom-color: rgba(255, 255, 255, .25);
+    color: #fff;
+    border-color: rgba(255, 25, 25, 25);
 }
 
 .masthead-nav > .active > a,
 .masthead-nav > .active > a:hover,
 .masthead-nav > .active > a:focus {
     color: #fff;
-    border-bottom-color: #fff;
-}
-
-@media (min-width: 768px) {
-    .masthead-brand {
-        float: left;
-    }
-    .masthead-nav {
-        float: right;
-    }
+    border-color: #fff;
 }
 
 
@@ -187,7 +272,10 @@ body {
 }
 
 
-/* Affix and center */
+/*RESPONSIVE SETTINGS*/
+
+
+/*Very narrow screens*/
 
 @media (min-width: 300px) {
     /* Pull out the header and footer */
@@ -217,6 +305,51 @@ body {
         /* Must be percentage or pixels for horizontal alignment */
     }
 }
+
+
+/*Narrow screens*/
+
+@media (min-width: 400px) {
+    /* Pull out the header and footer */
+    .masthead-nav > li > a {
+        padding: 7px;
+        font-size: 1.2em;
+    }
+    .masthead-nav > li + li {
+        margin-left: 10px;
+    }
+    .searchSubmitForm input {
+        margin-right: 20px;
+    }
+    #container .cover-heading {
+        margin-bottom: 30;
+        margin-top: 10;
+        margin-bottom: 30px;
+        font-size: 2em;
+    }
+}
+
+
+/*Medium screens*/
+
+@media (min-width: 768px) {
+    .masthead-brand {
+        float: left;
+    }
+    .masthead-nav {
+        float: right;
+    }
+    .masthead-nav > li > a {
+        padding: 15px;
+        font-size: 1.2em;
+    }
+    .masthead-nav > li + li {
+        margin-left: 20px;
+    }
+}
+
+
+/*Wide screens*/
 
 @media (min-width: 992px) {
     .cover-container {
