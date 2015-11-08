@@ -13,6 +13,7 @@
     
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/indexPageCustomStyles.css" rel="stylesheet">
+    <link href="./css/profilePage.css" rel="stylesheet">
 
     <script src="node_modules/handlebars/dist/handlebars.js"></script>
     <script src="node_modules/jquery/dist/jquery.js"></script>
@@ -62,10 +63,10 @@
                         </h3>
                         <nav>
                             <ul class="nav masthead-nav">
-                                <li class="active"><a href="#/">Home</a></li>
-                                <li><a href="#/profile:username">Profile</a></li>
-                                <li><a href="#/player">Galeries</a></li>
-                                <li><a id="log" href="#/login">Log in</a></li>
+                                <li id="homeLink"><a href="#/">Home</a></li>
+                                <li id="profileLink"><a href="#/profile/:username">Profile</a></li>
+                                <li id="galeriesLink"><a href="#/galeries">Galeries</a></li>
+                                <li id="logLink"><a id="log" href="#/login">Log in</a></li>
                             </ul>
                         </nav>
                     </div>
