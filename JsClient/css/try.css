@@ -31,27 +31,10 @@ html, body {
   float: left;
   margin: 0;
   padding: 0;
-  /*width: 25%;
-  height: 100vh;*/
-  background: #ccc;
   text-align: center;
-  /*line-height: 100vh;*/
   background-size: 100%;
   background-repeat: no-repeat;
-}
-
-#slider #slide1 {
-  background-image: url("../images/image1.jpg");
-}
-
-#slider #slide2 {
-  background-image: url("../images/image2.jpg");
-}
-#slider #slide3 {
-  background-image: url("../images/image3.jpg");
-}
-#slider #slide4 {
-  background-image: url("../images/image4.jpg");
+  background-position: center center;
 }
 
 a.control_prev, a.control_next {
