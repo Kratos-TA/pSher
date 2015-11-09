@@ -21,6 +21,6 @@
 
         // TODO: Add ImageInfo as method parameter
         // TODO: Add albums
-        int Add(string title, string authorUserName, string description, bool isPrivate, ICollection<string> tags = null);
+        int Add(string title, string authorUserName, string description, bool isPrivate, ICollection<string> tags = null, IDictionary<string, DateTime> albums = null);
     }
 }
