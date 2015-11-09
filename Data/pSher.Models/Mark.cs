@@ -9,6 +9,8 @@
         [Key]
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         [Required]
         [Range(ValidationConstants.MinMarkValue, ValidationConstants.MinMarkValue, ErrorMessage = ErrorMessages.MarkLength)]
         public int Value { get; set; }

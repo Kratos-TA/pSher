@@ -87,7 +87,7 @@
                 {
                     currentTag = new Tag()
                     {
-                        Name = t.ToLower()
+                        Name = t
                     };
                 }
 

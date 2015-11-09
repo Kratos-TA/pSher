@@ -7,15 +7,13 @@
 
     public interface IPSherDbContext
     {
-        IDbSet<Gallery> Galleries { get; set; }
+        IDbSet<Photostream> Galleries { get; set; }
 
         IDbSet<Album> Albums { get; set; }
 
         IDbSet<Image> Images { get; set; }
 
         IDbSet<ImageInfo> ImageInfos { get; set; }
-
-        IDbSet<Discussion> Discussions { get; set; }
 
         IDbSet<Comment> Comments { get; set; }
 

@@ -15,6 +15,8 @@
         [Key]
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public virtual ICollection<Mark> Marks
         {
             get { return this.marks; }

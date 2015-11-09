@@ -59,8 +59,7 @@
   <ItemGroup>
     <Compile Include="Album.cs" />
     <Compile Include="Comment.cs" />
-    <Compile Include="Discussion.cs" />
-    <Compile Include="Gallery.cs" />
+    <Compile Include="Photostream.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="ImageInfo.cs" />
     <Compile Include="Mark.cs" />

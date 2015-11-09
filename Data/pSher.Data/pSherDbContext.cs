@@ -14,15 +14,13 @@
         {
         }
 
-        public virtual IDbSet<Gallery> Galleries { get; set; }
+        public virtual IDbSet<Photostream> Galleries { get; set; }
 
         public virtual IDbSet<Album> Albums { get; set; }
 
         public virtual IDbSet<Image> Images { get; set; }
 
         public virtual IDbSet<ImageInfo> ImageInfos { get; set; }
-
-        public virtual IDbSet<Discussion> Discussions { get; set; }
 
         public virtual IDbSet<Comment> Comments { get; set; }
 

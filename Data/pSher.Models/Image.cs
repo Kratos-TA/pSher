@@ -9,16 +9,20 @@
     public class Image
     {
         private ICollection<Album> albums;
+        private ICollection<Comment> comments;
         private ICollection<Tag> tags;
 
         public Image()
         {
             this.albums = new HashSet<Album>();
+            this.comments = new HashSet<Comment>();
             this.tags = new HashSet<Tag>();
         }
 
         [Key]
         public int Id { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         [Required]
         [MinLength(ValidationConstants.MinImageTitle)]
@@ -40,8 +44,6 @@
         public DateTime UploadedOn { get; set; }
 
         public virtual Rating Rating { get; set; }
-        
-        public Discussion Discussion { get; set; }
 
         public virtual ImageInfo ImageInfo { get; set; }
 
@@ -49,6 +51,12 @@
         {
             get { return this.albums; }
             set { this.albums = value; }
+        }
+
+        public virtual ICollection<Comment> Comments
+        {
+            get { return this.comments; }
+            set { this.comments = value; }
         }
 
         public virtual ICollection<Tag> Tags

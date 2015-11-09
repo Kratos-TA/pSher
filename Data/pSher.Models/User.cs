@@ -12,18 +12,23 @@
     public class User : IdentityUser
     {
         private ICollection<Notification> notifications;
+        private ICollection<Album> albums;
 
         public User()
             : base()
         {
             this.notifications = new HashSet<Notification>();
+            this.albums = new HashSet<Album>();
         }
 
         public User(string username)
             : base(username)
         {
             this.notifications = new HashSet<Notification>();
+            this.albums = new HashSet<Album>();
         }
+
+        public bool IsDeleted { get; set; }
 
         [MaxLength(ValidationConstants.MaxUserRealName)]
         [MinLength(ValidationConstants.MinUserRealName)]
@@ -33,12 +38,17 @@
         [MinLength(ValidationConstants.MinUserRealName)]
         public string LastName { get; set; }
 
-        public Gallery Gallery { get; set; }
+        public Photostream Photostream { get; set; }
 
         public virtual ICollection<Notification> Notifications
         {
             get { return this.notifications; }
             set { this.notifications = value; }
+        }
+        public virtual ICollection<Album> Albums
+        {
+            get { return this.albums; }
+            set { this.albums = value; }
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager, string authenticationType)

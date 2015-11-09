@@ -10,6 +10,8 @@
         [Key]
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         [Required]
         [MaxLength(ValidationConstants.MaxImageInfoOriginalName)]
         public string OriginalName { get; set; }

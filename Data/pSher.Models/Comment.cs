@@ -8,6 +8,8 @@
     {
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         [Required]
         public virtual User Author { get; set; }
 
