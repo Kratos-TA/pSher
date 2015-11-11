@@ -56,14 +56,21 @@
 
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
 
-            var result = this.imagesService
+            var isUpdated = this.imagesService
                 .Update(
                 id,
                 model.AuthorUserName,
                 model.Description,
                 tags);
 
-            return this.Ok(result);
+            if (isUpdated)
+            {
+                return this.Ok();
+            }
+            else
+            {
+                return this.BadRequest("Invalid id");
+            }
         }
 
         public IHttpActionResult Delete(int id)

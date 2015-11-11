@@ -69,7 +69,7 @@
 
             image.IsDeleted = true;
 
-            this.images.Delete(image);
+            this.images.Update(image);
             this.images.SaveChanges();
 
             return true;
