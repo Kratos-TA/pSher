@@ -3,11 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using PSher.Common.Constants;
     using PSher.Models;
 
-    public interface IImagesService
+    public interface IImagesService : IService
     {
         IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize);
 
@@ -21,6 +22,6 @@
 
         // TODO: Add ImageInfo as method parameter
         // TODO: Add albums
-        int Add(string title, string authorUserName, string description, bool isPrivate, ICollection<string> tags = null, IDictionary<string, DateTime> albums = null);
+        Task<int> Add(string title, string authorUserName, string description, bool isPrivate, IEnumerable<Tag> tags = null, IDictionary<string, DateTime> albums = null);
     }
 }

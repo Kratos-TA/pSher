@@ -58,14 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EfGenericRepository.cs" />
-    <Compile Include="Contracts\IPSherDbContext.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSherDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

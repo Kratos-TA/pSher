@@ -6,5 +6,8 @@
 
         // Services.Data
         public const string InvalidUser = "Current user cannot be found!";
+
+        // Api
+        public const string TagNamesLength = "The names must be between {0} and {1} simbols";
     }
 }

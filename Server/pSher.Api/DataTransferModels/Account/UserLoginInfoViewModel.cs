@@ -1,4 +1,4 @@
-namespace PSher.Api.Models
+namespace PSher.Api.DataTransferModels.Account
 {
     public class UserLoginInfoViewModel
     {

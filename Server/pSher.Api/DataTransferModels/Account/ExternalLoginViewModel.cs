@@ -1,4 +1,4 @@
-﻿namespace PSher.Api.Models
+﻿namespace PSher.Api.DataTransferModels.Account
 {
     // Models returned by AccountController actions.
     public class ExternalLoginViewModel

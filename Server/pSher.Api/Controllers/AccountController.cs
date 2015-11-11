@@ -17,7 +17,7 @@
     using Microsoft.Owin.Security.Cookies;
     using Microsoft.Owin.Security.OAuth;
 
-    using PSher.Api.Models;
+    using PSher.Api.DataTransferModels.Account;
     using PSher.Api.Providers;
     using PSher.Api.Results;
     using PSher.Models;

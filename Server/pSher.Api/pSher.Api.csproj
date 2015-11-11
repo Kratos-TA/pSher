@@ -225,22 +225,23 @@
     <Compile Include="Infrastructure\Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\Mapping\IMapFrom.cs" />
     <Compile Include="Infrastructure\ObjectFactory.cs" />
-    <Compile Include="Models\Account\AddExternalLoginBindingModel.cs" />
-    <Compile Include="Models\Account\ChangePasswordBindingModel.cs" />
-    <Compile Include="Models\Account\ExternalLoginViewModel.cs" />
-    <Compile Include="Models\Account\ManageInfoViewModel.cs" />
-    <Compile Include="Models\Account\RegisterBindingModel.cs" />
-    <Compile Include="Models\Account\RegisterExternalBindingModel.cs" />
-    <Compile Include="Models\Account\RemoveLoginBindingModel.cs" />
-    <Compile Include="Models\Account\SetPasswordBindingModel.cs" />
-    <Compile Include="Models\Account\UserInfoViewModel.cs" />
-    <Compile Include="Models\Account\UserLoginInfoViewModel.cs" />
-    <Compile Include="Models\Images\ImageResponseModel.cs" />
-    <Compile Include="Models\Images\SaveImageRequestModel.cs" />
+    <Compile Include="DataTransferModels\Account\AddExternalLoginBindingModel.cs" />
+    <Compile Include="DataTransferModels\Account\ChangePasswordBindingModel.cs" />
+    <Compile Include="DataTransferModels\Account\ExternalLoginViewModel.cs" />
+    <Compile Include="DataTransferModels\Account\ManageInfoViewModel.cs" />
+    <Compile Include="DataTransferModels\Account\RegisterBindingModel.cs" />
+    <Compile Include="DataTransferModels\Account\RegisterExternalBindingModel.cs" />
+    <Compile Include="DataTransferModels\Account\RemoveLoginBindingModel.cs" />
+    <Compile Include="DataTransferModels\Account\SetPasswordBindingModel.cs" />
+    <Compile Include="DataTransferModels\Account\UserInfoViewModel.cs" />
+    <Compile Include="DataTransferModels\Account\UserLoginInfoViewModel.cs" />
+    <Compile Include="DataTransferModels\Images\ImageResponseModel.cs" />
+    <Compile Include="DataTransferModels\Images\SaveImageRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validation\StringInCommaSepatatedCollectionLength.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -274,7 +275,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Users\" />
+    <Folder Include="DataTransferModels\Users\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

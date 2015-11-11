@@ -11,7 +11,6 @@
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;
     using Microsoft.Owin.Security.OAuth;
-    using PSher.Api.Models;
     using PSher.Models;
 
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider

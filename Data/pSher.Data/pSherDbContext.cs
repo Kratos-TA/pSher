@@ -7,7 +7,7 @@
     using PSher.Data.Contracts;
     using PSher.Models;
 
-    public class PSherDbContext : IdentityDbContext<User>, IPSherDbContext
+    public class PSherDbContext : IdentityDbContext<User>
     {
         public PSherDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

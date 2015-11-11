@@ -1,5 +1,6 @@
 ﻿namespace PSher.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     using PSher.Common.Constants;
@@ -12,6 +13,8 @@
 
         [Required]
         public virtual User Author { get; set; }
+
+        public DateTime PostedOn { get; set; }
 
         [Required]
         [MinLength(ValidationConstants.MinCommentText)]

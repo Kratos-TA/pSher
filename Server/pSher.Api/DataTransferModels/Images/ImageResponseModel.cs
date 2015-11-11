@@ -1,10 +1,11 @@
-﻿namespace PSher.Api.Models.Images
+﻿namespace PSher.Api.DataTransferModels.Images
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
+
     using AutoMapper;
+
     using PSher.Api.Infrastructure.Mapping;
     using PSher.Models;
 
@@ -44,15 +45,9 @@
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<Image, ImageResponseModel>()
-                .ForMember(i => i.AuthorId, opts => opts.MapFrom(i => i.Author.Id));
-
-            config.CreateMap<Image, ImageResponseModel>()
-                .ForMember(i => i.AuthorName, opts => opts.MapFrom(i => i.Author.UserName));
-
-            config.CreateMap<Image, ImageResponseModel>()
-                .ForMember(i => i.Rating, opts => opts.MapFrom(i => i.Rating.Marks.Select(m => m.Value).Average()));
-
-            config.CreateMap<Image, ImageResponseModel>()
+                .ForMember(i => i.AuthorId, opts => opts.MapFrom(i => i.Author.Id))
+                .ForMember(i => i.AuthorName, opts => opts.MapFrom(i => i.Author.UserName))
+                .ForMember(i => i.Rating, opts => opts.MapFrom(i => i.Rating.Marks.Select(m => m.Value).Average()))
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(so => so.Tags.Select(t => t.Name).ToList()));
         }
     }

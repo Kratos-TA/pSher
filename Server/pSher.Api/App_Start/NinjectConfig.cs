@@ -4,6 +4,7 @@
 namespace PSher.Api.App_Start
 {
     using System;
+    using System.Data.Entity;
     using System.Web;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -67,7 +68,7 @@ namespace PSher.Api.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel
-                .Bind<IPSherDbContext>()
+                .Bind<DbContext>()
                 .To<PSherDbContext>()
                 .InRequestScope();
 

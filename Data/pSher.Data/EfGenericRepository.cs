@@ -3,12 +3,13 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using PSher.Data.Contracts;
 
     public class EfGenericRepository<T> : IRepository<T> where T : class
     {
-        public EfGenericRepository(IPSherDbContext context)
+        public EfGenericRepository(DbContext context)
         {
             if (context == null)
             {
@@ -21,7 +22,7 @@
 
         protected IDbSet<T> DbSet { get; set; }
 
-        protected IPSherDbContext Context { get; set; }
+        protected DbContext Context { get; set; }
 
         public virtual IQueryable<T> All()
         {
@@ -95,6 +96,11 @@
         public int SaveChanges()
         {
             return this.Context.SaveChanges();
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return this.Context.SaveChangesAsync();
         }
 
         public void Dispose()

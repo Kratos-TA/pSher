@@ -3,11 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Common.Constants;
-    using Common.Extensions;
-    using PSher.Data.Contracts;
-    using Models;
+    using System.Threading.Tasks;
+
     using Contracts;
+    using PSher.Common.Constants;
+    using PSher.Common.Extensions;
+    using PSher.Data.Contracts;
+    using PSher.Models;
 
     public class ImagesService : IImagesService
     {
@@ -72,7 +74,7 @@
         }
 
         // TODO: Check in the end of the method
-        public int Add(string title, string authorUserName, string description, bool isPrivate, ICollection<string> imageTags, IDictionary<string, DateTime> albumsToAdd)
+        public async Task<int> Add(string title, string authorUserName, string description, bool isPrivate, IEnumerable<Tag> imageTags, IDictionary<string, DateTime> albumsToAdd)
         {
             var currentUser = this.users
                 .All()
@@ -97,41 +99,40 @@
 
             imageTags.ForEach(t =>
             {
-                var currentTag = tags.All().FirstOrDefault(existing => existing.Name == t.ToLower());
+                var currentTag = tags.All().FirstOrDefault(existing => existing.Name == t.Name.ToLower());
 
                 if (currentTag == null)
                 {
                     currentTag = new Tag()
                     {
-                        Name = t
+                        Name = t.Name
                     };
                 }
 
-                //this.tags.Add(currentTag); This should be necessary.
                 newImage.Tags.Add(currentTag);
             });
 
+            /*
             albumsToAdd.ForEach(t =>
-            {
-                var currentAlbum = this.albums.All().FirstOrDefault(album => album.Name == t.Key.ToLower());
+           {
+               var currentAlbum = this.albums.All().FirstOrDefault(album => album.Name == t.Key.ToLower());
 
-                if (currentAlbum == null)
-                {
-                    currentAlbum = new Album()
-                    {
-                        Name = t.Key.ToLower(),
-                        CreatedOn = t.Value
-                    };
-                }
+               if (currentAlbum == null)
+               {
+                   currentAlbum = new Album()
+                   {
+                       Name = t.Key.ToLower(),
+                       CreatedOn = t.Value
+                   };
+               }
+               
 
-                //this.albums.Add(currentAlbum); This should be necessary.
-                newImage.Albums.Add(currentAlbum);
-            });
+               newImage.Albums.Add(currentAlbum);
+           });
+           */
 
             this.images.Add(newImage);
-            this.images.SaveChanges();
-            //this.tags.SaveChanges();
-            //this.albums.SaveChanges();
+            await this.images.SaveChangesAsync();
 
             return newImage.Id;
         }

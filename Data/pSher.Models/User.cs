@@ -45,6 +45,7 @@
             get { return this.notifications; }
             set { this.notifications = value; }
         }
+
         public virtual ICollection<Album> Albums
         {
             get { return this.albums; }

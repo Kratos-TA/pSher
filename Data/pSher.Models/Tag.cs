@@ -27,9 +27,11 @@
         [MinLength(ValidationConstants.MinTagName)]
         [MaxLength(ValidationConstants.MaxTagName)]
         [Index(IsUnique = true)]
-        public string Name {
+        public string Name
+        {
             get { return this.name; }
-            set { this.name = value.ToLower(); } }      
+            set { this.name = value.ToLower(); }
+        }      
 
         public virtual ICollection<Image> Images
         {

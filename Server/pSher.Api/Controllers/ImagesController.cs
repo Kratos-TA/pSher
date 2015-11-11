@@ -2,27 +2,32 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Cors;
-
+    
     using AutoMapper.QueryableExtensions;
-    using Models.Images;
-    using Services.Data.Contracts;
+    using PSher.Api.DataTransferModels.Images;
+    using PSher.Services.Data.Contracts;
 
     [RoutePrefix("api/Images")]
     public class ImagesController : ApiController
     {
-        private readonly IImagesService images;
+        private readonly IImagesService imagesService;
+        private readonly ITagsService tagsService;
 
-        public ImagesController(IImagesService imagesService)
+        public ImagesController(
+            IImagesService imagesService,
+            ITagsService tagsService)
         {
-            this.images = imagesService;
+            this.imagesService = imagesService;
+            this.tagsService = tagsService;
         }
 
         [EnableCors("*", "*", "*")]
         public IHttpActionResult Get()
         {
-            var result = this.images
+            var result = this.imagesService
                 .All()
                 .ProjectTo<ImageResponseModel>()
                 .ToList();
@@ -30,21 +35,23 @@
             return this.Ok(result);
         }
 
-        public IHttpActionResult Post(SaveImageRequestModel model)
+        public async Task<IHttpActionResult> Post(SaveImageRequestModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
 
-            var createdProjectId = this.images.Add(
-                model.Title, 
+            var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
+
+            var addedImageId = await this.imagesService.Add(
+                model.Title,
                 model.AuthorUserName,
                 model.Description,
                 model.IsPrivate,
-                model.Tags);
+                tags);
 
-            return this.Ok(createdProjectId);
+            return this.Ok(addedImageId);
         }
 
         [HttpGet]
@@ -56,7 +63,7 @@
                 return this.BadRequest("Username cannot be null or empty!");
             }
 
-            var imagesByUser = this.images.GetAllByUserName(userName);
+            var imagesByUser = this.imagesService.GetAllByUserName(userName);
 
             return this.Ok(imagesByUser);
         }
@@ -70,7 +77,7 @@
                 return this.BadRequest("Title cannot be null or empty!");
             }
 
-            var imagesByTitle = this.images.GetAllByTitle(title);
+            var imagesByTitle = this.imagesService.GetAllByTitle(title);
 
             return this.Ok(imagesByTitle);
         }
@@ -84,7 +91,7 @@
                 return this.BadRequest("Tag name cannot be null or empty!");
             }
 
-            var imagesByTagName = this.images.GetAllByTag(tagName);
+            var imagesByTagName = this.imagesService.GetAllByTag(tagName);
 
             return this.Ok(imagesByTagName);
         }
@@ -92,23 +99,9 @@
         [HttpGet]
         public IHttpActionResult GetImagesByUploadDate(DateTime uploadedOn)
         {
-            var imagesByUploadDate = this.images.GetAllByUlopadedOn(uploadedOn);
+            var imagesByUploadDate = this.imagesService.GetAllByUlopadedOn(uploadedOn);
 
             return this.Ok(imagesByUploadDate);
         }
-
-        [HttpPost]
-        [Route("api/Add")]
-        public IHttpActionResult Add(string title,
-            string authorUserName,
-            string description,
-            bool isPrivate,
-            ICollection tags,
-            IDictionary<string,
-            DateTime> albumsToAdd)
-        {
-
-        }
-
     }
 }
