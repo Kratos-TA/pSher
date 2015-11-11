@@ -37,40 +37,42 @@
             return allImages;
         }
 
-        public IQueryable<Image> GetAllByUserName(string userName)
+        public IQueryable<Image> GetImageById(int id)
         {
-            var imagesByUser = this.images
+            var imageById = this.images
                 .All()
-                .Where(i => i.Author.UserName == userName);
+                .Where(i => i.Id == id);
 
-            return imagesByUser;
+            return imageById;
         }
 
-        public IQueryable<Image> GetAllByTitle(string title)
+        public bool Update(int id, string title, string description, IEnumerable<Tag> tags)
         {
-            var imagesByTitle = this.images
-                .All()
-                .Where(i => i.Title == title);
+            var image = this.images
+                .GetById(id);
 
-            return imagesByTitle;
+            image.Title = title;
+            image.Description = description;
+            image.Tags = tags.ToList();
+
+            this.images.Update(image);
+
+            this.images.SaveChanges();
+
+            return true;
         }
 
-        public IQueryable<Image> GetAllByTag(string tagName)
+        public bool DeleteImage(int id)
         {
-            var imagesByTag = this.images
-                .All()
-                .Where(i => i.Tags.Any(t => t.Name == tagName));
+            var image = this.images
+                .GetById(id);
 
-            return imagesByTag;
-        }
+            image.IsDeleted = true;
 
-        public IQueryable<Image> GetAllByUlopadedOn(DateTime uploadedOn)
-        {
-            var imagesByDate = this.images
-                .All()
-                .Where(i => DateTime.Compare(i.UploadedOn, uploadedOn) == 0);
+            this.images.Delete(image);
+            this.images.SaveChanges();
 
-            return imagesByDate;
+            return true;
         }
 
         // TODO: Check in the end of the method

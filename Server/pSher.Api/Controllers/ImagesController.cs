@@ -10,7 +10,7 @@
     using PSher.Api.DataTransferModels.Images;
     using PSher.Services.Data.Contracts;
 
-    [RoutePrefix("api/Images")]
+    [RoutePrefix("api/images")]
     public class ImagesController : ApiController
     {
         private readonly IImagesService imagesService;
@@ -35,6 +35,51 @@
             return this.Ok(result);
         }
 
+        [EnableCors("*", "*", "*")]
+        public IHttpActionResult Get(int id)
+        {
+            var result = this.imagesService
+                .GetImageById(id)
+                .ProjectTo<ImageResponseModel>();
+
+            return this.Ok(result);
+        }
+
+        [EnableCors("*", "*", "*")]
+        [HttpPut]
+        public async Task<IHttpActionResult> Put(int id, SaveImageRequestModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
+
+            var result = this.imagesService
+                .Update(
+                id,
+                model.AuthorUserName,
+                model.Description,
+                tags);
+
+            return this.Ok(result);
+        }
+
+        public IHttpActionResult Delete(int id)
+        {
+            bool isDeleted = this.imagesService.DeleteImage(id);
+
+            if (isDeleted)
+            {
+                return this.Ok();
+            }
+            else
+            {
+                return this.BadRequest("Invalid id");
+            }
+        }
+
         public async Task<IHttpActionResult> Post(SaveImageRequestModel model)
         {
             if (!this.ModelState.IsValid)
@@ -52,56 +97,6 @@
                 tags);
 
             return this.Ok(addedImageId);
-        }
-
-        [HttpGet]
-        [Route("api/ImagesByUsername")]
-        public IHttpActionResult GetImagesByUsername(string userName)
-        {
-            if (string.IsNullOrEmpty(userName))
-            {
-                return this.BadRequest("Username cannot be null or empty!");
-            }
-
-            var imagesByUser = this.imagesService.GetAllByUserName(userName);
-
-            return this.Ok(imagesByUser);
-        }
-
-        [HttpGet]
-        [Route("api/ImagesByTitle")]
-        public IHttpActionResult GetImagesByTitle(string title)
-        {
-            if (string.IsNullOrEmpty(title))
-            {
-                return this.BadRequest("Title cannot be null or empty!");
-            }
-
-            var imagesByTitle = this.imagesService.GetAllByTitle(title);
-
-            return this.Ok(imagesByTitle);
-        }
-
-        [HttpGet]
-        [Route("api/ImagesByTagName")]
-        public IHttpActionResult GetImagesByTag(string tagName)
-        {
-            if (string.IsNullOrEmpty(tagName))
-            {
-                return this.BadRequest("Tag name cannot be null or empty!");
-            }
-
-            var imagesByTagName = this.imagesService.GetAllByTag(tagName);
-
-            return this.Ok(imagesByTagName);
-        }
-
-        [HttpGet]
-        public IHttpActionResult GetImagesByUploadDate(DateTime uploadedOn)
-        {
-            var imagesByUploadDate = this.imagesService.GetAllByUlopadedOn(uploadedOn);
-
-            return this.Ok(imagesByUploadDate);
         }
     }
 }

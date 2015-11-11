@@ -12,13 +12,11 @@
     {
         IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize);
 
-        IQueryable<Image> GetAllByUserName(string userName);
+        IQueryable<Image> GetImageById(int id);
 
-        IQueryable<Image> GetAllByTitle(string title);
+        bool Update(int id, string title, string description, IEnumerable<Tag> tags);
 
-        IQueryable<Image> GetAllByTag(string tagName);
-
-        IQueryable<Image> GetAllByUlopadedOn(DateTime uploadedOn);
+        bool DeleteImage(int id);
 
         // TODO: Add ImageInfo as method parameter
         // TODO: Add albums
