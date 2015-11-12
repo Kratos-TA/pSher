@@ -47,7 +47,7 @@ var slider = (function() {
 
         setInterval(function() {
             moveRight(windowWidth);
-        }, 7000);
+        }, 10000);
     }
 
     function selectSliderImages(windowWidth) {
@@ -86,7 +86,7 @@ var slider = (function() {
 
     function moveRight(windowWidth) {
         $('#slider ul').animate({
-            left: -windowWidth
+            left: -windowWidth 
         }, 600, function() {
             $('#slider ul li:first-child').appendTo('#slider ul');
             $('#slider ul').css('left', '');

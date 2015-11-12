@@ -60,20 +60,25 @@ var data = (function() {
         return promise;
     }
 
-
-    // I need this for the starting screen
-    // function hasUser() {
-    //     return !!localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY) &&
-    //         !!localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY);
-    // }
-
-    function usersGet() {
+    function getUser(currentUsername) {
         var options = {
             headers: {
                 'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
             }
         };
-        return jsonRequester.get('api/users', options)
+        return jsonRequester.get('api/users/' + currentUsername, options)
+            .then(function(res) {
+                return res.result;
+            });
+    }
+
+    function userDelete() {
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+        return jsonRequester.delete('api/users/' + localStorage.USERNAME_KEY, options)
             .then(function(res) {
                 return res.result;
             });
@@ -84,7 +89,8 @@ var data = (function() {
             login: login,
             logout: logout,
             register: register,
-            get: usersGet,
+            delete: userDelete,
+            getUser: getUser
         }
     };
 }());

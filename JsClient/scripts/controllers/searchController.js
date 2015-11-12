@@ -31,7 +31,7 @@ var searchController = (function() {
 
                 $('#searchPhotoBtn').on('click', function() {
                     var queryText = $('#photoSearcher').val();
-                    context.redirect('#/galeries' + '?name=' + queryText);
+                    context.redirect('#/images' + '?name=' + queryText);
                 });
             });
     };
