@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlbumsService.cs" />
     <Compile Include="CommentsService.cs" />
     <Compile Include="Contracts\IAlbumsService.cs" />
     <Compile Include="Contracts\ICommentsService.cs" />

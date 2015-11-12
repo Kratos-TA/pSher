@@ -59,7 +59,7 @@
             var isUpdated = this.imagesService
                 .Update(
                 id,
-                model.AuthorUserName,
+                model.Title,
                 model.Description,
                 tags);
 

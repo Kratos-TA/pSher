@@ -10,6 +10,7 @@
     using PSher.Common.Extensions;
     using PSher.Data.Contracts;
     using PSher.Models;
+    using System.Data.Entity.Validation;
 
     public class ImagesService : IImagesService
     {
@@ -52,8 +53,19 @@
                 .GetById(id);
 
             image.Title = title;
-            image.Description = description;
-            image.Tags = tags.ToList();
+
+            //For some reason this is necessary
+            image.Author = image.Author;
+
+            if (!string.IsNullOrEmpty(description))
+            {
+                image.Description = description;
+            }
+
+            if (tags.Count() > 0)
+            {
+                image.Tags = tags.ToList();
+            }
 
             this.images.Update(image);
 
@@ -70,6 +82,7 @@
             image.IsDeleted = true;
 
             this.images.Update(image);
+
             this.images.SaveChanges();
 
             return true;

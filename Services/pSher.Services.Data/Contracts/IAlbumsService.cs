@@ -10,12 +10,12 @@
     {
         IQueryable<Album> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize);
 
-        IQueryable<Album> GetAllByUserName(string userName);
+        IQueryable<Album> GetAlbumById(int id);
 
-        IQueryable<Album> GetAllByName(string name);
+        //IQueryable<Album> GetAllByName(string name);
 
-        IQueryable<Album> GetAllByTag(string tagName);
+        //IQueryable<Album> GetAllByTag(string tagName);
 
-        IQueryable<Album> GetAllByCreatedOn(DateTime createdOn);
+        //IQueryable<Album> GetAllByCreatedOn(DateTime createdOn);
     }
 }

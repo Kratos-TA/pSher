@@ -30,6 +30,8 @@
         public string Name { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public virtual User Creator { get; set; }
         
         public virtual ICollection<Image> Images
         {
