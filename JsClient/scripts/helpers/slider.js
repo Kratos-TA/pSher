@@ -1,4 +1,9 @@
+/*jslint white: true */
+
 var slider = (function() {
+    /* use strict */
+    console.log('slider loaded successfully');
+
     function getSlider() {
         var slideWidth = '100vw';
         var slideHeight = '100vh';

@@ -2,45 +2,31 @@
 <html>
 
 <head>
+    <!-- Metadata -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Photo sharing service">
     <meta name="author" content="Kratos Telerik Academy team">
-
+    <!-- Icon and Title of the page -->
     <link rel="icon" href="./img/photo.gif">
     <title>PShare</title>
-    
+    <!-- Loading styles -->
     <link href="./css/bootstrap.css" rel="stylesheet">
     <link href="./css/indexPageCustomStyles.css" rel="stylesheet">
     <link href="./css/profilePage.css" rel="stylesheet">
-
+    <!-- Lodaing libraries -->
     <script src="scripts/libraries/handlebars.js"></script>
     <script src="scripts/libraries/jquery.js"></script>
     <script src="scripts/libraries/sammy.js"></script>
     <script src="scripts/libraries/traceur.js"></script>
     <script src="scripts/libraries/es6-module-loader-dev.js"></script>
-    
+    <script src="scripts/libraries/toastr.js"></script>
+    <script src="scripts/libraries/crypto_sha.js"></script>
+    <!-- Start app -->
     <script type="text/javascript">
-        // System.config({
-        //     transpiler: 'babel',
-        //     balebOptions: {
-        //         optional: [
-        //             'runtime'
-        //         ]
-        //     },
-        //     map: {
-        //         // Load (map) the path to babel, jquery, bootstrap.js, handlebars and sammy
-        //         'babel': 'node_modules/babel/node_modules/babel-core/browser.js',
-        //         'jquery': 'node_modules/jquery/dist/jquery.js',
-        //         'bootstrapjs': 'node_modules/bootstrap/dist/js/bootstrap.min.js',
-        //         'handlebars': 'node_modules/handlebars/dist/handlebars.js',
-        //         'sammy': 'node_modules/sammy/lib/sammy.js'
-        //     }
-        // });
-        System.import('scripts/app.js');
+    System.import('scripts/app.js');
     </script>
-
 </head>
 
 <body>
@@ -50,11 +36,8 @@
         <div class="site-wrapper-inner">
             <div class="cover-container">
                 <div id="container" class="cover">
-                        <!--insert pages here-->
+                    <!--insert pages here-->
                 </div>
-
-                <!-- <script src="templates/templates.js"></script> -->
-
                 <div class="masthead clearfix">
                     <div class="inner">
                         <h3 class="masthead-brand">
@@ -65,7 +48,7 @@
                             <ul class="nav masthead-nav">
                                 <li id="homeLink"><a href="#/">Home</a></li>
                                 <li id="profileLink"><a href="#/profile/:username">Profile</a></li>
-                                <li id="galeriesLink"><a href="#/galeries">Galeries</a></li>
+                                <li id="imagesLink"><a href="#/images">Images</a></li>
                                 <li id="logLink"><a id="log" href="#/login">Log in</a></li>
                             </ul>
                         </nav>
