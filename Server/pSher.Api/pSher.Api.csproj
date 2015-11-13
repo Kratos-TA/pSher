@@ -223,6 +223,7 @@
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="DataTransferModels\Album\AlbumDetailsResponseModel.cs" />
     <Compile Include="DataTransferModels\Album\AlbumResponseModel.cs" />
+    <Compile Include="DataTransferModels\Album\SaveAlbumRequestModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -245,6 +246,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validation\IntegerInCommaSepatatedCollection.cs" />
     <Compile Include="Validation\StringInCommaSepatatedCollectionLength.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +282,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataTransferModels\Users\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\psher.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

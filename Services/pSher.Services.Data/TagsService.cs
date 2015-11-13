@@ -14,8 +14,6 @@
 
     public class TagsService : ITagsService
     {
-        private const char TagSeparator = ',';
-
         private readonly IRepository<Tag> tags;
 
         public TagsService(IRepository<Tag> tags)
@@ -36,7 +34,7 @@
                 .ToList()
                 .ForEach(tag =>
                 {
-                    tagNames.Add(tag.ToLower());
+                    tagNames.Add(tag.ToLower().Trim());
                 });
 
             var resultTags = await this.tags
