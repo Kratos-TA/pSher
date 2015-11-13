@@ -221,6 +221,7 @@
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
+    <Compile Include="Controllers\MarksController.cs" />
     <Compile Include="DataTransferModels\Album\AlbumDetailsResponseModel.cs" />
     <Compile Include="DataTransferModels\Album\AlbumResponseModel.cs" />
     <Compile Include="DataTransferModels\Album\SaveAlbumRequestModel.cs" />
