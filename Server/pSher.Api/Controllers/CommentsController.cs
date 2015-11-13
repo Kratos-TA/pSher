@@ -15,6 +15,7 @@
             this.commentsService = commentsService;
         }
 
+        [Authorize]
         [EnableCors("*", "*", "*")]
         public IHttpActionResult Post(int authorId, string text, int idImage)
         {
@@ -28,6 +29,7 @@
             return this.Ok("Comment with id " + commentId + " added.");
         }
 
+        [Authorize]
         [EnableCors("*", "*", "*")]
         public IHttpActionResult Put(int commentId, bool isLiked)
         {
@@ -43,6 +45,7 @@
             }
         }
 
+        [Authorize]
         public IHttpActionResult Delete(int id)
         {
             this.commentsService.DeleteComment(id);

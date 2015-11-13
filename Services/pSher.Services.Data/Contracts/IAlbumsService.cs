@@ -14,12 +14,10 @@
 
         IQueryable<Album> GetAlbumById(int id);
 
-        // IQueryable<Album> GetAllByName(string name);
-
-        // IQueryable<Album> GetAllByTag(string tagName);
-
-        // IQueryable<Album> GetAllByCreatedOn(DateTime createdOn);
-
         Task<int> Add(string name, string authorUserName, bool isPrivate, IEnumerable<Tag> albumTags = null, IEnumerable<Image> albumImages = null);
+
+        Task<int> Update(int id, string name, string authenticatedUserName, bool isPrivate, IEnumerable<Tag> albumTags = null, IEnumerable<Image> albumImages = null);
+
+        Task<int> Delete(int id);
     }
 }

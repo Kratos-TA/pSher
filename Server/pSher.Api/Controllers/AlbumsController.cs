@@ -67,14 +67,35 @@
             return this.Ok(addedAlbumId);
         }
 
-        //public IHttpActionResult Put()
-        //{
+        [Authorize
+        [EnableCors("*", "*", "*")]
+        public async Task<IHttpActionResult> Put(int id, SaveAlbumRequestModel model)
+        {
+            if (!this.ModelState.IsValid || model == null)
+            {
+                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "SaveAlbumRequestModel"));
+            }
 
-        //}
+            var authenticatedUser = this.User.Identity.Name;
+            var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
+            var images = await this.imagesService.ImagesFromCommaSeparatedIds(model.ImagesIds);
 
-        //public IHttpActionResult Delete()
-        //{
+            var changedAlbumId = await this.albumsService.Update(
+                id,
+                model.Name,
+                authenticatedUser,
+                model.IsPrivate,
+                tags,
+                images);
 
-        //}
+            return this.Ok(changedAlbumId);
+        }
+
+        public IHttpActionResult Delete(int id)
+        {
+            var deletedAlbumId = this.albumsService.Delete(id);
+
+            return this.Ok(deletedAlbumId);
+        }
     }
 }
