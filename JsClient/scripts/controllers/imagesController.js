@@ -89,6 +89,116 @@ var imagesController = (function() {
                                 });
                         });
                 });
+
+                $('#rateImage').on('click', function() {
+                	var mark = $('#markInput').val();
+                	if (!mark) {
+                		templates.get('AlertTemplate')
+                            .then(function(template) {
+                                $container.html(template({
+                                    alertText: 'You have not entered a mark.'
+                                }));
+                                $('#okBtn').on('click', function() {
+                                    sammyApp.refresh();
+                                });
+                            });
+                        return;
+                	}
+
+                	// Validate if number!!!
+
+                	if (0 > mark || mark > 5) {
+                		templates.get('AlertTemplate')
+                            .then(function(template) {
+                                $container.html(template({
+                                    alertText: 'You have given an invalid mark.'
+                                }));
+                                $('#okBtn').on('click', function() {
+                                    sammyApp.refresh();
+                                });
+                            });
+                        return;
+                	}
+
+                	imageData.rateImage(mark, currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            templates.get('AlertTemplate')
+                                .then(function() {
+                                    $container.html(template({
+                                        //not sure wether it works like this
+                                        alertText: err.responseJSON.toString()
+                                    }));
+                                    $('#okBtn').on('click', function() {
+                                        sammyApp.refresh();
+                                    });
+                                });
+                        });
+
+                });
+
+				$('#leaveComment').on('click', function() {
+					var comment = $('#commentInput').val();
+					if (!comment) {
+						templates.get('AlertTemplate')
+                            .then(function(template) {
+                                $container.html(template({
+                                    alertText: 'You have not entered a comment.'
+                                }));
+                                $('#okBtn').on('click', function() {
+                                    sammyApp.refresh();
+                                });
+                            });
+                        return;
+					}
+
+					// Validate comment!!!
+
+					imageData.commentImage(comment, currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            templates.get('AlertTemplate')
+                                .then(function() {
+                                    $container.html(template({
+                                        //not sure wether it works like this
+                                        alertText: err.responseJSON.toString()
+                                    }));
+                                    $('#okBtn').on('click', function() {
+                                        sammyApp.refresh();
+                                    });
+                                });
+                        });
+				});
+
+				$('#comments').on('click', function(ev) {
+					var target = $(ev.target);
+					var currentCommentId = target.attr('commentId');
+					var currentCommentText = target.val();
+
+					// Distplay the template for edditing the comment
+					// Get the text from the new comment
+					var comment;
+
+					// then:!!!!!!!!!!!!!!!
+
+					imageData.changeComment(comment, currentCommentId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            templates.get('AlertTemplate')
+                                .then(function() {
+                                    $container.html(template({
+                                        //not sure wether it works like this
+                                        alertText: err.responseJSON.toString()
+                                    }));
+                                    $('#okBtn').on('click', function() {
+                                        sammyApp.refresh();
+                                    });
+                                });
+                        });
+				});
             });
     };
 

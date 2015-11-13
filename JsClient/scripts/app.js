@@ -1,4 +1,13 @@
 /*jslint white: true */
+import {
+    slider
+}
+from './helpers/slider.js';
+
+import {
+    templates
+}
+from './templates.js';
 
 import {
     searchController
@@ -26,6 +35,15 @@ var appInitialize = (function() {
         $('#log').html('Logout');
     }
 
+    templates.get('SliderTemplate')
+        .then(function(template) {
+            var backgroundImageContainer = $('#backgroundContainer');
+            //  backgroundImageContainer.html(template(imageUrlContainerObject));
+            backgroundImageContainer.html(template());
+            // Load slider
+            jQuery(document).ready(slider.get());
+        });
+
     // Introduce Sammy:
     window.sammyApp = Sammy('#container', function() {
 
@@ -40,39 +58,37 @@ var appInitialize = (function() {
         this.get('#/login', userController.login);
         this.get('#/logout', userController.logout);
         this.get('#/register', userController.register);
-        
+
         // Images routes
         this.get('#/images', imagesController.getAll);
         this.get('#/images/:id', imagesController.getImage);
         this.get('#/images/create', imagesController.createImage);
         // this.get('#/images/change/:id', imagesController.changeImage);
-        // this.get('#/images/delete/:id', imagesController.deleteImage);
+        // this.get('#/images/delete/:id', imagesController.deleteImage); -> not needed in the Client
 
 
         // Marks routes
-        this.get('#marks/create', marksController.create);
-        this.get('#marks/change/:id', marksController.change);
-        this.get('#marks/delete/:id', marksController.delete);
+        // this.get('#marks/create', marksController.create);
+        // this.get('#marks/change/:id', marksController.change);
+        // this.get('#marks/delete/:id', marksController.delete);
 
         // Comments routes
-        this.get('#comments/create', commentsController.create);
+        // this.get('#comments/create', commentsController.create);
         this.get('#comments/change/:id', commentsController.change);
-        this.get('#comments/delete/:id', commentsController.delete);
+        // this.get('#comments/delete/:id', commentsController.delete);
 
-        // Images routes
-        this.get('#/albums', albumsController.getAll);
-        this.get('#/albums/:id', albumsController.getAlbum);
-        this.get('#/albums/create', albumsController.createAlbum);
-        this.get('#/albums/change/:id', albumsController.changeAlbum);
-        this.get('#/albums/delete/:id', albumsController.deleteAlbum);
+        // Albums routes
+        // this.get('#/albums', albumsController.getAll);
+        // this.get('#/albums/:id', albumsController.getAlbum);
+        // this.get('#/albums/create', albumsController.createAlbum);
+        // this.get('#/albums/change/:id', albumsController.changeAlbum);
+        // this.get('#/albums/delete/:id', albumsController.deleteAlbum);
     });
 
     $(function() {
         sammyApp.run('#/');
 
     });
-
-    
 }());
 
 export default appInitialize;
