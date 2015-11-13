@@ -45,8 +45,8 @@ var appInitialize = (function() {
         this.get('#/images', imagesController.getAll);
         this.get('#/images/:id', imagesController.getImage);
         this.get('#/images/create', imagesController.createImage);
-        this.get('#/images/change/:id', imagesController.changeImage);
-        this.get('#/images/delete/:id', imagesController.deleteImage);
+        // this.get('#/images/change/:id', imagesController.changeImage);
+        // this.get('#/images/delete/:id', imagesController.deleteImage);
 
 
         // Marks routes

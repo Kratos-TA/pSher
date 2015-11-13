@@ -15,6 +15,11 @@ import {
 }
 from '../templates.js';
 
+import {
+    imageData
+}
+from '../data/imageData.js';
+
 var imagesController = (function() {
     /* use strict */
 
@@ -65,12 +70,96 @@ var imagesController = (function() {
 
                 scrollFixedHelper.switchToScroll();
                 // $container.html(template(...insert here the Galery template ready...));
+
+                // Delete image functionality
+                $('#deleteImgBtn').on('click', function() {
+                    imageData.delete(currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            templates.get('AlertTemplate')
+                                .then(function() {
+                                    $container.html(template({
+                                        //not sure wether it works like this
+                                        alertText: err.responseJSON.toString()
+                                    }));
+                                    $('#okBtn').on('click', function() {
+                                        sammyApp.refresh();
+                                    });
+                                });
+                        });
+                });
+            });
+    };
+
+    var createImage = function(context) {
+        var $container = $('#container');
+        activeLink.toggle('#imagesLink');
+
+        templates.get('CreateImage')
+            .then(function(template) {
+                $container.html(template);
+                scrollFixedHelper.switchToFixed();
+
+                // Upload images functionality!!!!!!
+
+                $('#sendBtn').on('click', function() {
+                    var tags = $('#tagsInput').val();
+                    var name = $('#nameInput').val();
+                    var description = $('#descriptionInput').val();
+                    var byteArray; /*To be implemented*/
+
+                    if (!byteArray) {
+                        templates.get('AlertTemplate')
+                            .then(function(template) {
+                                $container.html(template({
+                                    alertText: 'You have not uploaded an image.'
+                                }));
+                                $('#okBtn').on('click', function() {
+                                    sammyApp.refresh();
+                                });
+                            });
+                        return;
+                    }
+
+                    var image = {
+                        tags,
+                        name,
+                        description,
+                        byteArray
+                    };
+
+                    imageData.upload(image)
+                        .then(function() {
+                            templates.get('AlertTemplate')
+                                .then(function() {
+                                    $container.html(template({
+                                        alertText: 'You have uploaded successfully this image.'
+                                    }));
+                                    $('#okBtn').on('click', function() {
+                                        sammyApp.refresh();
+                                    });
+                                });
+                        }, function(err) {
+                            templates.get('AlertTemplate')
+                                .then(function() {
+                                    $container.html(template({
+                                        //not sure wether it works like this
+                                        alertText: err.responseJSON.toString()
+                                    }));
+                                    $('#okBtn').on('click', function() {
+                                        sammyApp.refresh();
+                                    });
+                                });
+                        });
+                });
             });
     };
 
     return {
         getAll: getAllImages,
-        getImage: getImage
+        getImage: getImage,
+        createImage: createImage
     };
 }());
 
