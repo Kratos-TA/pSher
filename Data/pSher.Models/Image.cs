@@ -11,12 +11,14 @@
         private ICollection<Album> albums;
         private ICollection<Comment> comments;
         private ICollection<Tag> tags;
+        private ICollection<Mark> marks;
 
         public Image()
         {
             this.albums = new HashSet<Album>();
             this.comments = new HashSet<Comment>();
             this.tags = new HashSet<Tag>();
+            this.marks = new HashSet<Mark>();
         }
 
         [Key]
@@ -63,6 +65,12 @@
         {
             get { return this.tags; }
             set { this.tags = value; }
+        }
+
+        public virtual ICollection<Mark> Marks
+        {
+            get { return this.marks; }
+            set { this.marks = value; }
         }
     }
 }
