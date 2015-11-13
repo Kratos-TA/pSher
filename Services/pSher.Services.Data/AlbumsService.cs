@@ -78,5 +78,65 @@
 
             return newAlbum.Id;
         }
+
+        public async Task<int> Update(int id, string name, string authenticatedUserName, bool isPrivate, IEnumerable<Tag> albumTags = null, IEnumerable<Image> albumImages = null)
+        {
+            var albumToChange = this.albums
+                .All()
+                .FirstOrDefault(a => a.Id == id);
+
+            var currentUser = this.users
+                .All()
+                .FirstOrDefault(u => u.UserName == authenticatedUserName);
+
+            albumToChange.Name = name;
+            albumToChange.Creator = currentUser;
+            albumToChange.IsPrivate = isPrivate;
+
+            albumTags.ForEach(t =>
+            {
+                if (albumToChange.Tags.Contains(t))
+                {
+                    albumToChange.Tags.Remove(t);
+                }
+                else
+                {
+                    albumToChange.Tags.Add(t);
+                }
+            });
+
+            albumImages.ForEach(i =>
+            {
+                if (albumToChange.Images.Contains(i))
+                {
+                    albumToChange.Images.Remove(i);
+                }
+                else
+                {
+                    albumToChange.Images.Add(i);
+                }
+            });
+
+            this.albums.Update(albumToChange);
+            await this.albums.SaveChangesAsync();
+
+            return albumToChange.Id;
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var albumToDelete = this.albums
+                .All()
+                .FirstOrDefault(a => a.Id == id);
+
+            albumToDelete.IsDeleted = true;
+            albumToDelete.Creator = albumToDelete.Creator;
+
+            this.albums.Update(albumToDelete);
+
+            await this.albums.SaveChangesAsync();
+
+            return id;
+        }
     }
 }
