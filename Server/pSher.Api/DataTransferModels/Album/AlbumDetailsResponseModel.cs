@@ -21,7 +21,7 @@
 
         public virtual ICollection<string> UrlsOfPhotos { get; set; }
 
-        string IdCreator { get; set; }
+        public string IdCreator { get; set; }
 
         public string CreatorName { get; set; }
 

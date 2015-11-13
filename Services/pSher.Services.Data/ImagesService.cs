@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -25,6 +26,30 @@
             this.users = usersRepo;
             this.tags = tagsRepo;
             this.albums = albumRepo;
+        }
+
+        public async Task<IEnumerable<Image>> ImagesFromCommaSeparatedIds(string imageIdsAsCommaSeparatedValues)
+        {
+            if (string.IsNullOrWhiteSpace(imageIdsAsCommaSeparatedValues))
+            {
+                return Enumerable.Empty<Image>();
+            }
+
+            var imagesIds = new HashSet<int>();
+
+            imageIdsAsCommaSeparatedValues.Split(new[] { GlobalConstants.CommaSeparatedCollectionSeparator }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList()
+                .ForEach(i =>
+                {
+                    imagesIds.Add(int.Parse(i));
+                });
+
+            var resultImages = await this.images
+                .All()
+                .Where(i => imagesIds.Contains(i.Id))
+                .ToListAsync();
+
+            return resultImages;
         }
 
         public IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize)
@@ -92,8 +117,8 @@
         public async Task<int> Add(string title, string authorUserName, string description, bool isPrivate, IEnumerable<Tag> imageTags, IDictionary<string, DateTime> albumsToAdd)
         {
             var currentUser = this.users
-                .All()
-                .FirstOrDefault(u => u.UserName == authorUserName);
+               .All()
+               .FirstOrDefault(u => u.UserName == authorUserName);
 
             if (currentUser == null)
             {
@@ -114,36 +139,25 @@
 
             imageTags.ForEach(t =>
             {
-                var currentTag = tags.All().FirstOrDefault(existing => existing.Name == t.Name.ToLower());
-
-                if (currentTag == null)
-                {
-                    currentTag = new Tag()
-                    {
-                        Name = t.Name
-                    };
-                }
-
-                newImage.Tags.Add(currentTag);
+                newImage.Tags.Add(t);
             });
 
             /*
             albumsToAdd.ForEach(t =>
-           {
-               var currentAlbum = this.albums.All().FirstOrDefault(album => album.Name == t.Key.ToLower());
+            {
+                var currentAlbum = this.albums.All().FirstOrDefault(album => album.Name == t.Key.ToLower());
 
-               if (currentAlbum == null)
-               {
+                if (currentAlbum == null)
+                {
                    currentAlbum = new Album()
                    {
                        Name = t.Key.ToLower(),
                        CreatedOn = t.Value
-                   };
-               }
-               
+                    };
+                }               
 
                newImage.Albums.Add(currentAlbum);
-           });
+            });
            */
 
             this.images.Add(newImage);

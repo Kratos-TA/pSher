@@ -6,17 +6,13 @@
 
     using PSher.Common.Constants;
 
-    public class StringInCommaSepatatedCollectionLength : ValidationAttribute
+    public class IntegerInCommaSepatatedCollection : ValidationAttribute
     {
-        private readonly int minimumLength;
-        private readonly int maximumLength;
         private readonly string propertyName;
 
-        public StringInCommaSepatatedCollectionLength(int minimumLength, int maximumLength, string propertyName)
+        public IntegerInCommaSepatatedCollection(string propertyName)
         {
             this.propertyName = propertyName;
-            this.minimumLength = minimumLength;
-            this.maximumLength = maximumLength;
             this.ErrorMessage = ErrorMessages.PropertyNameLength;
         }
 
@@ -25,11 +21,19 @@
             var valueAsString = value as string;
             if (!string.IsNullOrWhiteSpace(valueAsString))
             {
-                var tags = valueAsString
+                var integers = valueAsString
                     .Split(new[] { GlobalConstants.CommaSeparatedCollectionSeparator }, StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
 
-                return tags.All(tag => this.minimumLength <= tag.Trim().Length && tag.Trim().Length <= this.maximumLength);
+                foreach (var i in integers)
+                {
+                    int ussles;
+                    bool isInteger = int.TryParse(i, out ussles);
+                    if (!isInteger)
+                    {
+                        return false;
+                    }
+                }
             }
 
             return true;
@@ -37,7 +41,7 @@
 
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(this.ErrorMessage, this.propertyName, this.minimumLength, this.maximumLength);
+            return string.Format(this.ErrorMessage, this.propertyName);
         }
     }
 }

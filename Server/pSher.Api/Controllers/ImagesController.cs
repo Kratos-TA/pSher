@@ -8,6 +8,7 @@
     
     using AutoMapper.QueryableExtensions;
     using PSher.Api.DataTransferModels.Images;
+    using PSher.Common.Constants;
     using PSher.Services.Data.Contracts;
 
     [RoutePrefix("api/images")]
@@ -25,10 +26,10 @@
         }
 
         [EnableCors("*", "*", "*")]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(int page, int pageSize)
         {
             var result = this.imagesService
-                .All()
+                .All(page, pageSize)
                 .ProjectTo<ImageResponseModel>()
                 .ToList();
 
@@ -46,6 +47,18 @@
         }
 
         [EnableCors("*", "*", "*")]
+        public IHttpActionResult Get()
+        {
+            var result = this.imagesService
+                .All()
+                .ProjectTo<ImageResponseModel>()
+                .ToList();
+
+            return this.Ok(result);
+        }
+
+        [EnableCors("*", "*", "*")]
+        [Authorize]
         [HttpPut]
         public async Task<IHttpActionResult> Put(int id, SaveImageRequestModel model)
         {
@@ -87,18 +100,21 @@
             }
         }
 
+        [Authorize]
+        [EnableCors("*", "*", "*")]
         public async Task<IHttpActionResult> Post(SaveImageRequestModel model)
         {
-            if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid || model == null)
             {
-                return this.BadRequest(this.ModelState);
+                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "SaveAlbumRequestModel"));
             }
 
+            var autenticatedUserName = this.User.Identity.Name;
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
 
             var addedImageId = await this.imagesService.Add(
                 model.Title,
-                model.AuthorUserName,
+                autenticatedUserName,
                 model.Description,
                 model.IsPrivate,
                 tags);

@@ -1,10 +1,11 @@
 ﻿namespace PSher.Services.Data
 {
+    using System;
+
+    using Common.Constants;
     using Contracts;
     using Models;
-    using Common.Constants;
     using PSher.Data.Contracts;
-    using System;
 
     public class CommentsService : ICommentsService
     {

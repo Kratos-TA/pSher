@@ -10,6 +10,8 @@
 
     public interface IImagesService : IService
     {
+        Task<IEnumerable<Image>> ImagesFromCommaSeparatedIds(string tagsAsCommaSeparatedValues);
+
         IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize);
 
         IQueryable<Image> GetImageById(int id);

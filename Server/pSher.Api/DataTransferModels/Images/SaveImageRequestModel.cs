@@ -6,7 +6,7 @@
 
     public class SaveImageRequestModel
     {
-        [StringInCommaSepatatedCollectionLength(ValidationConstants.MinTagName, ValidationConstants.MaxTagName)]
+        [StringInCommaSepatatedCollectionLength(ValidationConstants.MinTagName, ValidationConstants.MaxTagName, "Tags")]
         public string Tags { get; set; }
 
         [Required]
@@ -19,7 +19,7 @@
 
         public bool IsPrivate { get; set; }
 
-        [Required]
+        // [Required]
         public string AuthorUserName { get; set; }
 
         // TODO: Set the ImageInfo !!!
