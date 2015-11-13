@@ -1,4 +1,8 @@
-﻿var templates = (function() {
+﻿/*jslint white: true */
+
+var templates = (function() {
+    /* use strict */
+
     var handlebars = window.handlebars || window.Handlebars,
       Handlebars = window.handlebars || window.Handlebars;
 

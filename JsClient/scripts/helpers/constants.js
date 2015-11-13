@@ -1,4 +1,8 @@
+/*jslint white: true */
+
 var constants = (function() {
+	/* use strict */
+
     // Checking if the module is successfully loaded
     console.log('Constants successfully loaded!');
 

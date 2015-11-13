@@ -110,13 +110,16 @@ a.control_next {
 
 .searchSubmitForm,
 .form-login,
-.form-login input {
+.form-login input,
+.form-register,
+.form-register input {
     margin-left: auto;
     margin-right: auto;
 }
 
 .searchSubmitForm,
-.form-login {
+.form-login,
+.form-register {
     padding-top: 20px;
 }
 
@@ -137,7 +140,8 @@ a.control_next {
 }
 
 .searchSubmitForm input,
-.form-login input {
+.form-login input,
+.form-register input {
     color: gray;
     height: 45px;
     padding-left: 5px;
@@ -154,14 +158,16 @@ a.control_next {
 }
 
 .searchBtn,
-#loginBtn {
-    color: #FFF;
+#loginBtn,
+#goToRegister,
+#registerBtn {
+    color: #333;
     text-shadow: none;
     font-size: 1.2em;
     width: 100px;
     display: inline-block;
-    background-color: #FF1111;
-    border: 1px solid #DDD;
+    background-color: #FFEE11;
+    border: 1px solid #777;
     height: 45px;
     padding-top: 10px;
     font-weight: 600;
@@ -169,7 +175,9 @@ a.control_next {
 }
 
 .searchBtn:hover,
-#loginBtn:hover {
+#loginBtn:hover,
+#goToRegister:hover,
+#registerBtn:hover {
     background-color: #fff;
     color: #777;
 }
@@ -240,7 +248,7 @@ a.control_next {
 .masthead-nav > li > a:focus {
     background-color: transparent;
     color: #fff;
-    border-color: rgba(255, 25, 25, 25);
+    border-color: #FFEE11;
 }
 
 .masthead-nav > .active > a,
