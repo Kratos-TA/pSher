@@ -29,7 +29,7 @@ var appInitialize = (function() {
     // Introduce Sammy:
     window.sammyApp = Sammy('#container', function() {
 
-        // Home / search routes
+        // Home/search routes
         this.get('#/', searchController.getMain);
         this.get('#/advancedSearch', searchController.getAdvanced);
 
