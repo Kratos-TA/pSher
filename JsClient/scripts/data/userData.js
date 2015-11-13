@@ -2,9 +2,9 @@
 import {
     jsonRequester
 }
-from './requester.js';
+from '../requester.js';
 
-var data = (function() {
+var userData = (function() {
     /* use strict */
 
     const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
@@ -84,17 +84,37 @@ var data = (function() {
             });
     }
 
+    function changeUser(user) {
+        var reqUser = {
+            username: user.username,
+            passHash: CryptoJS.SHA1(user.username + user.password).toString()
+        };
+
+        return jsonRequester.put('api/users', {
+                data: reqUser
+            })
+            .then(function(resp) {
+                var user = resp.result;
+                localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
+                localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
+                return {
+                    username: resp.result.username
+                };
+            });
+    }
+
     return {
         users: {
             login: login,
             logout: logout,
             register: register,
             delete: userDelete,
-            getUser: getUser
+            getUser: getUser,
+            changeUser: changeUser
         }
     };
 }());
 
 export {
-    data
+    userData
 };

@@ -160,7 +160,8 @@ a.control_next {
 .searchBtn,
 #loginBtn,
 #goToRegister,
-#registerBtn {
+#registerBtn,
+.pshareBtn {
     color: #333;
     text-shadow: none;
     font-size: 1.2em;
@@ -174,12 +175,18 @@ a.control_next {
     border-radius: 0;
 }
 
+#noBtn {
+    display: none;
+}
+
 .searchBtn:hover,
 #loginBtn:hover,
 #goToRegister:hover,
-#registerBtn:hover {
+#registerBtn:hover,
+.pshareBtn:hover {
     background-color: #fff;
     color: #777;
+    text-decoration: none;
 }
 
 
@@ -277,6 +284,40 @@ a.control_next {
     color: #999;
     /* IE8 proofing */
     color: rgba(255, 255, 255, .5);
+}
+
+
+/*Popup div*/
+
+.black_overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .80;
+    filter: alpha(opacity=80);
+}
+
+#container > .white_content {
+    display: block;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    width: 20vw;
+    height: auto;
+    padding: 4vh;
+    background-color: white;
+    z-index: 1002;
+    color: #333;
+}
+
+.white_content > p {
+    margin-bottom: 15%;
 }
 
 
