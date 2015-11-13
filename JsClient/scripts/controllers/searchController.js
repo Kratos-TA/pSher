@@ -49,7 +49,7 @@ var searchController = (function() {
                     var name = $('#photoSearcherByName').val();
                     var user = $('#photoSearcherByUser').val();
                     var tags = $('#photoSearcherByTags').val();
-                    context.redirect('#/galeries' + '?name=' + name + '&user=' + user + '&tags=' + tags);
+                    context.redirect('#/images' + '?name=' + name + '&user=' + user + '&tags=' + tags);
                 });
             });
     };

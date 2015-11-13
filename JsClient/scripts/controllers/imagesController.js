@@ -30,9 +30,9 @@ var imagesController = (function() {
 
     var getAllImages = function(context) {
         var $container = $('#container');
-        var galeriesName = context.params.name || '';
-        var galeriesUser = context.params.user || '';
-        var galeriesYear = context.params.tags || '';
+        var imageName = context.params.name || '';
+        var imageUser = context.params.user || '';
+        var imageTags = context.params.tags || '';
 
         activeLink.toggle('#imagesLink');
 
@@ -41,13 +41,23 @@ var imagesController = (function() {
                 var imageUrlArray = [];
                 var i;
 
-                // Her we should access data for images from DB
-                for (i = 1; i <= 24; i++) {
-                    var imageName = 'galery%20%28' + i + '%29.jpg';
+                // Here we should access data for images from DB
 
-                    if (imageName.indexOf(galeriesName) >= 0 && imageName.indexOf(galeriesUser) >= 0 && imageName.indexOf(galeriesYear) >= 0) {
+                // var queryString = '?name='+imageName + '&user=' + imageUser + '&tags' + imageTags;
+                // imageData.getAll(queryString)
+                //     .then(function() {
+
+                //     });
+
+
+                for (i = 1; i <= 24; i++) {
+                    var currentImageName = 'galery%20%28' + i + '%29.jpg';
+
+                    if (currentImageName.indexOf(imageName) >= 0 &&
+                        currentImageName.indexOf(imageUser) >= 0 &&
+                        currentImageName.indexOf(imageTags) >= 0) {
                         var currentImage = {
-                            url: './images/galeries/' + imageName,
+                            url: './images/galeries/' + currentImageName,
                             link: '#/images/:' + i
                         };
                         imageUrlArray.push(currentImage);
@@ -67,80 +77,88 @@ var imagesController = (function() {
         var currentImageId = this.params['id'];
         activeLink.toggle('#imagesLink');
 
+        // Implement the galery itself
+        // iMPLEMENT HERE EVERITHING --> CONNECTED WITH 
+        // Access data for this specific galery below using currentGaleryId property!
         templates.get('Image')
             .then(function(template) {
-                // Implement the galery itself
+                imageData.getImage(currentImageId)
+                    .then(function() {
+                        scrollFixedHelper.switchToScroll();
+                        // $container.html(template(...insert here the Galery template ready...));
 
-                // Access data for this specific galery below using currentGaleryId property!
-
-                scrollFixedHelper.switchToScroll();
-                // $container.html(template(...insert here the Galery template ready...));
-
-                // Delete image functionality
-                $('#deleteImgBtn').on('click', function() {
-                    imageData.delete(currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Image ' + err.statusText);
-                        });
-                });
-
-                $('#rateImage').on('click', function() {
-                    var mark = $('#markInput').val();
-                    if (!mark) {
-                        return alertHelper.getOkAlert('You have not entered a mark.');
-                    }
-
-                    // Validate if number!!!
-
-                    if (0 > mark || mark > 5) {
-                        return alertHelper.getOkAlert('You have given an invalid mark.');
-                    }
-
-                    imageData.rateImage(mark, currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Mark ' + err.statusText);
+                        // Delete image functionality
+                        $('#deleteImgBtn').on('click', function() {
+                            imageData.delete(currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Image ' + err.statusText);
+                                });
                         });
 
-                });
+                        $('#rateImage').on('click', function() {
+                            var mark = $('#markInput').val();
+                            if (!mark) {
+                                return alertHelper.getOkAlert('You have not entered a mark.');
+                            }
 
-                $('#leaveComment').on('click', function() {
-                    var comment = $('#commentInput').val();
-                    if (!comment) {
-                        return alertHelper.getOkAlert('You have not entered a comment.');
-                    }
+                            if (0 > mark || mark > 5) {
+                                return alertHelper.getOkAlert('You have given an invalid mark.');
+                            }
 
-                    // Validate comment!!!
-
-                    imageData.commentImage(comment, currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Comment ' + err.statusText);
+                            imageData.rateImage(mark, currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Mark ' + err.statusText);
+                                });
                         });
-                });
 
-                $('#comments').on('click', function(ev) {
-                    var target = $(ev.target);
-                    var currentCommentId = target.attr('commentId');
-                    var currentCommentText = target.val();
-
-                    // Distplay the template for edditing the comment
-                    // Get the text from the new comment
-                    var comment;
-
-                    // then:!!!!!!!!!!!!!!!
-
-                    imageData.changeComment(comment, currentCommentId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Comment ' + err.statusText);
+                        $('#deleteMarkBtn').on('click', function() {
+                            imageData.deleteMark(currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Mark ' + err.statusText);
+                                });
                         });
-                });
+
+                        $('#leaveComment').on('click', function() {
+                            var comment = $('#commentInput').val();
+                            if (!comment) {
+                                return alertHelper.getOkAlert('You have not entered a comment.');
+                            }
+
+                            // Validate comment!!!
+
+                            imageData.commentImage(comment, currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                });
+                        });
+
+                        $('#comments').on('click', function(ev) {
+                            var target = $(ev.target);
+                            var currentCommentId = target.attr('commentId');
+                            var currentCommentText = target.val();
+
+                            // Distplay the template for edditing the comment
+                            // Get the text from the new comment
+                            var comment;
+
+                            // then:!!!!!!!!!!!!!!!
+
+                            imageData.changeComment(comment, currentCommentId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                });
+                        });
+                    });
             });
     };
 

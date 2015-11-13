@@ -20,7 +20,7 @@ import {
 from './controllers/userController.js';
 
 import {
-    imagesControllerx
+    imagesController
 }
 from './controllers/imagesController.js';
 

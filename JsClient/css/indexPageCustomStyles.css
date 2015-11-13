@@ -175,6 +175,11 @@ a.control_next {
     border-radius: 0;
 }
 
+.card .double {
+    height: 65px;
+
+}
+ 
 #noBtn {
     display: none;
 }

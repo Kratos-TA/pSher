@@ -15,7 +15,9 @@ var userData = (function() {
     function register(user) {
         var reqUser = {
             username: user.username,
-            passHash: CryptoJS.SHA1(user.username + user.password).toString()
+            passHash: CryptoJS.SHA1(user.username + user.password).toString(),
+            firstName: user.firstName,
+            lastName: user.lastName
         };
 
         return jsonRequester.post('api/users', {
@@ -87,7 +89,9 @@ var userData = (function() {
     function changeUser(user) {
         var reqUser = {
             username: user.username,
-            passHash: CryptoJS.SHA1(user.username + user.password).toString()
+            passHash: CryptoJS.SHA1(user.username + user.password).toString(),
+            firstName: user.firstName,
+            lastName: user.lastName
         };
 
         return jsonRequester.put('api/users', {
