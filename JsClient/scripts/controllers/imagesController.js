@@ -20,6 +20,11 @@ import {
 }
 from '../data/imageData.js';
 
+import {
+    alertHelper
+}
+from '../helpers/alertHelper.js';
+
 var imagesController = (function() {
     /* use strict */
 
@@ -77,128 +82,65 @@ var imagesController = (function() {
                         .then(function() {
                             sammyApp.refresh();
                         }, function(err) {
-                            templates.get('AlertTemplate')
-                                .then(function() {
-                                    $container.html(template({
-                                        //not sure wether it works like this
-                                        alertText: err.responseJSON.toString()
-                                    }));
-                                    $('#okBtn').on('click', function() {
-                                        sammyApp.refresh();
-                                    });
-                                });
+                            return alertHelper.getOkAlert('Image ' + err.statusText);
                         });
                 });
 
                 $('#rateImage').on('click', function() {
-                	var mark = $('#markInput').val();
-                	if (!mark) {
-                		templates.get('AlertTemplate')
-                            .then(function(template) {
-                                $container.html(template({
-                                    alertText: 'You have not entered a mark.'
-                                }));
-                                $('#okBtn').on('click', function() {
-                                    sammyApp.refresh();
-                                });
-                            });
-                        return;
-                	}
+                    var mark = $('#markInput').val();
+                    if (!mark) {
+                        return alertHelper.getOkAlert('You have not entered a mark.');
+                    }
 
-                	// Validate if number!!!
+                    // Validate if number!!!
 
-                	if (0 > mark || mark > 5) {
-                		templates.get('AlertTemplate')
-                            .then(function(template) {
-                                $container.html(template({
-                                    alertText: 'You have given an invalid mark.'
-                                }));
-                                $('#okBtn').on('click', function() {
-                                    sammyApp.refresh();
-                                });
-                            });
-                        return;
-                	}
+                    if (0 > mark || mark > 5) {
+                        return alertHelper.getOkAlert('You have given an invalid mark.');
+                    }
 
-                	imageData.rateImage(mark, currentImageId)
+                    imageData.rateImage(mark, currentImageId)
                         .then(function() {
                             sammyApp.refresh();
                         }, function(err) {
-                            templates.get('AlertTemplate')
-                                .then(function() {
-                                    $container.html(template({
-                                        //not sure wether it works like this
-                                        alertText: err.responseJSON.toString()
-                                    }));
-                                    $('#okBtn').on('click', function() {
-                                        sammyApp.refresh();
-                                    });
-                                });
+                            return alertHelper.getOkAlert('Mark ' + err.statusText);
                         });
 
                 });
 
-				$('#leaveComment').on('click', function() {
-					var comment = $('#commentInput').val();
-					if (!comment) {
-						templates.get('AlertTemplate')
-                            .then(function(template) {
-                                $container.html(template({
-                                    alertText: 'You have not entered a comment.'
-                                }));
-                                $('#okBtn').on('click', function() {
-                                    sammyApp.refresh();
-                                });
-                            });
-                        return;
-					}
+                $('#leaveComment').on('click', function() {
+                    var comment = $('#commentInput').val();
+                    if (!comment) {
+                        return alertHelper.getOkAlert('You have not entered a comment.');
+                    }
 
-					// Validate comment!!!
+                    // Validate comment!!!
 
-					imageData.commentImage(comment, currentImageId)
+                    imageData.commentImage(comment, currentImageId)
                         .then(function() {
                             sammyApp.refresh();
                         }, function(err) {
-                            templates.get('AlertTemplate')
-                                .then(function() {
-                                    $container.html(template({
-                                        //not sure wether it works like this
-                                        alertText: err.responseJSON.toString()
-                                    }));
-                                    $('#okBtn').on('click', function() {
-                                        sammyApp.refresh();
-                                    });
-                                });
+                            return alertHelper.getOkAlert('Comment ' + err.statusText);
                         });
-				});
+                });
 
-				$('#comments').on('click', function(ev) {
-					var target = $(ev.target);
-					var currentCommentId = target.attr('commentId');
-					var currentCommentText = target.val();
+                $('#comments').on('click', function(ev) {
+                    var target = $(ev.target);
+                    var currentCommentId = target.attr('commentId');
+                    var currentCommentText = target.val();
 
-					// Distplay the template for edditing the comment
-					// Get the text from the new comment
-					var comment;
+                    // Distplay the template for edditing the comment
+                    // Get the text from the new comment
+                    var comment;
 
-					// then:!!!!!!!!!!!!!!!
+                    // then:!!!!!!!!!!!!!!!
 
-					imageData.changeComment(comment, currentCommentId)
+                    imageData.changeComment(comment, currentCommentId)
                         .then(function() {
                             sammyApp.refresh();
                         }, function(err) {
-                            templates.get('AlertTemplate')
-                                .then(function() {
-                                    $container.html(template({
-                                        //not sure wether it works like this
-                                        alertText: err.responseJSON.toString()
-                                    }));
-                                    $('#okBtn').on('click', function() {
-                                        sammyApp.refresh();
-                                    });
-                                });
+                            return alertHelper.getOkAlert('Comment ' + err.statusText);
                         });
-				});
+                });
             });
     };
 
@@ -220,16 +162,7 @@ var imagesController = (function() {
                     var byteArray; /*To be implemented*/
 
                     if (!byteArray) {
-                        templates.get('AlertTemplate')
-                            .then(function(template) {
-                                $container.html(template({
-                                    alertText: 'You have not uploaded an image.'
-                                }));
-                                $('#okBtn').on('click', function() {
-                                    sammyApp.refresh();
-                                });
-                            });
-                        return;
+                        return alertHelper.getOkAlert('You have not uploaded an image.');
                     }
 
                     var image = {
@@ -241,26 +174,9 @@ var imagesController = (function() {
 
                     imageData.upload(image)
                         .then(function() {
-                            templates.get('AlertTemplate')
-                                .then(function() {
-                                    $container.html(template({
-                                        alertText: 'You have uploaded successfully this image.'
-                                    }));
-                                    $('#okBtn').on('click', function() {
-                                        sammyApp.refresh();
-                                    });
-                                });
+                            return alertHelper.getOkAlert('You have uploaded successfully this image.');
                         }, function(err) {
-                            templates.get('AlertTemplate')
-                                .then(function() {
-                                    $container.html(template({
-                                        //not sure wether it works like this
-                                        alertText: err.responseJSON.toString()
-                                    }));
-                                    $('#okBtn').on('click', function() {
-                                        sammyApp.refresh();
-                                    });
-                                });
+                            return alertHelper.getOkAlert('Image ' + err.statusText);
                         });
                 });
             });
