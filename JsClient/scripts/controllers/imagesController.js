@@ -38,37 +38,44 @@ var imagesController = (function() {
 
         templates.get('SearchResults')
             .then(function(template) {
-                var imageUrlArray = [];
-                var i;
+                var queryString = '?name=' + imageName + '&user=' + imageUser + '&tags' + imageTags;
 
-                // Here we should access data for images from DB
+                // To refactor this with then! See below
+                var images = imageData.getAll(queryString);
+                var imagesLength = images.length;
 
-                // var queryString = '?name='+imageName + '&user=' + imageUser + '&tags' + imageTags;
-                // imageData.getAll(queryString)
-                //     .then(function() {
-
-                //     });
-
-
-                for (i = 1; i <= 24; i++) {
-                    var currentImageName = 'galery%20%28' + i + '%29.jpg';
-
-                    if (currentImageName.indexOf(imageName) >= 0 &&
-                        currentImageName.indexOf(imageUser) >= 0 &&
-                        currentImageName.indexOf(imageTags) >= 0) {
-                        var currentImage = {
-                            url: './images/galeries/' + currentImageName,
-                            link: '#/images/' + i
-                        };
-                        imageUrlArray.push(currentImage);
-                    }
+                for (var i = 0; i < imagesLength; i++) {
+                    images[i].link = '#/images/' + images[i].imageId.toString();
                 }
-                var imageUrlContainerObject = {
-                    urls: imageUrlArray
-                };
 
-                $container.html(template(imageUrlContainerObject));
+                $container.html(template(images));
                 scrollFixedHelper.switchToScroll();
+
+                // .then(function(images) {
+
+                // });
+
+
+                // The old way - to be deleted
+                // var imageUrlArray = [];
+                // var i;
+
+                // for (i = 1; i <= 24; i++) {
+                //     var currentImageName = 'galery%20%28' + i + '%29.jpg';
+
+                //     if (currentImageName.indexOf(imageName) >= 0 &&
+                //         currentImageName.indexOf(imageUser) >= 0 &&
+                //         currentImageName.indexOf(imageTags) >= 0) {
+                //         var currentImage = {
+                //             url: './images/galeries/' + currentImageName,
+                //             link: '#/images/' + i
+                //         };
+                //         imageUrlArray.push(currentImage);
+                //     }
+                // }
+                // var imageUrlContainerObject = {
+                //     urls: imageUrlArray
+                // };
             });
     };
 
@@ -83,11 +90,15 @@ var imagesController = (function() {
         templates.get('Image')
             .then(function(template) {
                 // Fix it as it should work with services
-                console.log('Before templating');
                 var currentImage = imageData.getImage(currentImageId);
-                scrollFixedHelper.switchToUserFixed();
+
+                if (currentImage.user != localStorage.USERNAME_KEY) {
+                    currentImage.user = false;
+                }
+
                 $container.html(template(currentImage));
-                console.log('After templating');
+                scrollFixedHelper.switchToUserFixed();
+
 
 
                 // Delete image functionality
@@ -100,26 +111,9 @@ var imagesController = (function() {
                         });
                 });
 
-                $('#rateImage').on('click', function() {
+                $('#markInput').on('change', function(ev) {
                     var mark = $('#markInput').val();
-                    if (!mark) {
-                        return alertHelper.getOkAlert('You have not entered a mark.');
-                    }
-
-                    if (0 > mark || mark > 5) {
-                        return alertHelper.getOkAlert('You have given an invalid mark.');
-                    }
-
                     imageData.rateImage(mark, currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Mark ' + err.statusText);
-                        });
-                });
-
-                $('#deleteMarkBtn').on('click', function() {
-                    imageData.deleteMark(currentImageId)
                         .then(function() {
                             sammyApp.refresh();
                         }, function(err) {
@@ -146,20 +140,45 @@ var imagesController = (function() {
                 $('#comments').on('click', function(ev) {
                     var target = $(ev.target);
                     var currentCommentId = target.attr('commentId');
-                    var currentCommentText = target.val();
+                    var currentCommentText = target.html();
+                    var comment = {
+                        commentId: currentCommentId,
+                        commentText: currentCommentText
+                    };
 
-                    // Distplay the template for edditing the comment
-                    // Get the text from the new comment
-                    var comment;
+                    templates.get('EditCommentTemplate')
+                        .then(function(template) {
+                            $container.html(template(comment));
+                            scrollFixedHelper.switchToFixed();
 
-                    // then:!!!!!!!!!!!!!!!
+                            $('#editBtn').on('click', function() {
+                                var editedCommentText = $('#editedComment').val();
 
-                    imageData.changeComment(comment, currentCommentId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                imageData.changeComment(editedCommentText, currentCommentId)
+                                    .then(function() {
+                                        sammyApp.refresh();
+                                    }, function(err) {
+                                        return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                    });
+
+                            });
+
+                            $('#cancelBtn').on('click', function() {
+                                sammyApp.refresh();
+                            });
+                            $('#deleteBtn').on('click', function() {
+                                imageData.deleteComment(currentCommentId)
+                                    .then(function() {
+                                        sammyApp.refresh();
+                                    }, function(err) {
+                                        return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                    });
+                            });
                         });
+                });
+
+                $('#editLink').on('click', function() {
+                    editImage(context, currentImage);
                 });
 
 
@@ -254,24 +273,67 @@ var imagesController = (function() {
 
                 // Upload images functionality!!!!!!
 
-                $('#sendBtn').on('click', function() {
-                    var tags = $('#tagsInput').val();
-                    var name = $('#nameInput').val();
-                    var description = $('#descriptionInput').val();
-                    var byteArray; /*To be implemented*/
+                $('#sendImage').on('click', function() {
+                    var tags = $('#imageTags').val();
+                    var name = $('#imageName').val();
+                    var description = $('#imageDescription').val();
+                    var file = document.getElementById('fileinput').files[0];
 
-                    if (!byteArray) {
-                        return alertHelper.getOkAlert('You have not uploaded an image.');
+                    if (!file || !file.type.match('image.*')) {
+                        return alertHelper.getOkAlert('You have not selected an image.');
                     }
 
+                    $('#sendImage').html('uploading...');
+
+                    var reader = new FileReader();
+                    reader.readAsBinaryString(file);
+
+                    reader.onload = function() {
+                        var binary = reader.result;
+                        console.log(binary);
+                        var image = {
+                            tags,
+                            name,
+                            description,
+                            binary
+                        };
+
+                        imageData.upload(image)
+                            .then(function() {
+                                return alertHelper.getOkAlert('You have uploaded successfully this image.');
+                            }, function(err) {
+                                return alertHelper.getOkAlert('Image ' + err.statusText);
+                            });
+                    };
+
+
+                });
+            });
+    };
+
+    var editImage = function(context, currentImage) {
+        var $container = $('#container');
+        activeLink.toggle('#imagesLink');
+
+        templates.get('EditImage')
+            .then(function(template) {
+                $container.html(template(currentImage));
+                scrollFixedHelper.switchToFixed();
+
+                // Upload images functionality!!!!!!
+
+                $('#sendImage').on('click', function() {
+                    var tags = $('#imageTags').val();
+                    var name = $('#imageName').val();
+                    var description = $('#imageDescription').val();
                     var image = {
                         tags,
                         name,
                         description,
-                        byteArray
+                        imageId: currentImage.id
                     };
 
-                    imageData.upload(image)
+                    imageData.change(image)
                         .then(function() {
                             return alertHelper.getOkAlert('You have uploaded successfully this image.');
                         }, function(err) {
@@ -279,12 +341,15 @@ var imagesController = (function() {
                         });
                 });
             });
+
+        // TODO: Implement the edit which will look like the add without uploading!!!
     };
 
     return {
         getAll: getAllImages,
         getImage: getImage,
-        createImage: createImage
+        createImage: createImage,
+        editImage: editImage
     };
 }());
 
