@@ -6,8 +6,9 @@
     using System.Web.Http.Cors;
 
     using AutoMapper.QueryableExtensions;
-    using PSher.Common.Constants;
     using DataTransferModels.Album;
+    using PSher.Common.Constants;
+    using PSher.Common.Extensions;
     using PSher.Services.Data.Contracts;
 
     [RoutePrefix("api/albums")]
@@ -24,20 +25,40 @@
             this.imagesService = imagesService;
         }
 
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string name, string user = null, string tags = null, int page = 1, int pageSize = 10)
         {
+            var isAutorisedAcces = this.User.Identity.IsAuthenticated;
+            var currentUser = this.User.Identity.Name;
+            var selectedTags = tags.GetEnumerableFromCommSeparatedString();
+
             var result = this.albumsService
-                .All()
+                .AllByParamethers(name, user, selectedTags, page, pageSize, isAutorisedAcces, currentUser)
                 .ProjectTo<AlbumResponseModel>()
                 .ToList();
 
             return this.Ok(result);
         }
 
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(int page = 1, int pageSize = 10)
         {
+            var isAutorisedAcces = this.User.Identity.IsAuthenticated;
+            var currentUser = this.User.Identity.Name;
+
             var result = this.albumsService
-                .GetAlbumById(id)
+                .All(page, pageSize, isAutorisedAcces, currentUser)
+                .ProjectTo<AlbumResponseModel>()
+                .ToList();
+
+            return this.Ok(result);
+        }
+
+        public IHttpActionResult Get(string id)
+        {
+            var isAutorisedAcces = this.User.Identity.IsAuthenticated;
+            var currentUser = this.User.Identity.Name;
+
+            var result = this.albumsService
+                .GetAlbumById(int.Parse(id), isAutorisedAcces, currentUser)
                 .ProjectTo<AlbumDetailsResponseModel>()
                 .ToList();
 
@@ -67,7 +88,7 @@
             return this.Ok(addedAlbumId);
         }
 
-        [Authorize
+        [Authorize]
         [EnableCors("*", "*", "*")]
         public async Task<IHttpActionResult> Put(int id, SaveAlbumRequestModel model)
         {

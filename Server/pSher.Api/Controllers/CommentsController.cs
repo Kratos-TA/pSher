@@ -1,9 +1,10 @@
 ﻿namespace PSher.Api.Controllers
 {
-    using Common.Constants;
-    using Services.Data.Contracts;
     using System.Web.Http;
     using System.Web.Http.Cors;
+
+    using Common.Constants;
+    using Services.Data.Contracts;
 
     [RoutePrefix("api/comments")]
     public class CommentsController : ApiController

@@ -1,10 +1,11 @@
 ﻿namespace PSher.Api.DataTransferModels.Album
 {
-    using Infrastructure.Mapping;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
+
     using AutoMapper;
+    using Infrastructure.Mapping;
     using PSher.Models;
 
     public class AlbumDetailsResponseModel : IMapFrom<Album>, IHaveCustomMappings

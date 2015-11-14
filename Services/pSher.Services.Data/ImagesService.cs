@@ -11,7 +11,6 @@
     using PSher.Common.Extensions;
     using PSher.Data.Contracts;
     using PSher.Models;
-    using System.Data.Entity.Validation;
 
     public class ImagesService : IImagesService
     {
@@ -79,7 +78,7 @@
 
             image.Title = title;
 
-            //For some reason this is necessary
+            // For some reason this is necessary
             image.Author = image.Author;
 
             if (!string.IsNullOrEmpty(description))

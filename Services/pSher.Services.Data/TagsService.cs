@@ -43,11 +43,11 @@
                 .ToListAsync();
 
             (await this.tags
-                .All()
-                .Where(t => tagNames.Contains(t.Name.ToLower()))
-                .Select(t => t.Name.ToLower())
-                .ToListAsync())
-                .ForEach(t => tagNames.Remove(t));
+              .All()
+              .Where(t => tagNames.Contains(t.Name.ToLower()))
+              .Select(t => t.Name.ToLower())
+              .ToListAsync())
+              .ForEach(t => tagNames.Remove(t));
 
             tagNames.ForEach(tagName => resultTags.Add(new Tag { Name = tagName }));
 

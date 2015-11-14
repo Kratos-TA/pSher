@@ -1,7 +1,8 @@
 ﻿namespace PSher.Api.DataTransferModels.Marks
 {
-    using Common.Constants;
     using System.ComponentModel.DataAnnotations;
+
+    using Common.Constants;
 
     public class MarkRequestModel
     {

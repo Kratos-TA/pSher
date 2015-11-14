@@ -1,11 +1,11 @@
 ﻿namespace PSher.Services.Data
 {
-    using PSher.Data.Contracts;
-    using Models;
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Contracts;
+    using Models;
+    using PSher.Data.Contracts;
 
     public class MarksService : IMarksService
     {

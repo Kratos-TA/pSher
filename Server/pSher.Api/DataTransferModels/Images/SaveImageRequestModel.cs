@@ -19,9 +19,6 @@
 
         public bool IsPrivate { get; set; }
 
-        // [Required]
-        public string AuthorUserName { get; set; }
-
         // TODO: Set the ImageInfo !!!
         // public ImageInfo ImageInfo { get; set; }
     }

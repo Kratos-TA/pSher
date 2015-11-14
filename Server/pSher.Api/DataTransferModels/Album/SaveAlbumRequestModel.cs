@@ -1,8 +1,9 @@
 ﻿namespace PSher.Api.DataTransferModels.Album
 {
     using System.ComponentModel.DataAnnotations;
-    using PSher.Common.Constants;
+
     using PSher.Api.Validation;
+    using PSher.Common.Constants;
 
     public class SaveAlbumRequestModel
     {

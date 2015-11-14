@@ -345,7 +345,7 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            var user = new User() { UserName = model.Email, Email = model.Email };
+            var user = new User() { UserName = model.UserName, Email = model.Email };
 
             IdentityResult result = await this.UserManager.CreateAsync(user, model.Password);
 
@@ -388,7 +388,7 @@
                 return this.GetErrorResult(result);
             }
 
-            return this.Ok();
+            return this.Ok(result.Succeeded);
         }
 
         protected override void Dispose(bool disposing)

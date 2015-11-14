@@ -1,9 +1,10 @@
 ﻿namespace PSher.Api.Controllers
 {
     using System.Web.Http;
-    using PSher.Services.Data.Contracts;
-    using DataTransferModels.Marks;
+
     using Common.Constants;
+    using DataTransferModels.Marks;
+    using PSher.Services.Data.Contracts;
 
     [RoutePrefix("api/marks")]
     public class MarksController : ApiController
