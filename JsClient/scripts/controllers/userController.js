@@ -155,6 +155,10 @@ var userController = (function() {
                     context.redirect(route);
                 });
 
+                $('#addNewPhoto').on('click', function() {
+                    context.redirect('#/createImages');
+                });
+
                 // userData.users.getUser(currentUsername)
                 //     .then(function(userData) {
                 //         $container.html(template(userData));

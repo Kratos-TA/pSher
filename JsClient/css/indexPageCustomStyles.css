@@ -30,10 +30,12 @@ a:hover {
     color: #fff;
 }
 
+
 /*Styling image page*/
+
 #imagePage {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 75vh;
 }
 
 #imagePage img {
@@ -45,26 +47,65 @@ a:hover {
     transform: translate(-50%, -50%);
 }
 
-#imagePage h2 {
-    margin: 0 auto 10px auto;
+#additionalInfo {
+    z-index: 100;
+    position: absolute;
 }
 
-#additionalInfo > p, #additionalInfo > div {
-    float: left;
-    display: inline-block;
-    margin: 10px 0;
-    width: 33%;
-}
-
-#imageContainer > div {
-    float: left;
-    display: inline-block;
-    margin: 10px 0;
-}
-
-#imageContainer > div {
+#additionalInfo > h2 {
     text-align: left;
-    margin-left: 10px;
+    margin: 0 0 10px 0;
+}
+
+#tagsAndRatings {
+    position: absolute;
+    bottom: 0;
+}
+
+#tagsAndRatings > h4,
+#tagsAndRatings > p,
+#tagsAndRatings > input {
+    display: inline-block;
+}
+
+#tagsAndRatings > p {
+    margin-right: 20px;
+}
+
+#tagsAndRatings > input {
+    width: 100px;
+    vertical-align: middle;
+}
+
+#comments {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
+}
+
+#comments p {
+    cursor: pointer;
+}
+
+#editLink {
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+}
+
+#editLink a {
+    width: 110px;
+}
+
+/*Styling search results*/
+
+#imageCell p {
+    position: relative;
+    top: -20px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.2);
+    display: inline-block;
 }
 
 /*Styling background slider*/
@@ -141,20 +182,18 @@ a.control_next {
     overflow: hidden;
 }
 
+
 /*Styling forms - search and login*/
 
-.searchSubmitForm,
-.form-login,
-.form-login input,
-.form-register,
-.form-register input {
+.pShareForm,
+.pShareForm input,
+#light textarea,
+.pShareForm textarea {
     margin-left: auto;
     margin-right: auto;
 }
 
-.searchSubmitForm,
-.form-login,
-.form-register {
+.pShareForm {
     padding-top: 20px;
 }
 
@@ -174,16 +213,46 @@ a.control_next {
     margin-right: 0px;
 }
 
-.searchSubmitForm input,
-.form-login input,
-.form-register input {
+.pShareForm input,
+#light textarea,
+.pShareForm textarea {
     color: gray;
-    height: 45px;
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 0;
     font-size: 1.2em;
     width: 260px;
+}
+
+.pShareForm input {
+    height: 45px;
+}
+
+#light textarea,
+.pShareForm textarea {
+    height: 120px;
+}
+
+#container #light {
+    width: 40%;
+}
+
+#container #light textarea {
+    width: 100%;
+}
+
+#container #btnContainer {
+    margin: 3% 0;
+    padding: 0;
+    border: 0;
+}
+
+#container #light #deleteBtn {
+    float: left;
+}
+
+#container #light #cancelBtn {
+    float: right;
 }
 
 #container .cover-heading {
@@ -208,15 +277,17 @@ a.control_next {
     padding-top: 10px;
     font-weight: 600;
     border-radius: 0;
+    cursor: pointer;
 }
 
-.card .double, .edits .double {
+.card .double,
+.edits .double {
     height: 65px;
     margin: 20px 5px;
     width: 120px;
     padding: 7px;
 }
- 
+
 #noBtn {
     display: none;
 }
@@ -229,6 +300,16 @@ a.control_next {
     background-color: #fff;
     color: #777;
     text-decoration: none;
+}
+
+#fileinput::-webkit-file-upload-button {
+    visibility: hidden;
+    width: 0;
+}
+
+#fileinput::before {
+    display: inline-block;
+    display: block;
 }
 
 

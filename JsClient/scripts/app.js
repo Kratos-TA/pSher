@@ -59,20 +59,7 @@ var appInitialize = (function() {
         // Images routes
         this.get('#/images', imagesController.getAll);
         this.get('#/images/:id', imagesController.getImage);
-        this.get('#/images/create', imagesController.createImage);
-        // this.get('#/images/change/:id', imagesController.changeImage);
-        // this.get('#/images/delete/:id', imagesController.deleteImage); -> not needed in the Client
-
-
-        // Marks routes
-        // this.get('#marks/create', marksController.create);
-        // this.get('#marks/change/:id', marksController.change);
-        // this.get('#marks/delete/:id', marksController.delete);
-
-        // Comments routes
-        // this.get('#comments/create', commentsController.create);
-        this.get('#comments/change/:id', commentsController.change);
-        // this.get('#comments/delete/:id', commentsController.delete);
+        this.get('#/createImages', imagesController.createImage);
 
         // Albums routes
         // this.get('#/albums', albumsController.getAll);
