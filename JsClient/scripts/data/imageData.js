@@ -10,17 +10,33 @@ var imageData = (function() {
     const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
         LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
 
-    function getImage(imageId) {
-        var options = {
-            headers: {
-                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
-            }
-        };
+    var imageExample = {
+        name: 'Chosen image',
+        description: 'Beacause reasons I chose this one!',
+        url: './images/1_75/image3.jpg',
+        tags: 'sea,cool,summer',
+        rating: 4.6,
+        comments: [{
+            text: 'Ebasi qkata snimka',
+            commentId: 1
+        }, {
+            text: 'Da be da, super tupa e!',
+            commentId: 2
+        }]
+    };
 
-        return jsonRequester.push('api/images/' + imageId, options)
-            .then(function(res) {
-                return res.result;
-            });
+    function getImage(imageId) {
+        return imageExample;
+        // var options = {
+        //     headers: {
+        //         'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+        //     }
+        // };
+
+        // return jsonRequester.get('api/images/' + imageId, options)
+        //     .then(function(res) {
+        //         return res.result;
+        //     });
     }
 
     function getAllImages(queryString) {
@@ -30,7 +46,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.push('api/images' + queryString, options)
+        return jsonRequester.get('api/images' + queryString, options)
             .then(function(res) {
                 return res.result;
             });
@@ -44,7 +60,7 @@ var imageData = (function() {
             data: imageDetails
         };
 
-        return jsonRequester.push('api/images', options)
+        return jsonRequester.post('api/images', options)
             .then(function(res) {
                 return res.result;
             });

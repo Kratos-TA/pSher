@@ -1,1 +1,27 @@
-<!-- How the galery will look like -->
+<!-- How the image will look like -->
+<div id="imagePage">
+    <div id="imageContainer">
+    	<h2>{{name}}</h2>
+        <img src={{url}} alt={{name}}>
+        <div>
+            <h4>Comments</h4> 
+            {{#each comments}}
+            	<p>{{text}}</p>
+            {{/each}}
+        </div>
+    </div>
+    <div id="additionalInfo">
+        <p id="imageDescription">
+            {{description}}
+        </p>
+        <div>
+            <h4>Tags</h4>
+            <p>{{tags}}</p>
+        </div>
+        <div>
+            <h4>Rating</h4>
+            <p>{{rating}}</p>
+        </div>
+        
+    </div>
+</div>

@@ -50,8 +50,7 @@ var appInitialize = (function() {
         this.get('#/advancedSearch', searchController.getAdvanced);
 
         // User routes
-        this.get('#/user/:username', userController.getProfile);
-        this.get('#/user/delete/:username', userController.deleteUser);
+        this.get('#/user', userController.getProfile);
         this.get('#/user/change/:username', userController.changeDetails);
         this.get('#/login', userController.login);
         this.get('#/logout', userController.logout);

@@ -9,6 +9,11 @@ import {
 }
 from './scrollFixedHelper.js';
 
+import {
+    userController
+}
+from '../controllers/userController.js';
+
 var alertHelper = (function() {
     /* use strict */
 
@@ -48,7 +53,7 @@ var alertHelper = (function() {
         return promise;
     };
 
-    var getChioseAlert = function(message, context, currentUsername) {
+    var getChioseAlert = function(message, context) {
         var $container = $('#container');
         var promise = new Promise(function(resolve, reject) {
             templates.get('AlertTemplate')
@@ -59,7 +64,7 @@ var alertHelper = (function() {
                     scrollFixedHelper.switchToFixed();
                     $('#okBtn').on('click', function() {
                         $('#noBtn').css('display', 'none');
-                        context.redirect('#/user/delete/:' + currentUsername);
+                        userController.deleteUser(context);
                     });
                     $('#noBtn').on('click', function() {
                         $('#noBtn').css('display', 'none');

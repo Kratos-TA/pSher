@@ -40,7 +40,7 @@ var jsonRequester = (function() {
     }
 
     function del(url, options) {
-        return send('DELETE', url, options);
+        return _send('DELETE', url, options);
     }
 
     return {

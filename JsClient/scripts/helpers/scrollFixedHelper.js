@@ -19,9 +19,16 @@ var scrollFixedHelper = (function() {
         $('#container').addClass('searchResultsContainer');
     };
 
+    var switchToUserFixed = function() {
+        $('#backgroundContainer').css('display', 'none');
+        $('#container').removeClass('searchResultsContainer');
+        $('#container').addClass('cover');
+    };
+
     return {
         switchToFixed,
-        switchToScroll
+        switchToScroll,
+        switchToUserFixed
     };
 
 }());

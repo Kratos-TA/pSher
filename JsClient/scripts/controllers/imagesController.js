@@ -58,7 +58,7 @@ var imagesController = (function() {
                         currentImageName.indexOf(imageTags) >= 0) {
                         var currentImage = {
                             url: './images/galeries/' + currentImageName,
-                            link: '#/images/:' + i
+                            link: '#/images/' + i
                         };
                         imageUrlArray.push(currentImage);
                     }
@@ -82,83 +82,164 @@ var imagesController = (function() {
         // Access data for this specific galery below using currentGaleryId property!
         templates.get('Image')
             .then(function(template) {
-                imageData.getImage(currentImageId)
-                    .then(function() {
-                        scrollFixedHelper.switchToScroll();
-                        // $container.html(template(...insert here the Galery template ready...));
+                // Fix it as it should work with services
+                console.log('Before templating');
+                var currentImage = imageData.getImage(currentImageId);
+                scrollFixedHelper.switchToUserFixed();
+                $container.html(template(currentImage));
+                console.log('After templating');
 
-                        // Delete image functionality
-                        $('#deleteImgBtn').on('click', function() {
-                            imageData.delete(currentImageId)
-                                .then(function() {
-                                    sammyApp.refresh();
-                                }, function(err) {
-                                    return alertHelper.getOkAlert('Image ' + err.statusText);
-                                });
+
+                // Delete image functionality
+                $('#deleteImgBtn').on('click', function() {
+                    imageData.delete(currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            return alertHelper.getOkAlert('Image ' + err.statusText);
                         });
+                });
 
-                        $('#rateImage').on('click', function() {
-                            var mark = $('#markInput').val();
-                            if (!mark) {
-                                return alertHelper.getOkAlert('You have not entered a mark.');
-                            }
+                $('#rateImage').on('click', function() {
+                    var mark = $('#markInput').val();
+                    if (!mark) {
+                        return alertHelper.getOkAlert('You have not entered a mark.');
+                    }
 
-                            if (0 > mark || mark > 5) {
-                                return alertHelper.getOkAlert('You have given an invalid mark.');
-                            }
+                    if (0 > mark || mark > 5) {
+                        return alertHelper.getOkAlert('You have given an invalid mark.');
+                    }
 
-                            imageData.rateImage(mark, currentImageId)
-                                .then(function() {
-                                    sammyApp.refresh();
-                                }, function(err) {
-                                    return alertHelper.getOkAlert('Mark ' + err.statusText);
-                                });
+                    imageData.rateImage(mark, currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            return alertHelper.getOkAlert('Mark ' + err.statusText);
                         });
+                });
 
-                        $('#deleteMarkBtn').on('click', function() {
-                            imageData.deleteMark(currentImageId)
-                                .then(function() {
-                                    sammyApp.refresh();
-                                }, function(err) {
-                                    return alertHelper.getOkAlert('Mark ' + err.statusText);
-                                });
+                $('#deleteMarkBtn').on('click', function() {
+                    imageData.deleteMark(currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            return alertHelper.getOkAlert('Mark ' + err.statusText);
                         });
+                });
 
-                        $('#leaveComment').on('click', function() {
-                            var comment = $('#commentInput').val();
-                            if (!comment) {
-                                return alertHelper.getOkAlert('You have not entered a comment.');
-                            }
+                $('#leaveComment').on('click', function() {
+                    var comment = $('#commentInput').val();
+                    if (!comment) {
+                        return alertHelper.getOkAlert('You have not entered a comment.');
+                    }
 
-                            // Validate comment!!!
+                    // Validate comment!!!
 
-                            imageData.commentImage(comment, currentImageId)
-                                .then(function() {
-                                    sammyApp.refresh();
-                                }, function(err) {
-                                    return alertHelper.getOkAlert('Comment ' + err.statusText);
-                                });
+                    imageData.commentImage(comment, currentImageId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            return alertHelper.getOkAlert('Comment ' + err.statusText);
                         });
+                });
 
-                        $('#comments').on('click', function(ev) {
-                            var target = $(ev.target);
-                            var currentCommentId = target.attr('commentId');
-                            var currentCommentText = target.val();
+                $('#comments').on('click', function(ev) {
+                    var target = $(ev.target);
+                    var currentCommentId = target.attr('commentId');
+                    var currentCommentText = target.val();
 
-                            // Distplay the template for edditing the comment
-                            // Get the text from the new comment
-                            var comment;
+                    // Distplay the template for edditing the comment
+                    // Get the text from the new comment
+                    var comment;
 
-                            // then:!!!!!!!!!!!!!!!
+                    // then:!!!!!!!!!!!!!!!
 
-                            imageData.changeComment(comment, currentCommentId)
-                                .then(function() {
-                                    sammyApp.refresh();
-                                }, function(err) {
-                                    return alertHelper.getOkAlert('Comment ' + err.statusText);
-                                });
+                    imageData.changeComment(comment, currentCommentId)
+                        .then(function() {
+                            sammyApp.refresh();
+                        }, function(err) {
+                            return alertHelper.getOkAlert('Comment ' + err.statusText);
                         });
-                    });
+                });
+
+
+                // Should follow with then as below!
+                // .then(function() {
+                //     scrollFixedHelper.switchToScroll();
+                //     // $container.html(template(...insert here the Galery template ready...));
+
+                //     // Delete image functionality
+                //     $('#deleteImgBtn').on('click', function() {
+                //         imageData.delete(currentImageId)
+                //             .then(function() {
+                //                 sammyApp.refresh();
+                //             }, function(err) {
+                //                 return alertHelper.getOkAlert('Image ' + err.statusText);
+                //             });
+                //     });
+
+                //     $('#rateImage').on('click', function() {
+                //         var mark = $('#markInput').val();
+                //         if (!mark) {
+                //             return alertHelper.getOkAlert('You have not entered a mark.');
+                //         }
+
+                //         if (0 > mark || mark > 5) {
+                //             return alertHelper.getOkAlert('You have given an invalid mark.');
+                //         }
+
+                //         imageData.rateImage(mark, currentImageId)
+                //             .then(function() {
+                //                 sammyApp.refresh();
+                //             }, function(err) {
+                //                 return alertHelper.getOkAlert('Mark ' + err.statusText);
+                //             });
+                //     });
+
+                //     $('#deleteMarkBtn').on('click', function() {
+                //         imageData.deleteMark(currentImageId)
+                //             .then(function() {
+                //                 sammyApp.refresh();
+                //             }, function(err) {
+                //                 return alertHelper.getOkAlert('Mark ' + err.statusText);
+                //             });
+                //     });
+
+                //     $('#leaveComment').on('click', function() {
+                //         var comment = $('#commentInput').val();
+                //         if (!comment) {
+                //             return alertHelper.getOkAlert('You have not entered a comment.');
+                //         }
+
+                //         // Validate comment!!!
+
+                //         imageData.commentImage(comment, currentImageId)
+                //             .then(function() {
+                //                 sammyApp.refresh();
+                //             }, function(err) {
+                //                 return alertHelper.getOkAlert('Comment ' + err.statusText);
+                //             });
+                //     });
+
+                //     $('#comments').on('click', function(ev) {
+                //         var target = $(ev.target);
+                //         var currentCommentId = target.attr('commentId');
+                //         var currentCommentText = target.val();
+
+                //         // Distplay the template for edditing the comment
+                //         // Get the text from the new comment
+                //         var comment;
+
+                //         // then:!!!!!!!!!!!!!!!
+
+                //         imageData.changeComment(comment, currentCommentId)
+                //             .then(function() {
+                //                 sammyApp.refresh();
+                //             }, function(err) {
+                //                 return alertHelper.getOkAlert('Comment ' + err.statusText);
+                //             });
+                //     });
+                // });
             });
     };
 

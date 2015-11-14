@@ -30,6 +30,42 @@ a:hover {
     color: #fff;
 }
 
+/*Styling image page*/
+#imagePage {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#imagePage img {
+    max-width: 100vw;
+    max-height: 100vh;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#imagePage h2 {
+    margin: 0 auto 10px auto;
+}
+
+#additionalInfo > p, #additionalInfo > div {
+    float: left;
+    display: inline-block;
+    margin: 10px 0;
+    width: 33%;
+}
+
+#imageContainer > div {
+    float: left;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+#imageContainer > div {
+    text-align: left;
+    margin-left: 10px;
+}
 
 /*Styling background slider*/
 
@@ -105,7 +141,6 @@ a.control_next {
     overflow: hidden;
 }
 
-
 /*Styling forms - search and login*/
 
 .searchSubmitForm,
@@ -175,9 +210,11 @@ a.control_next {
     border-radius: 0;
 }
 
-.card .double {
+.card .double, .edits .double {
     height: 65px;
-
+    margin: 20px 5px;
+    width: 120px;
+    padding: 7px;
 }
  
 #noBtn {

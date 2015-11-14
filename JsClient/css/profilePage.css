@@ -2,15 +2,24 @@
   display: none;
 }
 
-.card {
+#fotorama {
+  font-size: 0;
+}
+
+.userInfoContainer {
+  float: right;
+  width: 30%;
+}
+
+.card, .edits {
   overflow: hidden;
   position: relative;
   border: 1px solid #CCC;
   text-align: center;
   padding: 0;
   margin-left: auto;
-  margin-right: auto;
-  width: 300px;
+  margin-right: 1%;
+  display: block;
 }
 
 .card .header-bg {

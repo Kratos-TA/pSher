@@ -1,15 +1,40 @@
-<div class="card">
-    <canvas class="header-bg" width="250" height="70" id="header-blur"></canvas>
-    <div class="avatar">
-        <img src="http://lorempixel.com/100/100/people/9/" alt="" />
-    </div>
-    <div class="content">
-        <p>Web Developer
-            <br> More description here
-        </p>
-        <div>
-            <a id="deleteProfile" type="button" class="pshareBtn double">Delete profile</a>
-            <a id="changeProfile" type="button" class="pshareBtn double">Change profile</a>
+<div class="userInfoContainer">
+    <div class="card">
+        <canvas class="header-bg" width="250" height="70" id="header-blur"></canvas>
+        <div class="avatar">
+            <img src="http://lorempixel.com/100/100/people/9/" alt="" />
+        </div>
+        <div class="content">
+            <h2>{{username}}</h2>
+            <p>{{firstName}} {{lastName}}
+            </p>
+            <div>
+                <a id="deleteProfile" type="button" class="pshareBtn double">Delete profile</a>
+                <a id="changeProfile" type="button" class="pshareBtn double">Change profile</a>
+            </div>
         </div>
     </div>
+    <div class="edits">
+        <a id="seeCurrentPhoto" type="button" class="pshareBtn double">See current photo</a>
+        <a id="addNewPhoto" type="button" class="pshareBtn double">Add new photo</a>
+        <a id="createAlbum" type="button" class="pshareBtn double">Create new album</a>
+        <a id="editExistingAlbum" type="button" class="pshareBtn double">Edit existing album</a>
+    </div>
 </div>
+
+<div id="fotorama" class="fotorama"
+        data-click="false"
+      data-width="90%"
+      data-maxheight="70%"
+      data-nav="thumbs"
+      data-thumbwidth="60px"
+      data-thumbheight="60px"
+      data-loop="true"
+      data-autoplay="true">
+    {{#each images}}
+        <div data-img={{url}}>{{imageId}}</div>
+    {{/each}}
+</div>
+
+<script src="scripts/libraries/fotorama.js"></script>
+<!-- <a href={{url}}></a> -->

@@ -57,12 +57,18 @@ var userController = (function() {
                         password
                     };
 
-                    userData.users.login(user)
-                        .then(function() {
-                            context.redirect('#/');
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Unable to log user.');
-                        });
+                    userData.users.login(user);
+
+                    $('#log').attr('href', '#/logout');
+                    $('#log').html('Logout');
+                    context.redirect('#/');
+                        // .then(function() {
+                               // $('#log').attr('href', '#/logout');
+                               //  $('#log').html('Logout'); 
+                        //     context.redirect('#/');
+                        // }, function(err) {
+                        //     return alertHelper.getOkAlert('Unable to log user.');
+                        // });
                 });
             });
     };
@@ -118,30 +124,36 @@ var userController = (function() {
 
     var getProfile = function(context) {
         var $container = $('#container');
-        var currentUsername = this.params['username'];
+        var currentUsername = localStorage.USERNAME_KEY;
         activeLink.toggle('#profileLink');
 
-        // We shoold turn on this!!!
-        // if (!localStorage.AUTHENTICATION_KEY) {
-        //     return alertHelper.getGoHomeAlert('You must be logged in order to view user profile.', context);
-        // }
+
+        if (!currentUsername) {
+            return alertHelper.getGoHomeAlert('You must be logged in order to view user profile.', context);
+        }
 
         templates.get('ProfilePage')
             .then(function(template) {
 
                 // this should be replaced by the next request!!!
-
-                $container.html(template());
+                var currentUser = userData.users.getUser(currentUsername);
+                scrollFixedHelper.switchToUserFixed();
+                $container.html(template(currentUser));
 
                 $('#deleteProfile').on('click', function() {
                     return alertHelper.getChioseAlert('Are you sure you want to delete your profile?', context, currentUsername);
                 });
 
                 $('#changeProfile').on('click', function() {
-                    context.redirect('#/user/change/:' + currentUsername);
+                    context.redirect('#/user/change/' + currentUsername);
                 });
 
-
+                $('#seeCurrentPhoto').on('click', function() {
+                    var $fotoramaDiv = $('#fotorama').fotorama();
+                    var imgUrl = $fotoramaDiv.data('fotorama').activeFrame._html;
+                    var route = '#/images/' + imgUrl;
+                    context.redirect(route);
+                });
 
                 // userData.users.getUser(currentUsername)
                 //     .then(function(userData) {
@@ -153,15 +165,15 @@ var userController = (function() {
                 //         });
 
                 //         $('#changeProfile').on('click', function() {
-                //             context.redirect('#/user/change/:' + currentUsername);
+                //             context.redirect('#/user/change/' + currentUsername);
                 //         });
                 //     });
             });
     };
 
     var deleteUser = function(context) {
+        console.log('we are in!');
         var $container = $('#container');
-        var currentUsername = this.params['username'];
 
         if (!localStorage.AUTHENTICATION_KEY) {
             return alertHelper.getGoHomeAlert('You must be logged in order delete your profile.', context);
@@ -179,6 +191,7 @@ var userController = (function() {
         // Not implemented!
         var $container = $('#container');
         var currentUsername = this.params['username'];
+        console.log(currentUsername);
 
         templates.get('RegisterTemplate')
             .then(function(template) {
