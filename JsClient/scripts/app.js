@@ -35,12 +35,10 @@ var appInitialize = (function() {
         $('#log').html('Logout');
     }
 
+    // Load background
     templates.get('SliderTemplate')
         .then(function(template) {
-            var backgroundImageContainer = $('#backgroundContainer');
-            //  backgroundImageContainer.html(template(imageUrlContainerObject));
-            backgroundImageContainer.html(template());
-            // Load slider
+            $('#backgroundContainer').html(template());
             jQuery(document).ready(slider.get());
         });
 

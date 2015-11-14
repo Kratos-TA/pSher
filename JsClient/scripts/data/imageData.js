@@ -10,6 +10,32 @@ var imageData = (function() {
     const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
         LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
 
+    function getImage(imageId) {
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+
+        return jsonRequester.push('api/images/' + imageId, options)
+            .then(function(res) {
+                return res.result;
+            });
+    }
+
+    function getAllImages(queryString) {
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+
+        return jsonRequester.push('api/images' + queryString, options)
+            .then(function(res) {
+                return res.result;
+            });
+    }
+
     function uploadImage(imageDetails) {
         var options = {
             headers: {
@@ -55,6 +81,22 @@ var imageData = (function() {
             });
     }
 
+    function deleteMark(currentImageId) {
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            },
+            data: {
+                'imageId': currentImageId
+            }
+        };
+
+        return jsonRequester.delete('/marks', options)
+            .then(function(res) {
+                return res.result;
+            });
+    }
+
     function commentImage(comment, currentImageId) {
         var options = {
             headers: {
@@ -93,9 +135,12 @@ var imageData = (function() {
 
 
     return {
+        getImage: getImage,
+        getAll: getAllImages,
         upload: uploadImage,
         delete: deleteImage,
         rateImage: rateImage,
+        deleteMark: deleteMark,
         commentImage: commentImage,
         changeComment: changeComment
     };
