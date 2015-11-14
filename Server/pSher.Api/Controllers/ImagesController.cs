@@ -41,7 +41,8 @@
         {
             var result = this.imagesService
                 .GetImageById(id)
-                .ProjectTo<ImageResponseModel>();
+                .ProjectTo<ImageResponseModel>()
+                .ToList();
 
             return this.Ok(result);
         }

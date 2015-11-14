@@ -1,4 +1,4 @@
-﻿namespace PSher.Models
+﻿ namespace PSher.Models
 {
     using System;
     using System.Collections.Generic;
@@ -38,6 +38,9 @@
         
         [Required]
         public virtual User Author { get; set; }
+
+        // [Required]
+        public virtual Photostream Photostream { get; set; }
 
         // [Required]
         [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]

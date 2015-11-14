@@ -130,7 +130,7 @@
 
             IdentityResult result = await this.UserManager
                 .ChangePasswordAsync(
-                User.Identity.GetUserId(),
+                this.User.Identity.GetUserId(),
                 model.OldPassword,
                 model.NewPassword);
 

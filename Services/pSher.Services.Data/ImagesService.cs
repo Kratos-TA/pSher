@@ -113,7 +113,13 @@
         }
 
         // TODO: Check in the end of the method
-        public async Task<int> Add(string title, string authorUserName, string description, bool isPrivate, IEnumerable<Tag> imageTags, IDictionary<string, DateTime> albumsToAdd)
+        public async Task<int> Add(
+            string title, 
+            string authorUserName, 
+            string description, 
+            bool isPrivate, 
+            IEnumerable<Tag> imageTags, 
+            IDictionary<string, DateTime> albumsToAdd)
         {
             var currentUser = this.users
                .All()

@@ -19,6 +19,7 @@
         {
             this.notifications = new HashSet<Notification>();
             this.albums = new HashSet<Album>();
+            this.Photostream = new Photostream();
         }
 
         public User(string username)
@@ -26,6 +27,7 @@
         {
             this.notifications = new HashSet<Notification>();
             this.albums = new HashSet<Album>();
+            this.Photostream = new Photostream();
         }
 
         public bool IsDeleted { get; set; }

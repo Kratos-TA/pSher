@@ -44,6 +44,7 @@
     <Compile Include="Constants\Assemblies.cs" />
     <Compile Include="Constants\ErrorMessages.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
+    <Compile Include="Constants\Messages.cs" />
     <Compile Include="Constants\ValidationConstants.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
