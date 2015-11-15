@@ -59,7 +59,7 @@ a:hover {
 
 #tagsAndRatings {
     position: absolute;
-    bottom: 0;
+    bottom: 2%;
 }
 
 #tagsAndRatings > h4,
@@ -430,7 +430,7 @@ a.control_next {
     display: block;
     position: absolute;
     top: 30%;
-    left: 40%;
+    left: 30%;
     width: 20vw;
     height: auto;
     padding: 4vh;

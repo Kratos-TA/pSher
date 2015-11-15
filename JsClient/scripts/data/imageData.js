@@ -88,7 +88,7 @@ var imageData = (function() {
 
     function getImage(imageId) {
         return imageExample;
-        
+
         var options = {
             headers: {
                 'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
@@ -223,7 +223,6 @@ var imageData = (function() {
                 return res.result;
             });
     }
-
 
     return {
         getImage: getImage,

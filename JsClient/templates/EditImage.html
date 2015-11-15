@@ -1,9 +1,12 @@
 <div class="pShareForm">
-    <input type="text" id="imageName" class="form-control input-sm chat-input" value={{name}} />
+    <input type="text" id="imageName" class="form-control input-sm chat-input" value="{{name}}">
     </br>
-    <textarea id="imageDescription" class="form-control" value={{description}} />
+    <textarea id="imageDescription" class="form-control">{{description}}</textarea>
     </br>
-    <input type="text" id="imageTags" class="form-control" value={{tags}} />
+    <input type="text" id="imageTags" class="form-control" value="{{tags}}">
+    </br>
+    <span>Chec if the photo is private:</span>
+    <input type="checkbox" id="isPrivate" class="form-control">
     </br>
     <div class="wrapper">
         <span class="group-btn">     
