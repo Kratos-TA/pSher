@@ -1,5 +1,6 @@
 ﻿namespace PSher.Api.Controllers
 {
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -23,10 +24,10 @@
 
         public async Task<IHttpActionResult> Get(string id)
         {
-            var result = this.usersServices
+            var result = await this.usersServices
                 .GetById(id)
                 .ProjectTo<UserResponseModel>()
-                .ToList();
+                .ToArrayAsync();
 
             return this.Ok(result);
         }

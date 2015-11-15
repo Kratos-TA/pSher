@@ -22,9 +22,9 @@
         {
             var resultUser = this.users
                 .All()
-                .Where(user => user.Id == userId && user.IsDeleted == false).ToList();
+                .Where(user => user.Id == userId && user.IsDeleted == false);
 
-            return resultUser.AsQueryable();
+            return resultUser;
         }
 
         public async Task<string> Delete(string userId)
