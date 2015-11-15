@@ -2,6 +2,7 @@
 {
     using System.Diagnostics;
     using System.IO;
+
     using Spring.IO;
     using Spring.Social.Dropbox.Api;
     using Spring.Social.Dropbox.Connect;
@@ -9,6 +10,7 @@
 
     using PSher.Common.Constants;
     using PSher.Services.Common.Contracts;
+    using System.Threading.Tasks;
 
     public class DropboxService : IDropboxService
     {
@@ -24,16 +26,17 @@
             this.dropboxApi = this.GetDropboxApi();
         }
 
-        public Entry UploadImageToCloud(IResource resource)
+        public async Task<Entry> UploadImageToCloud(IResource resource, string fileName)
         {
-            Entry uploadFileEntry = this.dropboxApi.UploadFileAsync(resource, DropboxConstants.Collection).Result;
+            string path = "/" + DropboxConstants.Collection + "/" + fileName;
+            Entry uploadFileEntry = await this.dropboxApi.UploadFileAsync(resource, path);
 
             return uploadFileEntry;
         }
 
-        public string GetImageUrl(string path)
+        public async Task<string> GetImageUrl(string path)
         {
-            var mediaLink = this.dropboxApi.GetMediaLinkAsync(path).Result;
+            var mediaLink = await this.dropboxApi.GetMediaLinkAsync(path);
 
             return mediaLink.Url;
         }
@@ -50,7 +53,7 @@
         {
             DropboxServiceProvider dropboxServiceProvider = new DropboxServiceProvider(key, secret, AccessLevel.AppFolder);
 
-            // This constant may contain the wrong file path - if no authentication chek here.
+            // This constant may contain the wrong file path - if no authentication check here.
             if (!File.Exists(DropboxConstants.OAuthTokenFileName))
             {
                 this.AuthorizeAppOAuth(dropboxServiceProvider);

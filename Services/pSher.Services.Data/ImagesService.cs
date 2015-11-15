@@ -6,6 +6,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Spring.IO;
+
     using Contracts;
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
@@ -195,9 +197,16 @@
             if (currentUser == null)
             {
                 throw new ArgumentException(ErrorMessages.InvalidUser);
-            }
+            }            
 
-            // TODO: Do it async upload and get DropBoxUrl usin rawImage data and the make
+            var fileToUpload = new ByteArrayResource(rawImage.Content);
+            
+            string fileNameWithExtension = title + "." + rawImage.FileExtension;
+            await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
+
+            string path = "/" + DropboxConstants.Collection + "/" + title + "." + rawImage.FileExtension;
+            string dropboxUrl = await this.dropbox.GetImageUrl(path);
+
             var newImageInfo = new ImageInfo()
             {
                 OriginalName = rawImage.OriginalFileName,
@@ -212,7 +221,7 @@
                 IsPrivate = isPrivate,
                 UploadedOn = DateTime.Now,
                 ImageInfo = newImageInfo,
-                DropboxUrl = "" // Add the url here
+                DropboxUrl = dropboxUrl
             };
 
             imageTags.ForEach(t =>

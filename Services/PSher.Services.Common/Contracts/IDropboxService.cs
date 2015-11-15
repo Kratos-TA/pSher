@@ -1,12 +1,14 @@
 ﻿namespace PSher.Services.Common.Contracts
 {
+    using System.Threading.Tasks;
+
     using Spring.IO;
     using Spring.Social.Dropbox.Api;
 
     public interface IDropboxService
     {
-        Entry UploadImageToCloud(IResource resource);
+        Task<Entry> UploadImageToCloud(IResource resource, string fileName);
 
-        string GetImageUrl(string path);
+        Task<string> GetImageUrl(string path);
     }
 }
