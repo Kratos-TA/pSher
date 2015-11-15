@@ -10,11 +10,11 @@
 
     public class UserResponseModel : IMapFrom<User>, IHaveCustomMappings
     {
-        private ICollection<Image> images;
+        private ICollection<ImageSimpleResponseModel> images;
 
         public UserResponseModel()
         {
-            this.images = new HashSet<Image>();
+            this.images = new HashSet<ImageSimpleResponseModel>();
         }
 
         public string UserName { get; set; }
@@ -23,7 +23,7 @@
 
         public string LastName { get; set; }
 
-        public virtual ICollection<Image> Images
+        public virtual ICollection<ImageSimpleResponseModel> Images
         {
             get { return this.images; }
             set { this.images = value; }
@@ -32,7 +32,7 @@
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<User, UserResponseModel>()
-             .ForMember(urm => urm.Images, opts => opts.MapFrom(u => u.Photostream.Images.OrderBy(i => i.UploadedOn)));
+             .ForMember(urm => urm.Images, opts => opts.MapFrom(u => u.Images.OrderBy(i => i.UploadedOn)));
         }
     }
 }

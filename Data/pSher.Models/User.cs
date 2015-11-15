@@ -12,22 +12,23 @@
     public class User : IdentityUser
     {
         private ICollection<Notification> notifications;
+        private ICollection<Image> images;
         private ICollection<Album> albums;
 
         public User()
             : base()
         {
             this.notifications = new HashSet<Notification>();
+            this.images = new HashSet<Image>();
             this.albums = new HashSet<Album>();
-            this.Photostream = new Photostream();
         }
 
         public User(string username)
             : base(username)
         {
             this.notifications = new HashSet<Notification>();
+            this.images = new HashSet<Image>();
             this.albums = new HashSet<Album>();
-            this.Photostream = new Photostream();
         }
 
         public bool IsDeleted { get; set; }
@@ -40,12 +41,16 @@
         [MinLength(ValidationConstants.MinUserRealName)]
         public string LastName { get; set; }
 
-        public Photostream Photostream { get; set; }
-
         public virtual ICollection<Notification> Notifications
         {
             get { return this.notifications; }
             set { this.notifications = value; }
+        }
+
+        public virtual ICollection<Image> Images
+        {
+            get { return this.images; }
+            set { this.images = value; }
         }
 
         public virtual ICollection<Album> Albums

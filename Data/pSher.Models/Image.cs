@@ -40,9 +40,6 @@
         public virtual User Author { get; set; }
 
         // [Required]
-        public virtual Photostream Photostream { get; set; }
-
-        // [Required]
         [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
         public string DropboxUrl { get; set; }
 

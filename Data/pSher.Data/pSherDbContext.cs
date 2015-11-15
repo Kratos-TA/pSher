@@ -14,8 +14,6 @@
         {
         }
 
-        public virtual IDbSet<Photostream> Galleries { get; set; }
-
         public virtual IDbSet<Album> Albums { get; set; }
 
         public virtual IDbSet<Image> Images { get; set; }
