@@ -1,11 +1,10 @@
 ﻿namespace PSher.Api.Controllers
 {
     using System.Data.Entity;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Cors;
-    
+
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
     using PSher.Api.DataTransferModels.Album;
@@ -20,21 +19,29 @@
         private readonly ITagsService tagsService;
         private readonly IImagesService imagesService;
 
-        public AlbumsController(IAlbumsService albumsService, ITagsService tagsService, IImagesService imagesService)
+        public AlbumsController(
+            IAlbumsService albumsService, 
+            ITagsService tagsService, 
+            IImagesService imagesService)
         {
             this.albumsService = albumsService;
             this.tagsService = tagsService;
             this.imagesService = imagesService;
         }
 
-        public async Task<IHttpActionResult> Get(string name, string user = null, string tags = null, int page = 1, int pageSize = 10)
+        public async Task<IHttpActionResult> Get(
+            string name, 
+            string user = null, 
+            string tags = null, 
+            int page = 1, 
+            int pageSize = 10)
         {
-            var isAutorisedAcces = this.User.Identity.IsAuthenticated;
-            var currentUser = this.User.Identity.Name;
+            var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
+            var currentUserId = this.User.Identity.GetUserId();
             var selectedTags = tags.GetEnumerableFromCommSeparatedString();
 
             var result = await this.albumsService
-                .AllByParamethers(name, user, selectedTags, page, pageSize, isAutorisedAcces, currentUser)
+                .AllByParamethers(name, user, selectedTags, page, pageSize, isAuthorizedAccess, currentUserId)
                 .ProjectTo<AlbumResponseModel>()
                 .ToListAsync();
 
@@ -43,26 +50,26 @@
 
         public async Task<IHttpActionResult> Get(int page = 1, int pageSize = 10)
         {
-            var isAutorisedAcces = this.User.Identity.IsAuthenticated;
+            var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
             var result = await this.albumsService
-                .All(page, pageSize, isAutorisedAcces, currentUserId)
+                .All(page, pageSize, isAuthorizedAccess, currentUserId)
                 .ProjectTo<AlbumResponseModel>()
                 .ToListAsync();
 
             return this.Ok(result);
         }
 
-        public IHttpActionResult Get(string id)
+        public async Task<IHttpActionResult> Get(string id)
         {
-            var isAutorisedAcces = this.User.Identity.IsAuthenticated;
+            var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
-            var result = this.albumsService
-                .GetAlbumById(int.Parse(id), isAutorisedAcces, currentUserId)
+            var result = await this.albumsService
+                .GetAlbumById(int.Parse(id), isAuthorizedAccess, currentUserId)
                 .ProjectTo<AlbumDetailsResponseModel>()
-                .ToList();
+                .ToListAsync();
 
             return this.Ok(result);
         }
@@ -73,14 +80,17 @@
         {
             if (!this.ModelState.IsValid || model == null)
             {
-                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "SaveAlbumRequestModel"));
+                return this.BadRequest(string.Format(
+                    ErrorMessages.InvalidRequestModel, 
+                    "SaveAlbumRequestModel"));
             }
 
             var currentUserId = this.User.Identity.GetUserId();
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var images = await this.imagesService.ImagesFromCommaSeparatedIds(model.ImagesIds);
 
-            var addedAlbumId = await this.albumsService.Add(
+            var addedAlbumId = await this.albumsService
+                .Add(
                 model.Name,
                 currentUserId,
                 model.IsPrivate,

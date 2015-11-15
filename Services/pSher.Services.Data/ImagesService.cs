@@ -9,22 +9,30 @@
     using Contracts;
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
+    using PSher.Common.Models;
     using PSher.Data.Contracts;
     using PSher.Models;
+    using PSher.Services.Logic.Contracts;
 
-    public class ImagesService : IImagesService
+    public class ImagesService : UserAutenticationDependService, IImagesService
     {
         private readonly IRepository<Image> images;
-        private readonly IRepository<User> users;
         private readonly IRepository<Tag> tags;
         private readonly IRepository<Album> albums;
+        private readonly IImageProcessorService imageProcessor;
 
-        public ImagesService(IRepository<Image> imagesRepo, IRepository<User> usersRepo, IRepository<Tag> tagsRepo, IRepository<Album> albumRepo)
+        public ImagesService(
+            IRepository<Image> imagesRepo,
+            IRepository<User> usersRepo,
+            IRepository<Tag> tagsRepo,
+            IRepository<Album> albumRepo,
+            IImageProcessorService imageProcessor)
+            : base(usersRepo)
         {
             this.images = imagesRepo;
-            this.users = usersRepo;
             this.tags = tagsRepo;
             this.albums = albumRepo;
+            this.imageProcessor = imageProcessor;
         }
 
         public async Task<IEnumerable<Image>> ImagesFromCommaSeparatedIds(string imageIdsAsCommaSeparatedValues)
@@ -36,7 +44,10 @@
 
             var imagesIds = new HashSet<int>();
 
-            imageIdsAsCommaSeparatedValues.Split(new[] { GlobalConstants.CommaSeparatedCollectionSeparator }, StringSplitOptions.RemoveEmptyEntries)
+            imageIdsAsCommaSeparatedValues
+                .Split(
+                    new[] { GlobalConstants.CommaSeparatedCollectionSeparator },
+                    StringSplitOptions.RemoveEmptyEntries)
                 .ToList()
                 .ForEach(i =>
                 {
@@ -51,27 +62,78 @@
             return resultImages;
         }
 
-        public IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize)
+        public IQueryable<Image> All(
+            int page = 1,
+            int pageSize = GlobalConstants.DefaultPageSize,
+            bool isAuthorizedAccess = false,
+            string authenticatedUserId = "")
         {
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
+
             var allImages = this.images
-                   .All()
-                   .OrderByDescending(pr => pr.UploadedOn)
-                   .Skip((page - 1) * pageSize)
-                   .Take(pageSize);
+                .All()
+                .Where(i => (i.IsDeleted == false) &&
+                    (i.IsPrivate == false ||
+                        (i.Author.Id == currentUser.Id &&
+                            isAuthorizedAccess == true)))
+                .OrderBy(a => a.UploadedOn)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
 
             return allImages;
         }
 
-        public IQueryable<Image> GetImageById(int id)
+        public IQueryable<Image> AllByParamethers(
+        string imageTitle,
+        string imageAuthor,
+        IEnumerable<string> imageTags,
+        int page,
+        int pageSize,
+        bool isAuthorizedAccess = false,
+        string authenticatedUserId = "")
         {
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
+
+            var allAlbums = this.images
+                .All()
+                .Where(i => (i.IsDeleted == false) &&
+                    (i.IsPrivate == false || (i.Author.Id == currentUser.Id && isAuthorizedAccess == true)) &&
+                    (i.Tags.Any(t => imageTags.Contains(t.Name)) ||
+                        i.Author.UserName.Contains(imageAuthor) ||
+                        i.Author.FirstName.Contains(imageAuthor) ||
+                        i.Author.LastName.Contains(imageAuthor) ||
+                        i.Title.Contains(imageTitle)))
+                .OrderBy(i => i.UploadedOn)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
+
+            return allAlbums;
+        }
+
+        public IQueryable<Image> GetImageById(
+            int id,
+            bool isAuthorizedAccess,
+            string authenticatedUserId)
+        {
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
+
             var imageById = this.images
                 .All()
-                .Where(i => i.Id == id);
+                .Where(i => (i.IsDeleted == false) &&
+                        i.Id == id &&
+                            (i.IsPrivate == false ||
+                                (i.Author.Id == currentUser.Id &&
+                                    isAuthorizedAccess == true)));
 
             return imageById;
         }
 
-        public bool Update(int id, string title, string description, IEnumerable<Tag> tags)
+        // TODO: Fix update
+        public async Task<int> Update(
+            int id,
+            string title,
+            string description,
+            IEnumerable<Tag> tags)
         {
             var image = this.images
                 .GetById(id);
@@ -95,10 +157,11 @@
 
             this.images.SaveChanges();
 
-            return true;
+            return 1;
         }
 
-        public bool DeleteImage(int id)
+        // TODO: Fix delete
+        public async Task<int> DeleteImage(int id)
         {
             var image = this.images
                 .GetById(id);
@@ -109,37 +172,43 @@
 
             this.images.SaveChanges();
 
-            return true;
+            return 1;
         }
-
-        // TODO: Check in the end of the method
+       
         public async Task<int> Add(
-            string title, 
-            string authorUserName, 
-            string description, 
-            bool isPrivate, 
-            IEnumerable<Tag> imageTags, 
-            IDictionary<string, DateTime> albumsToAdd)
+            string title,
+            string autenticatedUserId,
+            string description,
+            bool isPrivate,
+            RawFile rawImage,
+            IEnumerable<Tag> imageTags = null,
+            IEnumerable<Album> imageAlbums = null)
         {
-            var currentUser = this.users
+            var currentUser = this.Users
                .All()
-               .FirstOrDefault(u => u.UserName == authorUserName);
+               .FirstOrDefault(u => u.Id == autenticatedUserId || u.IsDeleted == false);
 
             if (currentUser == null)
             {
                 throw new ArgumentException(ErrorMessages.InvalidUser);
             }
 
-            // TODO: TO Set DropBoxUrl !!!
-            // TODO: ImageInfo to be added !!!
-            // TODO: Make conversion befor dropBox upload and to check how and where to do that !!! 
+            // TODO: Do it async upload and get DropBoxUrl usin rawImage data and the make
+            var newImageInfo = new ImageInfo()
+            {
+                OriginalName = rawImage.OriginalFileName,
+                OriginalExtension = rawImage.FileExtension
+            };
+
             var newImage = new Image()
             {
                 Title = title,
                 Author = currentUser,
                 Description = description,
                 IsPrivate = isPrivate,
-                UploadedOn = DateTime.Now
+                UploadedOn = DateTime.Now,
+                ImageInfo = newImageInfo,
+                DropboxUrl = "" // Add the url here
             };
 
             imageTags.ForEach(t =>
@@ -147,28 +216,22 @@
                 newImage.Tags.Add(t);
             });
 
-            /*
-            albumsToAdd.ForEach(t =>
+            imageAlbums.ForEach(a =>
             {
-                var currentAlbum = this.albums.All().FirstOrDefault(album => album.Name == t.Key.ToLower());
-
-                if (currentAlbum == null)
-                {
-                   currentAlbum = new Album()
-                   {
-                       Name = t.Key.ToLower(),
-                       CreatedOn = t.Value
-                    };
-                }               
-
-               newImage.Albums.Add(currentAlbum);
+                newImage.Albums.Add(a);
             });
-           */
 
             this.images.Add(newImage);
             await this.images.SaveChangesAsync();
 
             return newImage.Id;
+        }
+
+        public async Task<RawFile> ProcessImage(RawFile rawImage)
+        {
+            rawImage.Content = await this.imageProcessor.Resize(rawImage.Content, GlobalConstants.ResizedImageWidth);
+
+            return rawImage;
         }
     }
 }

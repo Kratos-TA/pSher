@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -26,19 +27,70 @@
             this.tags = tagsRepo;
         }
 
+        public async Task<IEnumerable<Album>> AlbumsFromCommaSeparatedValuesAndUserId(string albumsAsCommaSeparatedValues, string userId)
+        {
+            if (string.IsNullOrWhiteSpace(albumsAsCommaSeparatedValues))
+            {
+                return Enumerable.Empty<Album>();
+            }
+
+            var albumsValues = new HashSet<string>();
+
+            albumsAsCommaSeparatedValues.Split(new[] { GlobalConstants.CommaSeparatedCollectionSeparator }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList()
+                .ForEach(val =>
+                {
+                    albumsValues.Add(val.Trim());
+                });
+
+            var resultAlbum = await this.albums
+                .All()
+                .Where(a => (albumsValues.Contains(a.Name.ToLower()) ||
+                                albumsValues.Contains(a.Id.ToString())) &&
+                            a.Creator.Id == userId)
+                .ToListAsync();
+
+            (await this.albums
+              .All()
+              .Where(a => (albumsValues.Contains(a.Name.ToLower()) ||
+                                albumsValues.Contains(a.Id.ToString())) &&
+                            a.Creator.Id == userId)
+              .Select(a => a.Name.ToLower())
+              .ToListAsync())
+              .ForEach(a => albumsValues.Remove(a));
+
+            var idValues = new List<string>();
+
+            albumsValues.ForEach(v =>
+            {
+                int id;
+                var isId = int.TryParse(v, out id);
+                if (isId)
+                {
+                    idValues.Add(v);
+                }
+            });
+
+            idValues.ForEach(a => albumsValues.Remove(a));
+
+            albumsValues.ForEach(tagName => resultAlbum.Add(new Album() { Name = tagName }));
+
+            return resultAlbum;
+        }
+
         public IQueryable<Album> All(
             int page = 1,
             int pageSize = GlobalConstants.DefaultPageSize,
             bool isAuthorizedAccess = false,
-            string authenticatedUserName = "")
+            string authenticatedUserId = "")
         {
-            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserName);
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
 
             var allAlbums = this.albums
                 .All()
                 .Where(a => (a.IsDeleted == false) &&
                     (a.IsPrivate == false ||
-                        (a.Creator.UserName == currentUser.UserName &&
+                        (a.Creator.Id == currentUser.Id &&
                             isAuthorizedAccess == true)))
                 .OrderBy(a => a.Name)
                 .Skip((page - 1) * pageSize)
@@ -61,8 +113,8 @@
             var allAlbums = this.albums
                 .All()
                 .Where(a => (a.IsDeleted == false) &&
-                    (a.IsPrivate == false || (a.Creator.UserName == currentUser.UserName && isAuthorizedAccess == true)) &&
-                    (a.Tags.Any(t => albumTags.Contains(t.Name)) || a.Name == albumName || a.Creator.UserName == albumCreator))
+                    (a.IsPrivate == false || (a.Creator.Id == currentUser.Id && isAuthorizedAccess == true)) &&
+                    (a.Tags.Any(t => albumTags.Contains(t.Name)) || a.Name.Contains(albumName) || a.Creator.UserName.Contains(albumCreator)))
                 .OrderBy(a => a.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);

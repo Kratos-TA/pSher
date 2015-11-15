@@ -1,6 +1,5 @@
 ﻿namespace PSher.Services.Data.Contracts
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,16 +9,18 @@
 
     public interface IAlbumsService
     {
+        Task<IEnumerable<Album>> AlbumsFromCommaSeparatedValuesAndUserId(string albumsAsCommaSeparatedValues, string userId);
+
         IQueryable<Album> All(
             int page = 1,
             int pageSize = GlobalConstants.DefaultPageSize,
-            bool isAutorised = false,
-            string authenticatedUserName = "");
+            bool isAuthorizedAccess = false,
+            string authenticatedUserId = "");
 
         IQueryable<Album> GetAlbumById(
             int id,
-            bool isAutorizedAcces,
-            string userName);
+            bool isAutorizedAcces = false,
+            string authenticatedUserId = "");
 
         Task<int> Add(
             string name,
@@ -44,7 +45,7 @@
             IEnumerable<string> tags,
             int page, 
             int pageSize,
-            bool isAuthorizedAccess,
-            string authenticatedUserName);
+            bool isAuthorizedAccess = false,
+            string authenticatedUserId = "");
     }
 }

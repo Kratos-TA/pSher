@@ -91,6 +91,10 @@
       <Project>{92294abd-2550-4783-9331-7fadb440c04a}</Project>
       <Name>PSher.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PSher.Services.Logic\PSher.Services.Logic.csproj">
+      <Project>{65F105F7-CE10-43B0-978E-FA2AEC454970}</Project>
+      <Name>PSher.Services.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,22 +6,50 @@
     using System.Threading.Tasks;
 
     using PSher.Common.Constants;
+    using PSher.Common.Models;
     using PSher.Models;
 
     public interface IImagesService : IService
     {
         Task<IEnumerable<Image>> ImagesFromCommaSeparatedIds(string tagsAsCommaSeparatedValues);
 
-        IQueryable<Image> All(int page = 1, int pageSize = GlobalConstants.DefaultPageSize);
+        Task<RawFile> ProcessImage(RawFile rawImages);
 
-        IQueryable<Image> GetImageById(int id);
+        IQueryable<Image> All(
+            int page = 1,
+            int pageSize = GlobalConstants.DefaultPageSize,
+            bool isAuthorizedAccess = false,
+            string authenticatedUserId = "");
 
-        bool Update(int id, string title, string description, IEnumerable<Tag> tags);
+        IQueryable<Image> AllByParamethers(
+            string imageTitle,
+            string imageAuthor,
+            IEnumerable<string> imageTags,
+            int page,
+            int pageSize,
+            bool isAuthorizedAccess = false,
+            string authenticatedUserId = "");
 
-        bool DeleteImage(int id);
+        IQueryable<Image> GetImageById(
+            int id,
+            bool isAuthorizedAccess,
+            string authenticatedUserId);
 
-        // TODO: Add ImageInfo as method parameter
-        // TODO: Add albums
-        Task<int> Add(string title, string authorUserName, string description, bool isPrivate, IEnumerable<Tag> tags = null, IDictionary<string, DateTime> albums = null);
+        Task<int> Update(
+            int id, 
+            string title, 
+            string description, 
+            IEnumerable<Tag> tags);
+
+        Task<int> DeleteImage(int id);
+       
+        Task<int> Add(
+            string title,
+            string autenticatedUserId,
+            string description,
+            bool isPrivate,
+            RawFile rawImage,
+            IEnumerable<Tag> imageTags = null,
+            IEnumerable<Album> imageAlbums = null);
     }
 }

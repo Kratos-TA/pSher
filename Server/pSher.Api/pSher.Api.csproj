@@ -53,8 +53,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MyWebApi, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MyWebApi.0.9.0\lib\net45\MyWebApi.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Hosting, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Testing, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Testing.3.0.1\lib\net45\Microsoft.Owin.Testing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MyTested.WebApi, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MyTested.WebApi.1.1.6\lib\net45\MyTested.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -228,6 +236,8 @@
     <Compile Include="DataTransferModels\Album\SaveAlbumRequestModel.cs" />
     <Compile Include="DataTransferModels\Album\UpdateAlbumRequestModel.cs" />
     <Compile Include="DataTransferModels\Images\ImageSimpleResponseModel.cs" />
+    <Compile Include="DataTransferModels\Images\ImageInfoRequstModel.cs" />
+    <Compile Include="DataTransferModels\Images\UpdateImageRequestModel.cs" />
     <Compile Include="DataTransferModels\Marks\MarkRequestModel.cs" />
     <Compile Include="DataTransferModels\Users\UpdateUserRequestModel.cs" />
     <Compile Include="DataTransferModels\Users\UserResponseModel.cs" />
@@ -282,6 +292,10 @@
     <ProjectReference Include="..\..\Services\pSher.Services.Data\PSher.Services.Data.csproj">
       <Project>{fbe1c1a6-cccd-447a-9d45-cf9461a2e54b}</Project>
       <Name>PSher.Services.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\PSher.Services.Logic\PSher.Services.Logic.csproj">
+      <Project>{65f105f7-ce10-43b0-978e-fa2aec454970}</Project>
+      <Name>PSher.Services.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

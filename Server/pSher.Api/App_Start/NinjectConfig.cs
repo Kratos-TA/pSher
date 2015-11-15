@@ -80,6 +80,11 @@ namespace PSher.Api.App_Start
                 .Bind(b => b.From(Assemblies.DataServices)
                     .SelectAllClasses()
                     .BindDefaultInterface());
+
+            kernel
+             .Bind(b => b.From(Assemblies.LogicServices)
+                 .SelectAllClasses()
+                 .BindDefaultInterface());
         }
     }
 }
