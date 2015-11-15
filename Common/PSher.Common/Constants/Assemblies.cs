@@ -5,5 +5,6 @@
         public const string WebApi = "PSher.Api";
         public const string DataServices = "PSher.Services.Data";
         public const string LogicServices = "PSher.Services.Logic";
+        public const string CommonServices = "PSher.Services.Common";
     }
 }

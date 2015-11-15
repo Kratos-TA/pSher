@@ -13,6 +13,7 @@
     using PSher.Data.Contracts;
     using PSher.Models;
     using PSher.Services.Logic.Contracts;
+    using PSher.Services.Common.Contracts;
 
     public class ImagesService : UserAutenticationDependService, IImagesService
     {
@@ -20,19 +21,22 @@
         private readonly IRepository<Tag> tags;
         private readonly IRepository<Album> albums;
         private readonly IImageProcessorService imageProcessor;
+        private readonly IDropboxService dropbox;
 
         public ImagesService(
             IRepository<Image> imagesRepo,
             IRepository<User> usersRepo,
             IRepository<Tag> tagsRepo,
             IRepository<Album> albumRepo,
-            IImageProcessorService imageProcessor)
+            IImageProcessorService imageProcessor,
+            IDropboxService dropbox)
             : base(usersRepo)
         {
             this.images = imagesRepo;
             this.tags = tagsRepo;
             this.albums = albumRepo;
             this.imageProcessor = imageProcessor;
+            this.dropbox = dropbox;
         }
 
         public async Task<IEnumerable<Image>> ImagesFromCommaSeparatedIds(string imageIdsAsCommaSeparatedValues)
