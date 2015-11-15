@@ -235,10 +235,12 @@
     <Compile Include="DataTransferModels\Album\AlbumResponseModel.cs" />
     <Compile Include="DataTransferModels\Album\SaveAlbumRequestModel.cs" />
     <Compile Include="DataTransferModels\Album\UpdateAlbumRequestModel.cs" />
+    <Compile Include="DataTransferModels\Images\ImageRatingResponseModel.cs" />
     <Compile Include="DataTransferModels\Images\ImageSimpleResponseModel.cs" />
     <Compile Include="DataTransferModels\Images\ImageInfoRequstModel.cs" />
     <Compile Include="DataTransferModels\Images\UpdateImageRequestModel.cs" />
     <Compile Include="DataTransferModels\Marks\MarkRequestModel.cs" />
+    <Compile Include="DataTransferModels\Marks\MarkResponseModel.cs" />
     <Compile Include="DataTransferModels\Users\UpdateUserRequestModel.cs" />
     <Compile Include="DataTransferModels\Users\UserResponseModel.cs" />
     <Compile Include="Global.asax.cs">

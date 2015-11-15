@@ -12,7 +12,7 @@
         public bool IsDeleted { get; set; }
 
         [Required]
-        [Range(ValidationConstants.MinMarkValue, ValidationConstants.MinMarkValue, ErrorMessage = ErrorMessages.MarkLength)]
+        [Range(ValidationConstants.MinMarkValue, ValidationConstants.MaxMarkValue, ErrorMessage = ErrorMessages.MarkLength)]
         public int Value { get; set; }
 
         public virtual User GivenBy { get; set; }

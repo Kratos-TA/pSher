@@ -1,6 +1,10 @@
-﻿namespace PSher.Api.Controllers
+﻿using System.Threading.Tasks;
+
+namespace PSher.Api.Controllers
 {
     using System.Web.Http;
+
+    using Microsoft.AspNet.Identity;
 
     using Common.Constants;
     using DataTransferModels.Marks;
@@ -16,31 +20,40 @@
             this.marksService = marksService;
         }
 
-        public IHttpActionResult Post(MarkRequestModel model)
+        [Authorize]
+        public async Task<IHttpActionResult> Post(MarkRequestModel model)
         {
-            if (!ModelState.IsValid || model == null)
+            if (!this.ModelState.IsValid || model == null)
             {
                 return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "MarkRequestModel"));
             }
 
-            var markId = this.marksService.Add(
-                model.AuthorUserName,
+            var autenticatedUserId = this.User.Identity.GetUserId();
+
+            var markId = await this.marksService.Add(
+                autenticatedUserId,
                 model.ImageId,
                 model.Value);
 
             return this.Ok(markId);
         }
 
-        public IHttpActionResult Put(int id, int value)
+        [Authorize]
+        public async Task<IHttpActionResult> Put(int id, int value)
         {
-            var markId = this.marksService.UpdateMarkValue(id, value);
+            var autenticatedUserId = this.User.Identity.GetUserId();
+
+            var markId = await this.marksService.UpdateMarkValue(id, value, autenticatedUserId);
 
             return this.Ok(markId);
         }
 
-        public IHttpActionResult Delete(int id)
+        [Authorize]
+        public async Task<IHttpActionResult> Delete(int id)
         {
-            var markId = this.marksService.DeleteMark(id);
+            var autenticatedUserId = this.User.Identity.GetUserId();
+
+            var markId = await this.marksService.DeleteMark(id, autenticatedUserId);
 
             return this.Ok(markId);
         }
