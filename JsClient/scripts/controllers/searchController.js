@@ -49,6 +49,24 @@ var searchController = (function() {
                     var name = $('#photoSearcherByName').val();
                     var user = $('#photoSearcherByUser').val();
                     var tags = $('#photoSearcherByTags').val();
+
+                    if (!name || name.length < 3) {
+                        name = '';
+                    }
+                    if (!user || user.length < 3) {
+                        user = '';
+                    }
+
+                    // Check if this plit is correct!!!!
+                    var tagsArray = tags.split(',');
+                    tags = '';
+                    var len = tagsArray.length;
+                    for (var i = 0; i < len; i++) {
+                        if (tagsArray[i] && tagsArray[i].length > 2) {
+                            tags += tags[i];
+                        }
+                    }
+
                     context.redirect('#/images' + '?name=' + name + '&user=' + user + '&tags=' + tags);
                 });
             });
