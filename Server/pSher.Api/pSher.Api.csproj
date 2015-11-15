@@ -226,6 +226,7 @@
     <Compile Include="DataTransferModels\Album\AlbumDetailsResponseModel.cs" />
     <Compile Include="DataTransferModels\Album\AlbumResponseModel.cs" />
     <Compile Include="DataTransferModels\Album\SaveAlbumRequestModel.cs" />
+    <Compile Include="DataTransferModels\Album\UpdateAlbumRequestModel.cs" />
     <Compile Include="DataTransferModels\Images\ImageSimpleResponseModel.cs" />
     <Compile Include="DataTransferModels\Marks\MarkRequestModel.cs" />
     <Compile Include="DataTransferModels\Users\UpdateUserRequestModel.cs" />

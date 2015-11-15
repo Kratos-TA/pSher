@@ -16,6 +16,8 @@
 
         public string CreatorName { get; set; }
 
+        public bool IsPrivate { get; set; }
+
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<Album, AlbumResponseModel>()

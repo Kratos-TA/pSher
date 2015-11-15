@@ -1,12 +1,14 @@
 ﻿namespace PSher.Api.Controllers
 {
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Cors;
-
+    
     using AutoMapper.QueryableExtensions;
-    using DataTransferModels.Album;
+    using Microsoft.AspNet.Identity;
+    using PSher.Api.DataTransferModels.Album;
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
     using PSher.Services.Data.Contracts;
@@ -25,29 +27,29 @@
             this.imagesService = imagesService;
         }
 
-        public IHttpActionResult Get(string name, string user = null, string tags = null, int page = 1, int pageSize = 10)
+        public async Task<IHttpActionResult> Get(string name, string user = null, string tags = null, int page = 1, int pageSize = 10)
         {
             var isAutorisedAcces = this.User.Identity.IsAuthenticated;
             var currentUser = this.User.Identity.Name;
             var selectedTags = tags.GetEnumerableFromCommSeparatedString();
 
-            var result = this.albumsService
+            var result = await this.albumsService
                 .AllByParamethers(name, user, selectedTags, page, pageSize, isAutorisedAcces, currentUser)
                 .ProjectTo<AlbumResponseModel>()
-                .ToList();
+                .ToListAsync();
 
             return this.Ok(result);
         }
 
-        public IHttpActionResult Get(int page = 1, int pageSize = 10)
+        public async Task<IHttpActionResult> Get(int page = 1, int pageSize = 10)
         {
             var isAutorisedAcces = this.User.Identity.IsAuthenticated;
-            var currentUser = this.User.Identity.Name;
+            var currentUserId = this.User.Identity.GetUserId();
 
-            var result = this.albumsService
-                .All(page, pageSize, isAutorisedAcces, currentUser)
+            var result = await this.albumsService
+                .All(page, pageSize, isAutorisedAcces, currentUserId)
                 .ProjectTo<AlbumResponseModel>()
-                .ToList();
+                .ToListAsync();
 
             return this.Ok(result);
         }
@@ -55,10 +57,10 @@
         public IHttpActionResult Get(string id)
         {
             var isAutorisedAcces = this.User.Identity.IsAuthenticated;
-            var currentUser = this.User.Identity.Name;
+            var currentUserId = this.User.Identity.GetUserId();
 
             var result = this.albumsService
-                .GetAlbumById(int.Parse(id), isAutorisedAcces, currentUser)
+                .GetAlbumById(int.Parse(id), isAutorisedAcces, currentUserId)
                 .ProjectTo<AlbumDetailsResponseModel>()
                 .ToList();
 
@@ -74,13 +76,13 @@
                 return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "SaveAlbumRequestModel"));
             }
 
-            var autenticatedUserName = this.User.Identity.Name;
+            var currentUserId = this.User.Identity.GetUserId();
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var images = await this.imagesService.ImagesFromCommaSeparatedIds(model.ImagesIds);
 
             var addedAlbumId = await this.albumsService.Add(
                 model.Name,
-                autenticatedUserName,
+                currentUserId,
                 model.IsPrivate,
                 tags,
                 images);
@@ -90,21 +92,21 @@
 
         [Authorize]
         [EnableCors("*", "*", "*")]
-        public async Task<IHttpActionResult> Put(int id, SaveAlbumRequestModel model)
+        public async Task<IHttpActionResult> Put(int id, UpdateAlbumRequestModel model)
         {
             if (!this.ModelState.IsValid || model == null)
             {
-                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "SaveAlbumRequestModel"));
+                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "UpdateAlbumRequestModel"));
             }
 
-            var authenticatedUser = this.User.Identity.Name;
+            var currentUserId = this.User.Identity.GetUserId();
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var images = await this.imagesService.ImagesFromCommaSeparatedIds(model.ImagesIds);
 
-            var changedAlbumId = await this.albumsService.Update(
+            var changedAlbumId = await this.albumsService.UpdateAll(
                 id,
                 model.Name,
-                authenticatedUser,
+                currentUserId,
                 model.IsPrivate,
                 tags,
                 images);
@@ -112,9 +114,12 @@
             return this.Ok(changedAlbumId);
         }
 
-        public IHttpActionResult Delete(int id)
+        [Authorize]
+        public async Task<IHttpActionResult> Delete(int id)
         {
-            var deletedAlbumId = this.albumsService.Delete(id);
+            var currentUserId = this.User.Identity.GetUserId();
+
+            var deletedAlbumId = await this.albumsService.Delete(id, currentUserId);
 
             return this.Ok(deletedAlbumId);
         }

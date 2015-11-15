@@ -11,19 +11,18 @@
     using PSher.Data.Contracts;
     using PSher.Models;
 
-    public class AlbumsService : IAlbumsService
+    public class AlbumsService : UserAutenticationDependService, IAlbumsService
     {
         private readonly IRepository<Album> albums;
-        private readonly IRepository<User> users;
         private readonly IRepository<Tag> tags;
 
         public AlbumsService(
             IRepository<Album> albumsRepo,
             IRepository<User> userRepo,
             IRepository<Tag> tagsRepo)
+            : base(userRepo)
         {
             this.albums = albumsRepo;
-            this.users = userRepo;
             this.tags = tagsRepo;
         }
 
@@ -33,7 +32,7 @@
             bool isAuthorizedAccess = false,
             string authenticatedUserName = "")
         {
-            var currentUser = this.GetCurrentUser(authenticatedUserName);
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserName);
 
             var allAlbums = this.albums
                 .All()
@@ -51,19 +50,19 @@
         public IQueryable<Album> AllByParamethers(
             string albumName,
             string albumCreator,
-            IEnumerable<string> tags,
+            IEnumerable<string> albumTags,
             int page,
             int pageSize,
             bool isAuthorizedAccess = false,
-            string authenticatedUserName = "")
+            string authenticatedUserId = "")
         {
-            var currentUser = this.GetCurrentUser(authenticatedUserName);
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
 
             var allAlbums = this.albums
                 .All()
                 .Where(a => (a.IsDeleted == false) &&
                     (a.IsPrivate == false || (a.Creator.UserName == currentUser.UserName && isAuthorizedAccess == true)) &&
-                    (a.Tags.Any(t => tags.Contains(t.Name)) || a.Name == albumName || a.Creator.UserName == albumCreator))
+                    (a.Tags.Any(t => albumTags.Contains(t.Name)) || a.Name == albumName || a.Creator.UserName == albumCreator))
                 .OrderBy(a => a.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
@@ -74,16 +73,16 @@
         public IQueryable<Album> GetAlbumById(
             int id,
             bool isAuthorizedAccess = false,
-            string authenticatedUserName = "")
+            string authenticatedUserId = "")
         {
-            var currentUser = this.GetCurrentUser(authenticatedUserName);
+            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
 
             var albumById = this.albums
                 .All()
                 .Where(a => (a.IsDeleted == false) &&
                         a.Id == id &&
                             (a.IsPrivate == false ||
-                                (a.Creator.UserName == currentUser.UserName &&
+                                (a.Creator.Id == currentUser.Id &&
                                     isAuthorizedAccess == true)));
 
             return albumById;
@@ -91,18 +90,18 @@
 
         public async Task<int> Add(
             string name,
-            string authorUserName,
+            string authorUserId,
             bool isPrivate,
             IEnumerable<Tag> albumTags = null,
             IEnumerable<Image> albumImages = null)
         {
-            var currentUser = this.users
+            var currentUser = this.Users
                 .All()
-                .FirstOrDefault(u => u.UserName == authorUserName);
+                .FirstOrDefault(u => u.Id == authorUserId && u.IsDeleted == false);
 
             if (currentUser == null)
             {
-                throw new ArgumentException(ErrorMessages.InvalidUser);
+                return 0;
             }
 
             var newAlbum = new Album()
@@ -129,77 +128,63 @@
             return newAlbum.Id;
         }
 
-        public async Task<int> Update(int id, string name, string authenticatedUserName, bool isPrivate, IEnumerable<Tag> albumTags = null, IEnumerable<Image> albumImages = null)
+        public async Task<int> UpdateAll(
+            int id,
+            string newName,
+            string authenticatedUserId,
+            bool? isPrivate,
+            IEnumerable<Tag> newAlbumTags = null,
+            IEnumerable<Image> newAlbumImages = null)
         {
-            var albumToChange = this.albums
+            var albumToUpdate = this.albums
                 .All()
-                .FirstOrDefault(a => a.Id == id);
+                .FirstOrDefault(a => a.Id == id &&
+                    a.IsDeleted == false &&
+                    a.Creator.Id == authenticatedUserId);
 
-            var currentUser = this.users
-                .All()
-                .FirstOrDefault(u => u.UserName == authenticatedUserName);
-
-            albumToChange.Name = name;
-            albumToChange.Creator = currentUser;
-            albumToChange.IsPrivate = isPrivate;
-
-            albumTags.ForEach(t =>
+            if (albumToUpdate == null)
             {
-                if (albumToChange.Tags.Contains(t))
-                {
-                    albumToChange.Tags.Remove(t);
-                }
-                else
-                {
-                    albumToChange.Tags.Add(t);
-                }
-            });
+                return 0;
+            }
 
-            albumImages.ForEach(i =>
+            if (!string.IsNullOrEmpty(newName))
             {
-                if (albumToChange.Images.Contains(i))
-                {
-                    albumToChange.Images.Remove(i);
-                }
-                else
-                {
-                    albumToChange.Images.Add(i);
-                }
-            });
+                albumToUpdate.Name = newName;
+            }
 
-            this.albums.Update(albumToChange);
-            await this.albums.SaveChangesAsync();
+            if (isPrivate != null)
+            {
+                albumToUpdate.IsPrivate = (bool)isPrivate;
+            }
 
-            return albumToChange.Id;
+            albumToUpdate.Tags.Clear();
+            newAlbumTags.ForEach(t => albumToUpdate.Tags.Add(t));
+
+            albumToUpdate.Images.Clear();
+            newAlbumImages.ForEach(i => albumToUpdate.Images.Add(i));
+
+            this.albums.Update(albumToUpdate);
+            var result = await this.albums.SaveChangesAsync();
+
+            return result;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<int> Delete(int id, string userId)
         {
             var albumToDelete = this.albums
                 .All()
-                .FirstOrDefault(a => a.Id == id);
+                .FirstOrDefault(a => a.Id == id && a.Creator.Id == userId);
+
+            if (albumToDelete != null)
+            {
+                return 0;
+            }
 
             albumToDelete.IsDeleted = true;
-            albumToDelete.Creator = albumToDelete.Creator;
 
-            this.albums.Update(albumToDelete);
+            var result = await this.albums.SaveChangesAsync();
 
-            await this.albums.SaveChangesAsync();
-
-            return id;
-        }
-
-        private User GetCurrentUser(string userName)
-        {
-            var currentUser = this.users
-                .All()
-                .FirstOrDefault(u => u.UserName == userName) ??
-                    new User()
-                    {
-                        UserName = string.Empty
-                    };
-
-            return currentUser;
+            return result;
         }
     }
 }

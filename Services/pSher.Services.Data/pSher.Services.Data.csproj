@@ -71,6 +71,7 @@
     <Compile Include="MarksService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagsService.cs" />
+    <Compile Include="UserAutenticationDependService.cs" />
     <Compile Include="UsersServices.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,15 +28,15 @@
             IEnumerable<Tag> albumTags = null,
             IEnumerable<Image> albumImages = null);
 
-        Task<int> Update(
+        Task<int> UpdateAll(
             int id,
             string name,
             string authenticatedUserName,
-            bool isPrivate,
+            bool? isPrivate,
             IEnumerable<Tag> albumTags = null,
             IEnumerable<Image> albumImages = null);
 
-        Task<int> Delete(int id);
+        Task<int> Delete(int id, string userId);
 
         IQueryable<Album> AllByParamethers(
             string albumName,

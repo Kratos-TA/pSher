@@ -9,6 +9,8 @@
 
         public string Title { get; set; }
 
+        public bool IsPrivate { get; set; }
+
         public string DropboxUrl { get; set; }
     }
 }
