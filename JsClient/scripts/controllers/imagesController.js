@@ -33,13 +33,18 @@ var imagesController = (function() {
         var imageName = context.params.name || '';
         var imageUser = context.params.user || '';
         var imageTags = context.params.tags || '';
+        var queryString;
 
         activeLink.toggle('#imagesLink');
 
+        if (imageName.length === 0 && imageUser.length === 0 && imageTags.length === 0) {
+            queryString = '';
+        } else {
+            queryString = '?name=' + imageName + '&user=' + imageUser + '&tags=' + imageTags;
+        }
+
         templates.get('SearchResults')
             .then(function(template) {
-                var queryString = '?name=' + imageName + '&user=' + imageUser + '&tags' + imageTags;
-
                 // To refactor this with then! See below
                 var images = imageData.getAll(queryString);
                 var imagesLength = images.length;
@@ -290,12 +295,20 @@ var imagesController = (function() {
 
                     reader.onload = function() {
                         var binary = reader.result;
-                        console.log(binary);
+
+                        var isPrivate = $('#isPrivate').val();
+                        if (isPrivate === 'on') {
+                            isPrivate = true;
+                        } else {
+                            isPrivate = false;
+                        }
+
                         var image = {
                             tags,
                             name,
                             description,
-                            binary
+                            binary,
+                            isPrivate
                         };
 
                         imageData.upload(image)
@@ -320,16 +333,25 @@ var imagesController = (function() {
                 $container.html(template(currentImage));
                 scrollFixedHelper.switchToFixed();
 
-                // Upload images functionality!!!!!!
-
                 $('#sendImage').on('click', function() {
+
+                    // Implement checks here!!!
                     var tags = $('#imageTags').val();
                     var name = $('#imageName').val();
                     var description = $('#imageDescription').val();
+
+                    var isPrivate = $('#isPrivate').val();
+                    if (isPrivate === 'on') {
+                        isPrivate = true;
+                    } else {
+                        isPrivate = false;
+                    }
+
                     var image = {
                         tags,
                         name,
                         description,
+                        isPrivate,
                         imageId: currentImage.id
                     };
 

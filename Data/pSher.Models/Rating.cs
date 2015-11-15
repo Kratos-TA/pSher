@@ -1,4 +1,6 @@
-﻿namespace PSher.Models
+﻿using System.Linq;
+
+namespace PSher.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

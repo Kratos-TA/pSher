@@ -62,13 +62,13 @@ var userController = (function() {
                     $('#log').attr('href', '#/logout');
                     $('#log').html('Logout');
                     context.redirect('#/');
-                        // .then(function() {
-                               // $('#log').attr('href', '#/logout');
-                               //  $('#log').html('Logout'); 
-                        //     context.redirect('#/');
-                        // }, function(err) {
-                        //     return alertHelper.getOkAlert('Unable to log user.');
-                        // });
+                    // .then(function() {
+                    // $('#log').attr('href', '#/logout');
+                    //  $('#log').html('Logout'); 
+                    //     context.redirect('#/');
+                    // }, function(err) {
+                    //     return alertHelper.getOkAlert('Unable to log user.');
+                    // });
                 });
             });
     };
@@ -84,24 +84,34 @@ var userController = (function() {
 
                 $('#registerBtn').on('click', function() {
                     var username = $('#usernameInput').val();
-                    var password = $('#userPassword').val();
-                    var repeatedPassword = $('#repeateUserPassword').val();
                     var firstName = $('#firstName').val();
                     var lastName = $('#lastName').val();
+                    var email = $('#email').val();
+                    var password = $('#userPassword').val();
+                    var repeatedPassword = $('#repeateUserPassword').val();
 
+                    var userToSend = {
+                        username,
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                        repeatedPassword
+                    };
 
-                    var validUserInput = validateUserInput($container, username, password, repeatedPassword);
+                    var validUserInput = validateUserInput($container, userToSend, true);
 
                     if (!validUserInput) {
                         return;
                     }
 
-                    var user = {
-                        username,
-                        password,
-                        firstName,
-                        lastName
-                    };
+                    if (!firstName || firstName.length < 2) {
+                        userToSend.firstName = null;
+                    }
+
+                    if (!lastName || lastName.length < 2) {
+                        userToSend.lastName = null;
+                    }
 
                     userData.users.register(user)
                         .then(function() {
@@ -126,7 +136,6 @@ var userController = (function() {
         var $container = $('#container');
         var currentUsername = localStorage.USERNAME_KEY;
         activeLink.toggle('#profileLink');
-
 
         if (!currentUsername) {
             return alertHelper.getGoHomeAlert('You must be logged in order to view user profile.', context);
@@ -192,40 +201,84 @@ var userController = (function() {
     };
 
     var changeDetails = function(context) {
-        // Not implemented!
         var $container = $('#container');
         var currentUsername = this.params['username'];
-        console.log(currentUsername);
+        var currentUser = userData.users.getUser(currentUsername);
 
-        templates.get('RegisterTemplate')
+        if (localStorage.USERNAME_KEY != currentUsername) {
+            return alertHelper.getGoHomeAlert('You are not allowed to edit other users profiles!', context);
+        }
+
+        templates.get('ChangeDetailsTemplate')
             .then(function(template) {
-                $container.html(template({
-                    text: 'change'
-                }));
-
+                $container.html(template(currentUser));
                 scrollFixedHelper.switchToFixed();
 
-                $('#registerBtn').on('click', function() {
-                    var username = $('#usernameInput').val();
-                    var password = $('#userPassword').val();
-                    var repeatedPassword = $('#repeateUserPassword').val();
+                $('#changeDetails').on('click', function() {
                     var firstName = $('#firstName').val();
                     var lastName = $('#lastName').val();
+                    var email = $('#email').val();
 
-                    var validUserInput = validateUserInput($container, username, password, repeatedPassword);
+                    var userToSend = {
+                        firstName,
+                        lastName,
+                        email,
+                        ChangePasswordBindingModel: null
+                    };
+
+                    if (!firstName || firstName.length < 2) {
+                        userToSend.firstName = null;
+                    }
+
+                    if (!lastName || lastName.length < 2) {
+                        userToSend.lastName = null;
+                    }
+
+                    // If you have time - iplement full checks for the pass!
+                    if (!email || email.length < 6) {
+                        userToSend.email = null;
+                    }
+
+                    userData.users.changeUser(userToSend)
+                        .then(function() {
+                            return alertHelper.getOkAlert('You have successfully changed your profile details.');
+                        }, function(err) {
+                            return alertHelper.getOkAlert('User ' + err.statusText);
+                        });
+                });
+
+                $('#changeAll').on('click', function() {
+                    var firstName = $('#firstName').val();
+                    var lastName = $('#lastName').val();
+                    var email = $('#email').val();
+                    var password = $('#userPassword').val();
+                    var repeatedPassword = $('#repeateUserPassword').val();
+                    var oldPass = $('#oldPass').val();
+
+                    var userToSend = {
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                        repeatedPassword,
+                        oldPass
+                    };
+
+                    var validUserInput = validateUserInput($container, userToSend, false);
 
                     if (!validUserInput) {
                         return;
                     }
 
-                    var user = {
-                        username,
-                        password,
-                        firstName,
-                        lastName
-                    };
+                    if (!firstName || firstName.length < 2) {
+                        userToSend.firstName = null;
+                    }
 
-                    userData.users.changeUser(user)
+                    if (!lastName || lastName.length < 2) {
+                        userToSend.lastName = null;
+                    }
+
+                    userData.users.changeUser(userToSend)
                         .then(function() {
                             return alertHelper.getOkAlert('You have successfully changed your profile details.');
                         }, function(err) {
@@ -236,18 +289,30 @@ var userController = (function() {
 
     };
 
-    var validateUserInput = function($container, username, password, repeatedPassword) {
+    var validateUserInput = function($container, user, validateUsername) {
         var valid = true;
-
-        if (!validators.validateUsername(username)) {
+        if (validateUsername) {
+            if (!validators.validateUsername(user.username)) {
+                valid = false;
+                alertHelper.getOkAlert('Ivalid Username! Username must be between 6 and 30 symbols.');
+            }
+        } else if (!validators.validateEmail(user.email)) {
             valid = false;
-            alertHelper.getOkAlert('Ivalid Username! Username must be between 6 and 30 symbols.');
-        } else if (!password) {
+            alertHelper.getOkAlert('You have not given a valid email!');
+        } else if (!user.password) {
             valid = false;
             alertHelper.getOkAlert('You have not given a password!');
-        } else if (password !== repeatedPassword) {
+        } else if (user.password.length < 6 || user.password.length > 30) {
             valid = false;
-            alertHelper.getOkAlert('You have given different input in the two password fields!');
+            alertHelper.getOkAlert('Ivalid new password! Password must be between 6 and 30 symbols.');
+        } else if (user.password !== user.repeatedPassword) {
+            valid = false;
+            alertHelper.getOkAlert('You have given different input in the two new password fields!');
+        } else if (!validateUsername) {
+            if (user.oldPass.length < 6 || user.oldPass.length > 30) {
+                valid = false;
+                alertHelper.getOkAlert('Ivalid old password! Password must be between 6 and 30 symbols.');
+            }
         }
 
         return valid;

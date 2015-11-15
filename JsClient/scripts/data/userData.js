@@ -67,15 +67,18 @@ var userData = (function() {
 
     function register(user) {
         var reqUser = {
-            username: user.username,
-            passHash: CryptoJS.SHA1(user.username + user.password).toString(),
-            firstName: user.firstName,
-            lastName: user.lastName,
-            // Remove this
+            UserName: user.username,
+            FirstName: user.firstName,
+            LastName: user.lastName,
+            Email: user.email,
+            Password: CryptoJS.SHA1(user.username + user.password).toString(),
+            ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString(),
+
+            // remove this in the production code!!!
             userId: ++userId
         };
 
-        // return jsonRequester.post('api/users', {
+        // return jsonRequester.post('api/account/register', {
         //         data: reqUser
         //     })
         //     .then(function(resp) {
@@ -90,7 +93,6 @@ var userData = (function() {
             users.push(reqUser);
             localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
             localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
-            console.log(users);
             resolve(reqUser.username);
         });
 
@@ -103,8 +105,12 @@ var userData = (function() {
             username: user.username,
             passHash: CryptoJS.SHA1(user.username + user.password).toString()
         };
+        var headers = {
+            'contentType': 'application/x-www-form-urlencoded; charset=utf-8'
+        };
 
         var options = {
+            headers: headers,
             data: reqUser
         };
 
@@ -112,7 +118,7 @@ var userData = (function() {
         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
         return reqUser;
 
-        // return jsonRequester.put('api/auth', options)
+        // return jsonRequester.post('api/users/login', options)
         //     .then(function(resp) {
         //         var user = resp.result;
         //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
@@ -157,15 +163,24 @@ var userData = (function() {
     }
 
     function changeUser(user) {
+        var headers = {
+            'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+        };
+
         var reqUser = {
-            username: user.username,
-            passHash: CryptoJS.SHA1(user.username + user.password).toString(),
-            firstName: user.firstName,
-            lastName: user.lastName
+            FirstName: user.firstName,
+            LastName: user.lastName,
+            Email: user.email,
+            ChangePasswordBindingModel: {
+                OldPassword: CryptoJS.SHA1(user.username + user.oldPass).toString(),
+                NewPassword: CryptoJS.SHA1(user.username + user.password).toString(),
+                ConfirmPassword: CryptoJS.SHA1(user.username + user.password).toString()
+            }
         };
 
         return jsonRequester.put('api/users', {
-                data: reqUser
+                data: reqUser,
+                headers: headers
             })
             .then(function(resp) {
                 var user = resp.result;

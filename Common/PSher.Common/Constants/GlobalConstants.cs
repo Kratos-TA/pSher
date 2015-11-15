@@ -8,6 +8,8 @@
 
         public const int ErrorCodeComment = -1;
 
+        public const int InvalidDbObjectReturnValue = -1;
+
         public const int ImageQuality = 70;
 
         public const int ResizedImageWidth = 1920;

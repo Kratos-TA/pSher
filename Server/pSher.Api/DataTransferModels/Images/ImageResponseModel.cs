@@ -34,7 +34,7 @@
 
         public DateTime UploadedOn { get; set; }
 
-        public double? Rating { get; set; }
+        public ImageRatingResponseModel Rating { get; set; }
 
         public virtual ICollection<string> Tags
         {
@@ -47,7 +47,6 @@
             config.CreateMap<Image, ImageResponseModel>()
                 .ForMember(i => i.AuthorId, opts => opts.MapFrom(i => i.Author.Id))
                 .ForMember(i => i.AuthorName, opts => opts.MapFrom(i => i.Author.UserName))
-                .ForMember(i => i.Rating, opts => opts.MapFrom(i => i.Rating.Marks.Select(m => m.Value).Average()))
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(so => so.Tags.Select(t => t.Name).ToList()));
         }
     }
