@@ -80,7 +80,8 @@ namespace PSher.Api.App_Start
 
             kernel
                 .Bind(typeof(INotificationService))
-                .To(typeof(PubNubNotificationService));
+                .To(typeof(PubNubNotificationService))
+                .InSingletonScope();
 
             kernel
                 .Bind(b => b.From(Assemblies.DataServices)
