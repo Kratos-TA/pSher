@@ -1,6 +1,5 @@
 ﻿namespace PSher.Api.Controllers
 {
-    using System.Linq;
     using System.Data.Entity;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -8,7 +7,6 @@
 
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
-
     using PSher.Api.DataTransferModels.Images;
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
@@ -79,17 +77,6 @@
         }
 
         [EnableCors("*", "*", "*")]
-        public IHttpActionResult Get()
-        {
-            var result = this.imagesService
-                .All()
-                .ProjectTo<ImageResponseModel>()
-                .ToList();
-
-            return this.Ok(result);
-        }
-
-        [EnableCors("*", "*", "*")]
         [Authorize]
         [HttpPut]
         public async Task<IHttpActionResult> Put(int id, SaveImageRequestModel model)
@@ -144,7 +131,7 @@
             var autenticatedUserId = this.User.Identity.GetUserId();
             var imageTags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var imageAlbums = await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, autenticatedUserId);
-            var resizedRawFile = await this.imagesService.ProcessImage(model.ImageInfo.ToRawFile());
+            var resizedRawFile = model.ImageInfo.ToRawFile();  // await this.imagesService.ProcessImage(model.ImageInfo.ToRawFile());
 
             var addedImageId = await this.imagesService.Add(
                 model.Title,

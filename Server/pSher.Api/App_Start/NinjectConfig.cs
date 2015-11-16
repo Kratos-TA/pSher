@@ -82,12 +82,12 @@ namespace PSher.Api.App_Start
                     .BindDefaultInterface());
 
             kernel
-             .Bind(b => b.From(Assemblies.LogicServices)
-                 .SelectAllClasses()
-                 .BindDefaultInterface());
+                .Bind(b => b.From(Assemblies.CommonServices)
+                    .SelectAllClasses()
+                    .BindDefaultInterface());
 
             kernel
-             .Bind(b => b.From(Assemblies.CommonServices)
+             .Bind(b => b.From(Assemblies.LogicServices)
                  .SelectAllClasses()
                  .BindDefaultInterface());
         }

@@ -65,11 +65,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\Spring.Rest.txt" />
-    <Content Include="App_Readme\Spring.Social.Core.txt" />
-    <Content Include="App_Readme\Spring.Social.Dropbox.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

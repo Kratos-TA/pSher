@@ -2,9 +2,9 @@
 {
     using System;
 
-    using PSher.Common.Constants;
     using Contracts;
     using Models;
+    using PSher.Common.Constants;
     using PSher.Data.Contracts;
 
     public class CommentsService : ICommentsService

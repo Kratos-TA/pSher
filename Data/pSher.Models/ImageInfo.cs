@@ -18,7 +18,7 @@
 
         [Required]
         [MaxLength(ValidationConstants.MaxImageInfoFileExtension)]
-        [MinLength(ValidationConstants.MaxImageInfoFileExtension)]
+        [MinLength(ValidationConstants.MinImageInfoFileExtension)]
         public string OriginalExtension { get; set; }
 
         public DateTime? CreatedOn { get; set; }

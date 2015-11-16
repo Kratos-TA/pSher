@@ -6,7 +6,7 @@
 
     public class ImageInfoRequstModel
     {
-        public  RawFile ToRawFile()
+        public RawFile ToRawFile()
         {
             return new RawFile()
             {
@@ -22,7 +22,7 @@
 
         [Required]
         [MaxLength(ValidationConstants.MaxImageInfoFileExtension)]
-        [MinLength(ValidationConstants.MaxImageInfoFileExtension)]
+        [MinLength(ValidationConstants.MinImageInfoFileExtension)]
         public string OriginalExtension { get; set; }
 
         [Required]

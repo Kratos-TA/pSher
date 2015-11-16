@@ -26,12 +26,13 @@
             set { this.marks = value; }
         }
 
-        public double Average { get { return this.Marks.Select(m => m.Value).Average(); } }
+        public double? Average { get; set; }
 
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<Rating, ImageRatingResponseModel>()
-                .ForMember(r => r.Marks, opts => opts.MapFrom(r => r.Marks));
+                .ForMember(r => r.Marks, opts => opts.MapFrom(r => r.Marks))
+                .ForMember(r => r.Average, opts => opts.MapFrom(r => r.Marks.Average(m => m.Value)));
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace PSher.Api.Controllers
+﻿namespace PSher.Api.Controllers
 {
+    using System.Threading.Tasks;
     using System.Web.Http;
-
-    using Microsoft.AspNet.Identity;
 
     using Common.Constants;
     using DataTransferModels.Marks;
+    using Microsoft.AspNet.Identity;
     using PSher.Services.Data.Contracts;
 
     [RoutePrefix("api/marks")]

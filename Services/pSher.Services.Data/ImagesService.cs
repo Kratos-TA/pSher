@@ -6,16 +6,16 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Spring.IO;
-
     using Contracts;
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
     using PSher.Common.Models;
     using PSher.Data.Contracts;
     using PSher.Models;
-    using PSher.Services.Logic.Contracts;
     using PSher.Services.Common.Contracts;
+    using PSher.Services.Logic.Contracts;
+
+    using Spring.IO;
 
     public class ImagesService : UserAutenticationDependService, IImagesService
     {
@@ -197,20 +197,12 @@
             if (currentUser == null)
             {
                 throw new ArgumentException(ErrorMessages.InvalidUser);
-            }            
-
-            var fileToUpload = new ByteArrayResource(rawImage.Content);
-            
-            string fileNameWithExtension = title + "." + rawImage.FileExtension;
-            await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
-
-            string path = "/" + DropboxConstants.Collection + "/" + title + "." + rawImage.FileExtension;
-            string dropboxUrl = await this.dropbox.GetImageUrl(path);
+            }
 
             var newImageInfo = new ImageInfo()
             {
                 OriginalName = rawImage.OriginalFileName,
-                OriginalExtension = rawImage.FileExtension
+                OriginalExtension = rawImage.FileExtension,
             };
 
             var newImage = new Image()
@@ -221,8 +213,20 @@
                 IsPrivate = isPrivate,
                 UploadedOn = DateTime.Now,
                 ImageInfo = newImageInfo,
-                DropboxUrl = dropboxUrl
             };
+
+            this.images.Add(newImage);
+            await this.images.SaveChangesAsync();
+
+            var fileToUpload = new ByteArrayResource(rawImage.Content);
+
+            string fileNameWithExtension = newImage.Id + "." + rawImage.FileExtension;
+            await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
+
+            string path = "/" + DropboxConstants.Collection + "/" + newImage.Id + "." + rawImage.FileExtension;
+            string dropboxUrl = await this.dropbox.GetImageUrl(path);
+
+            newImage.DropboxUrl = dropboxUrl;
 
             imageTags.ForEach(t =>
             {
@@ -234,7 +238,7 @@
                 newImage.Albums.Add(a);
             });
 
-            this.images.Add(newImage);
+            this.images.Update(newImage);
             await this.images.SaveChangesAsync();
 
             return newImage.Id;
