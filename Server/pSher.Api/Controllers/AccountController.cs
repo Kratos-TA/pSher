@@ -1,4 +1,6 @@
-﻿namespace PSher.Api.Controllers
+﻿using System.Web.Http.Cors;
+
+namespace PSher.Api.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -22,6 +24,7 @@
     using PSher.Api.Results;
     using PSher.Models;
 
+    [EnableCors("*", "*", "*")]
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController

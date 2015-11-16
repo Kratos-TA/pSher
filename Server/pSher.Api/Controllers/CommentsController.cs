@@ -6,6 +6,7 @@
     using Common.Constants;
     using Services.Data.Contracts;
 
+    [EnableCors("*", "*", "*")]
     [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {

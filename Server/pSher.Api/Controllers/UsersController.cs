@@ -12,6 +12,7 @@
     using PSher.Common.Constants;
     using PSher.Services.Data.Contracts;
 
+    [EnableCors("*", "*", "*")]
     [RoutePrefix("api/users")]
     public class UsersController : ApiController
     {

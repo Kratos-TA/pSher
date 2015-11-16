@@ -35,13 +35,14 @@ var jsonRequester = (function() {
         var promise = new Promise(function(resolve, reject) {
             $.ajax({
                 url: url,
-                method: POST,
+                method: 'POST',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: JSON.stringify(data),
+                data: data,
                 success: function(res) {
                     resolve(res);
                 },
                 error: function(err) {
+                    console.log(err);
                     reject(err);
                 }
             });

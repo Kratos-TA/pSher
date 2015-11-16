@@ -72,25 +72,25 @@ var userData = (function() {
             LastName: user.lastName,
             Email: user.email,
             Password: CryptoJS.SHA1(user.username + user.password).toString(),
-            ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString(),
+            ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString()
 
             // remove this in the production code!!!
-            userId: ++userId
+            // userId: ++userId
         };
 
-        // return jsonRequester.post('/api/account/register', {
-        //         data: reqUser
-        //     });
-
-        // Remove this!
-        var promise = new Promise(function(resolve, reject) {
-            users.push(reqUser);
-            localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-            localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
-            resolve(reqUser.username);
+        return jsonRequester.post('http://localhost:4380/api/account/register', {
+            data: reqUser
         });
 
-        return promise;
+        // Remove this!
+        // var promise = new Promise(function(resolve, reject) {
+        //     users.push(reqUser);
+        //     localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
+        //     localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
+        //     resolve(reqUser.username);
+        // });
+
+        // return promise;
     }
 
 
@@ -101,16 +101,17 @@ var userData = (function() {
             grant_type: 'password'
         };
 
-        localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
-        localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
-        return reqUser;
+        // localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
+        // localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
+        // return reqUser;
 
-        // return jsonRequester.sendLogIn('/api/users/login', reqUser)
-        //     .then(function(resp) {
-        //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.data.userName); // should I use data here????
-        //         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.data.access_token);
-        //         return user;
-        //     });
+        return jsonRequester.sendLogIn('http://localhost:4380/api/users/login', reqUser)
+            .then(function(resp) {
+                console.log(resp);
+                localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.userName);
+                localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.access_token);
+                return resp.userName;
+            });
     }
 
     function logout() {
@@ -142,7 +143,7 @@ var userData = (function() {
                 'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
             }
         };
-        return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY, options)
+        return jsonRequester.delete('http://localhost:4380/api/users/' + localStorage.USERNAME_KEY, options)
             .then(function(res) {
                 return res.result;
             });

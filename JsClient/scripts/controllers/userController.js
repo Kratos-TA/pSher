@@ -57,11 +57,14 @@ var userController = (function() {
                         password
                     };
 
-                    userData.users.login(user);
-
-                    $('#log').attr('href', '#/logout');
-                    $('#log').html('Logout');
-                    context.redirect('#/');
+                    userData.users.login(user)
+                        .then(function(username) {
+                            $('#log').attr('href', '#/logout');
+                            $('#log').html('Logout');
+                            return alertHelper.getGoHomeAlert(username + 'successfully logged.', context);
+                        }, function(err) {
+                            return alertHelper.getOkAlert('User ' + err.statusText);
+                        });
                     // .then(function() {
                     // $('#log').attr('href', '#/logout');
                     //  $('#log').html('Logout'); 

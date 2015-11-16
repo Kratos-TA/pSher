@@ -2,12 +2,14 @@
 {
     using System.Threading.Tasks;
     using System.Web.Http;
+    using System.Web.Http.Cors;
 
     using Common.Constants;
     using DataTransferModels.Marks;
     using Microsoft.AspNet.Identity;
     using PSher.Services.Data.Contracts;
 
+    [EnableCors("*", "*", "*")]
     [RoutePrefix("api/marks")]
     public class MarksController : ApiController
     {
