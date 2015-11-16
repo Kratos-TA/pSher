@@ -95,7 +95,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.get('api/images/' + imageId, options)
+        return jsonRequester.get('/api/images/' + imageId, options)
             .then(function(res) {
                 return res.result;
             });
@@ -110,7 +110,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.get('api/images' + queryString, options)
+        return jsonRequester.get('/api/images' + queryString, options)
             .then(function(res) {
                 return res.result;
             });
@@ -124,7 +124,7 @@ var imageData = (function() {
             data: imageDetails
         };
 
-        return jsonRequester.post('api/images', options)
+        return jsonRequester.post('/api/images', options)
             .then(function(res) {
                 return res.result;
             });
@@ -138,7 +138,7 @@ var imageData = (function() {
             data: imageDetails
         };
 
-        return jsonRequester.put('api/images/' + imageDetails.imageId, options)
+        return jsonRequester.put('/api/images/' + imageDetails.imageId, options)
             .then(function(res) {
                 return res.result;
             });
@@ -151,7 +151,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.delete('api/images/' + imageId, options)
+        return jsonRequester.delete('/api/images/' + imageId, options)
             .then(function(res) {
                 return res.result;
             });
@@ -169,7 +169,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.post('/marks', options)
+        return jsonRequester.post('/api/marks', options)
             .then(function(res) {
                 return res.result;
             });
@@ -187,7 +187,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.post('/comments', options)
+        return jsonRequester.post('/api/comments', options)
             .then(function(res) {
                 return res.result;
             });
@@ -205,7 +205,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.put('/comments', options)
+        return jsonRequester.put('/api/comments', options)
             .then(function(res) {
                 return res.result;
             });
@@ -218,7 +218,7 @@ var imageData = (function() {
             }
         };
 
-        return jsonRequester.delete('/comments/' + commentId, options)
+        return jsonRequester.delete('/api/comments/' + commentId, options)
             .then(function(res) {
                 return res.result;
             });

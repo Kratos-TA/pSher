@@ -113,7 +113,7 @@ var userController = (function() {
                         userToSend.lastName = null;
                     }
 
-                    userData.users.register(user)
+                    userData.users.register(userToSend)
                         .then(function() {
                             return alertHelper.getGoHomeAlert('You have been successfully registered.', context);
                         }, function(err) {

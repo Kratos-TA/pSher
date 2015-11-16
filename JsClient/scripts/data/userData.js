@@ -78,17 +78,11 @@ var userData = (function() {
             userId: ++userId
         };
 
-        // return jsonRequester.post('api/account/register', {
+        // return jsonRequester.post('/api/account/register', {
         //         data: reqUser
-        //     })
-        //     .then(function(resp) {
-        //         var user = resp.result;
-        //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-        //         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
-        //         return {
-        //             username: resp.result.username
-        //         };
         //     });
+
+        // Remove this!
         var promise = new Promise(function(resolve, reject) {
             users.push(reqUser);
             localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
@@ -103,26 +97,18 @@ var userData = (function() {
     function login(user) {
         var reqUser = {
             username: user.username,
-            passHash: CryptoJS.SHA1(user.username + user.password).toString()
-        };
-        var headers = {
-            'contentType': 'application/x-www-form-urlencoded; charset=utf-8'
-        };
-
-        var options = {
-            headers: headers,
-            data: reqUser
+            password: CryptoJS.SHA1(user.username + user.password).toString(),
+            grant_type: 'password'
         };
 
         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
         return reqUser;
 
-        // return jsonRequester.post('api/users/login', options)
+        // return jsonRequester.sendLogIn('/api/users/login', reqUser)
         //     .then(function(resp) {
-        //         var user = resp.result;
-        //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-        //         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
+        //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.data.userName); // should I use data here????
+        //         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.data.access_token);
         //         return user;
         //     });
     }
@@ -144,7 +130,7 @@ var userData = (function() {
         //         'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
         //     }
         // };
-        // return jsonRequester.get('api/users/' + currentUsername, options)
+        // return jsonRequester.get('/api/users/' + currentUsername, options)
         //     .then(function(res) {
         //         return res.result;
         //     });
@@ -156,7 +142,7 @@ var userData = (function() {
                 'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
             }
         };
-        return jsonRequester.delete('api/users/' + localStorage.USERNAME_KEY, options)
+        return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY, options)
             .then(function(res) {
                 return res.result;
             });
@@ -178,7 +164,7 @@ var userData = (function() {
             }
         };
 
-        return jsonRequester.put('api/users', {
+        return jsonRequester.put('/api/users', {
                 data: reqUser,
                 headers: headers
             })

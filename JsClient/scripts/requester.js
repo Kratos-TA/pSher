@@ -9,6 +9,7 @@ var jsonRequester = (function() {
         var headers = options.headers || {},
             data = options.data || undefined;
 
+        headers.Authorization = 'Bearer ' + localStorage.AUTHENTICATION_KEY;
         // Check how to implement this as it wont work like that!!!    
         // headers.x-auth-key = localStorage.getItem('AUTHENTICATION_KEY');
 
@@ -27,6 +28,25 @@ var jsonRequester = (function() {
                 }
             });
         });
+        return promise;
+    }
+
+    function sendLogIn(url, data) {
+        var promise = new Promise(function(resolve, reject) {
+            $.ajax({
+                url: url,
+                method: POST,
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: JSON.stringify(data),
+                success: function(res) {
+                    resolve(res);
+                },
+                error: function(err) {
+                    reject(err);
+                }
+            });
+        });
+
         return promise;
     }
 
@@ -51,7 +71,8 @@ var jsonRequester = (function() {
         get: get,
         post: post,
         put: put,
-        delete: del
+        delete: del,
+        sendLogIn: sendLogIn
     };
 }());
 
