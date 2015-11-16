@@ -6,18 +6,25 @@
     using Models;
     using PSher.Common.Constants;
     using PSher.Data.Contracts;
+    using PSher.Services.Common.Contracts;
 
     public class CommentsService : ICommentsService
     {
         private readonly IRepository<Comment> comments;
         private readonly IRepository<Image> images;
         private readonly IRepository<User> users;
+        private INotificationService notifier;
 
-        public CommentsService(IRepository<Comment> commentsRepo, IRepository<Image> imagesRepo, IRepository<User> usersRepo)
+        public CommentsService(
+            IRepository<Comment> commentsRepo,
+            IRepository<Image> imagesRepo,
+            IRepository<User> usersRepo,
+            INotificationService notifier)
         {
             this.comments = commentsRepo;
             this.images = imagesRepo;
             this.users = usersRepo;
+            this.notifier = notifier;
         }
 
         public int AddComment(int authorId, string text, int idImage)

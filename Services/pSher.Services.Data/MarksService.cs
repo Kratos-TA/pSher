@@ -7,21 +7,25 @@
     using Models;
     using PSher.Common.Constants;
     using PSher.Data.Contracts;
+    using PSher.Services.Common.Contracts;
 
     public class MarksService : IMarksService
     {
         private IRepository<Mark> marks;
         private IRepository<User> users;
         private IRepository<Image> images;
+        private INotificationService notifier;
 
         public MarksService(
             IRepository<Mark> marksRepo, 
             IRepository<User> usersRepo, 
-             IRepository<Image> imagesRepo)
+             IRepository<Image> imagesRepo,
+             INotificationService notifier)
         {
             this.marks = marksRepo;
             this.users = usersRepo;
             this.images = imagesRepo;
+            this.notifier = notifier;
         }
 
         public async Task<int> Add(string authorId, int imageId, int value)
