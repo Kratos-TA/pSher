@@ -24,6 +24,7 @@
         private readonly IRepository<Album> albums;
         private readonly IImageProcessorService imageProcessor;
         private readonly IDropboxService dropbox;
+        private readonly INotificationService notifier;
 
         public ImagesService(
             IRepository<Image> imagesRepo,
@@ -31,7 +32,8 @@
             IRepository<Tag> tagsRepo,
             IRepository<Album> albumRepo,
             IImageProcessorService imageProcessor,
-            IDropboxService dropbox)
+            IDropboxService dropbox,
+            INotificationService notifier)
             : base(usersRepo)
         {
             this.images = imagesRepo;
@@ -39,6 +41,7 @@
             this.albums = albumRepo;
             this.imageProcessor = imageProcessor;
             this.dropbox = dropbox;
+            this.notifier = notifier;
         }
 
         public async Task<IEnumerable<Image>> ImagesFromCommaSeparatedIds(string imageIdsAsCommaSeparatedValues)
@@ -240,6 +243,9 @@
 
             this.images.Update(newImage);
             await this.images.SaveChangesAsync();
+
+            string notification = string.Format("{0} added picture {1}", currentUser.UserName, title);
+            this.notifier.Notify(notification);
 
             return newImage.Id;
         }

@@ -295,6 +295,10 @@
       <Project>{92294ABD-2550-4783-9331-7FADB440C04A}</Project>
       <Name>PSher.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\PSher.Services.Common\PSher.Services.Common.csproj">
+      <Project>{dd22bafc-1b13-4ee2-be62-1c1f01ceed69}</Project>
+      <Name>PSher.Services.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\pSher.Services.Data\PSher.Services.Data.csproj">
       <Project>{fbe1c1a6-cccd-447a-9d45-cf9461a2e54b}</Project>
       <Name>PSher.Services.Data</Name>

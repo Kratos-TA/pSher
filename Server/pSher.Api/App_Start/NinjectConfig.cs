@@ -15,6 +15,8 @@ namespace PSher.Api.App_Start
     using PSher.Common.Constants;
     using PSher.Data;
     using PSher.Data.Contracts;
+    using PSher.Services.Common;
+    using PSher.Services.Common.Contracts;
 
     public static class NinjectConfig
     {
@@ -75,6 +77,10 @@ namespace PSher.Api.App_Start
             kernel
                 .Bind(typeof(IRepository<>))
                 .To(typeof(EfGenericRepository<>));
+
+            kernel
+                .Bind(typeof(INotificationService))
+                .To(typeof(PubNubNotificationService));
 
             kernel
                 .Bind(b => b.From(Assemblies.DataServices)
