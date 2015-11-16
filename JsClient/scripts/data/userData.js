@@ -7,7 +7,8 @@ from '../requester.js';
 var userData = (function() {
     /* use strict */
 
-    var users = [{
+    // For local test purposes
+    /* var users = [{
         firstName: "veso",
         lastName: "tsve",
         passHash: "c8f56e5c7fec26b5d99177a658d6204e923eed7f",
@@ -58,12 +59,10 @@ var userData = (function() {
         }]
     }];
 
-    var userId = 0;
+    var userId = 0; */
 
     const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
         LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
-
-    /* Users */
 
     function register(user) {
         var reqUser = {
@@ -74,23 +73,13 @@ var userData = (function() {
             Password: CryptoJS.SHA1(user.username + user.password).toString(),
             ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString()
 
-            // remove this in the production code!!!
+            // for test
             // userId: ++userId
         };
 
-        return jsonRequester.post('http://localhost:4380/api/account/register', {
+        return jsonRequester.post('/api/account/register', {
             data: reqUser
         });
-
-        // Remove this!
-        // var promise = new Promise(function(resolve, reject) {
-        //     users.push(reqUser);
-        //     localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-        //     localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
-        //     resolve(reqUser.username);
-        // });
-
-        // return promise;
     }
 
 
@@ -101,13 +90,13 @@ var userData = (function() {
             grant_type: 'password'
         };
 
+        // for test
         // localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
         // localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
         // return reqUser;
 
-        return jsonRequester.sendLogIn('http://localhost:4380/api/users/login', reqUser)
+        return jsonRequester.sendLogIn('/api/users/login', reqUser)
             .then(function(resp) {
-                console.log(resp);
                 localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.userName);
                 localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.access_token);
                 return resp.userName;
@@ -124,26 +113,14 @@ var userData = (function() {
     }
 
     function getUser(currentUsername) {
-        return users[0];
-
-        // var options = {
-        //     headers: {
-        //         'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
-        //     }
-        // };
-        // return jsonRequester.get('/api/users/' + currentUsername, options)
-        //     .then(function(res) {
-        //         return res.result;
-        //     });
+        return jsonRequester.get('/api/users/' + currentUsername)
+            .then(function(res) {
+                return res.result; // Check what it turns!
+            });
     }
 
     function userDelete() {
-        var options = {
-            headers: {
-                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
-            }
-        };
-        return jsonRequester.delete('http://localhost:4380/api/users/' + localStorage.USERNAME_KEY, options)
+        return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY)
             .then(function(res) {
                 return res.result;
             });
@@ -180,14 +157,12 @@ var userData = (function() {
     }
 
     return {
-        users: {
-            login: login,
-            logout: logout,
-            register: register,
-            delete: userDelete,
-            getUser: getUser,
-            changeUser: changeUser
-        }
+        login: login,
+        logout: logout,
+        register: register,
+        delete: userDelete,
+        getUser: getUser,
+        changeUser: changeUser
     };
 }());
 

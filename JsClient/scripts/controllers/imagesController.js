@@ -45,42 +45,23 @@ var imagesController = (function() {
 
         templates.get('SearchResults')
             .then(function(template) {
-                // To refactor this with then! See below
-                var images = imageData.getAll(queryString);
-                var imagesLength = images.length;
+                imageData.getAll(queryString)
+                    .then(function(images) {
+                        $container.html(template(images));
+                        scrollFixedHelper.switchToScroll();
 
-                for (var i = 0; i < imagesLength; i++) {
-                    images[i].link = '#/images/' + images[i].imageId.toString();
-                }
+                        // For test only
+                        // var images = imageData.getAll(queryString);
+                        // var imagesLength = images.length;
 
-                $container.html(template(images));
-                scrollFixedHelper.switchToScroll();
+                        // for (var i = 0; i < imagesLength; i++) {
+                        //     images[i].link = '#/images/' + images[i].imageId.toString();
+                        // }
 
-                // .then(function(images) {
+                    }, function(err) {
+                        return alertHelper.getOkAlert('Images ' + err.statusText);
+                    });
 
-                // });
-
-
-                // The old way - to be deleted
-                // var imageUrlArray = [];
-                // var i;
-
-                // for (i = 1; i <= 24; i++) {
-                //     var currentImageName = 'galery%20%28' + i + '%29.jpg';
-
-                //     if (currentImageName.indexOf(imageName) >= 0 &&
-                //         currentImageName.indexOf(imageUser) >= 0 &&
-                //         currentImageName.indexOf(imageTags) >= 0) {
-                //         var currentImage = {
-                //             url: './images/galeries/' + currentImageName,
-                //             link: '#/images/' + i
-                //         };
-                //         imageUrlArray.push(currentImage);
-                //     }
-                // }
-                // var imageUrlContainerObject = {
-                //     urls: imageUrlArray
-                // };
             });
     };
 
@@ -89,181 +70,100 @@ var imagesController = (function() {
         var currentImageId = this.params['id'];
         activeLink.toggle('#imagesLink');
 
-        // Implement the galery itself
-        // iMPLEMENT HERE EVERITHING --> CONNECTED WITH 
-        // Access data for this specific galery below using currentGaleryId property!
         templates.get('Image')
             .then(function(template) {
-                // Fix it as it should work with services
-                var currentImage = imageData.getImage(currentImageId);
+                imageData.getImage(currentImageId)
+                    .then(function(currentImage) {
+                        if (currentImage.user != localStorage.USERNAME_KEY) {
+                            currentImage.user = false;
+                        }
 
-                if (currentImage.user != localStorage.USERNAME_KEY) {
-                    currentImage.user = false;
-                }
+                        $container.html(template(currentImage));
+                        scrollFixedHelper.switchToUserFixed();
 
-                $container.html(template(currentImage));
-                scrollFixedHelper.switchToUserFixed();
-
-
-
-                // Delete image functionality
-                $('#deleteImgBtn').on('click', function() {
-                    imageData.delete(currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Image ' + err.statusText);
+                        // Delete image functionality
+                        $('#deleteImgBtn').on('click', function() {
+                            imageData.delete(currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Image ' + err.statusText);
+                                });
                         });
-                });
 
-                $('#markInput').on('change', function(ev) {
-                    var mark = $('#markInput').val();
-                    imageData.rateImage(mark, currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Mark ' + err.statusText);
+                        $('#markInput').on('change', function(ev) {
+                            var mark = $('#markInput').val();
+                            imageData.rateImage(mark, currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Mark ' + err.statusText);
+                                });
                         });
-                });
 
-                $('#leaveComment').on('click', function() {
-                    var comment = $('#commentInput').val();
-                    if (!comment) {
-                        return alertHelper.getOkAlert('You have not entered a comment.');
-                    }
+                        $('#leaveComment').on('click', function() {
+                            var comment = $('#commentInput').val();
+                            if (!comment) {
+                                return alertHelper.getOkAlert('You have not entered a comment.');
+                            }
 
-                    // Validate comment!!!
+                            // Validate comment!!!
 
-                    imageData.commentImage(comment, currentImageId)
-                        .then(function() {
-                            sammyApp.refresh();
-                        }, function(err) {
-                            return alertHelper.getOkAlert('Comment ' + err.statusText);
+                            imageData.commentImage(comment, currentImageId)
+                                .then(function() {
+                                    sammyApp.refresh();
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                });
                         });
-                });
 
-                $('#comments').on('click', function(ev) {
-                    var target = $(ev.target);
-                    var currentCommentId = target.attr('commentId');
-                    var currentCommentText = target.html();
-                    var comment = {
-                        commentId: currentCommentId,
-                        commentText: currentCommentText
-                    };
+                        $('#comments').on('click', function(ev) {
+                            var target = $(ev.target);
+                            var currentCommentId = target.attr('commentId');
+                            var currentCommentText = target.html();
+                            var comment = {
+                                commentId: currentCommentId,
+                                commentText: currentCommentText
+                            };
 
-                    templates.get('EditCommentTemplate')
-                        .then(function(template) {
-                            $container.html(template(comment));
-                            scrollFixedHelper.switchToFixed();
+                            templates.get('EditCommentTemplate')
+                                .then(function(template) {
+                                    $container.html(template(comment));
+                                    scrollFixedHelper.switchToFixed();
 
-                            $('#editBtn').on('click', function() {
-                                var editedCommentText = $('#editedComment').val();
+                                    $('#editBtn').on('click', function() {
+                                        var editedCommentText = $('#editedComment').val();
 
-                                imageData.changeComment(editedCommentText, currentCommentId)
-                                    .then(function() {
-                                        sammyApp.refresh();
-                                    }, function(err) {
-                                        return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                        imageData.changeComment(editedCommentText, currentCommentId)
+                                            .then(function() {
+                                                sammyApp.refresh();
+                                            }, function(err) {
+                                                return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                            });
+
                                     });
 
-                            });
-
-                            $('#cancelBtn').on('click', function() {
-                                sammyApp.refresh();
-                            });
-                            $('#deleteBtn').on('click', function() {
-                                imageData.deleteComment(currentCommentId)
-                                    .then(function() {
+                                    $('#cancelBtn').on('click', function() {
                                         sammyApp.refresh();
-                                    }, function(err) {
-                                        return alertHelper.getOkAlert('Comment ' + err.statusText);
                                     });
-                            });
+
+                                    $('#deleteBtn').on('click', function() {
+                                        imageData.deleteComment(currentCommentId)
+                                            .then(function() {
+                                                sammyApp.refresh();
+                                            }, function(err) {
+                                                return alertHelper.getOkAlert('Comment ' + err.statusText);
+                                            });
+                                    });
+                                });
                         });
-                });
 
-                $('#editLink').on('click', function() {
-                    editImage(context, currentImage);
-                });
-
-
-                // Should follow with then as below!
-                // .then(function() {
-                //     scrollFixedHelper.switchToScroll();
-                //     // $container.html(template(...insert here the Galery template ready...));
-
-                //     // Delete image functionality
-                //     $('#deleteImgBtn').on('click', function() {
-                //         imageData.delete(currentImageId)
-                //             .then(function() {
-                //                 sammyApp.refresh();
-                //             }, function(err) {
-                //                 return alertHelper.getOkAlert('Image ' + err.statusText);
-                //             });
-                //     });
-
-                //     $('#rateImage').on('click', function() {
-                //         var mark = $('#markInput').val();
-                //         if (!mark) {
-                //             return alertHelper.getOkAlert('You have not entered a mark.');
-                //         }
-
-                //         if (0 > mark || mark > 5) {
-                //             return alertHelper.getOkAlert('You have given an invalid mark.');
-                //         }
-
-                //         imageData.rateImage(mark, currentImageId)
-                //             .then(function() {
-                //                 sammyApp.refresh();
-                //             }, function(err) {
-                //                 return alertHelper.getOkAlert('Mark ' + err.statusText);
-                //             });
-                //     });
-
-                //     $('#deleteMarkBtn').on('click', function() {
-                //         imageData.deleteMark(currentImageId)
-                //             .then(function() {
-                //                 sammyApp.refresh();
-                //             }, function(err) {
-                //                 return alertHelper.getOkAlert('Mark ' + err.statusText);
-                //             });
-                //     });
-
-                //     $('#leaveComment').on('click', function() {
-                //         var comment = $('#commentInput').val();
-                //         if (!comment) {
-                //             return alertHelper.getOkAlert('You have not entered a comment.');
-                //         }
-
-                //         // Validate comment!!!
-
-                //         imageData.commentImage(comment, currentImageId)
-                //             .then(function() {
-                //                 sammyApp.refresh();
-                //             }, function(err) {
-                //                 return alertHelper.getOkAlert('Comment ' + err.statusText);
-                //             });
-                //     });
-
-                //     $('#comments').on('click', function(ev) {
-                //         var target = $(ev.target);
-                //         var currentCommentId = target.attr('commentId');
-                //         var currentCommentText = target.val();
-
-                //         // Distplay the template for edditing the comment
-                //         // Get the text from the new comment
-                //         var comment;
-
-                //         // then:!!!!!!!!!!!!!!!
-
-                //         imageData.changeComment(comment, currentCommentId)
-                //             .then(function() {
-                //                 sammyApp.refresh();
-                //             }, function(err) {
-                //                 return alertHelper.getOkAlert('Comment ' + err.statusText);
-                //             });
-                //     });
-                // });
+                        $('#editLink').on('click', function() {
+                            editImage(context, currentImage);
+                        });
+                    }, function(err) {
+                        return alertHelper.getOkAlert('Image ' + err.statusText);
+                    });
             });
     };
 
@@ -277,7 +177,6 @@ var imagesController = (function() {
                 scrollFixedHelper.switchToFixed();
 
                 // Upload images functionality!!!!!!
-
                 $('#sendImage').on('click', function() {
                     var tags = $('#imageTags').val();
                     var name = $('#imageName').val();
@@ -363,8 +262,6 @@ var imagesController = (function() {
                         });
                 });
             });
-
-        // TODO: Implement the edit which will look like the add without uploading!!!
     };
 
     return {

@@ -3,6 +3,8 @@
 var jsonRequester = (function() {
     /* use strict */
 
+    const BASE_URL = 'http://localhost:4380';
+
     function _send(method, url, options) {
         options = options || {};
 
@@ -15,7 +17,7 @@ var jsonRequester = (function() {
 
         var promise = new Promise(function(resolve, reject) {
             $.ajax({
-                url: url,
+                url: BASE_URL + url,
                 method: method,
                 contentType: 'application/json; charset=utf-8',
                 headers: headers,
@@ -34,7 +36,7 @@ var jsonRequester = (function() {
     function sendLogIn(url, data) {
         var promise = new Promise(function(resolve, reject) {
             $.ajax({
-                url: url,
+                url: BASE_URL + url,
                 method: 'POST',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 data: data,

@@ -57,7 +57,7 @@ var userController = (function() {
                         password
                     };
 
-                    userData.users.login(user)
+                    userData.login(user)
                         .then(function(username) {
                             $('#log').attr('href', '#/logout');
                             $('#log').html('Logout');
@@ -116,7 +116,7 @@ var userController = (function() {
                         userToSend.lastName = null;
                     }
 
-                    userData.users.register(userToSend)
+                    userData.register(userToSend)
                         .then(function() {
                             return alertHelper.getGoHomeAlert('You have been successfully registered.', context);
                         }, function(err) {
@@ -127,7 +127,7 @@ var userController = (function() {
     };
 
     var logout = function(context) {
-        userData.users.logout()
+        userData.logout()
             .then(function() {
                 $('#log').attr('href', '#/login');
                 $('#log').html('Login');
@@ -141,61 +141,46 @@ var userController = (function() {
         activeLink.toggle('#profileLink');
 
         if (!currentUsername) {
-            return alertHelper.getGoHomeAlert('You must be logged in order to view user profile.', context);
+            return alertHelper.getGoHomeAlert('You must be logged in order to view a user profile.', context);
         }
 
         templates.get('ProfilePage')
             .then(function(template) {
+                userData.getUser(currentUsername)
+                    .then(function(currentUser) {
+                        scrollFixedHelper.switchToUserFixed();
+                        $container.html(template(currentUser));
 
-                // this should be replaced by the next request!!!
-                var currentUser = userData.users.getUser(currentUsername);
-                scrollFixedHelper.switchToUserFixed();
-                $container.html(template(currentUser));
+                        $('#deleteProfile').on('click', function() {
+                            return alertHelper.getChioseAlert('Are you sure you want to delete your profile?', context);
+                        });
 
-                $('#deleteProfile').on('click', function() {
-                    return alertHelper.getChioseAlert('Are you sure you want to delete your profile?', context, currentUsername);
-                });
+                        $('#changeProfile').on('click', function() {
+                            context.redirect('#/user/change/' + currentUsername);
+                        });
 
-                $('#changeProfile').on('click', function() {
-                    context.redirect('#/user/change/' + currentUsername);
-                });
+                        $('#seeCurrentPhoto').on('click', function() {
+                            var $fotoramaDiv = $('#fotorama').fotorama();
+                            var imgUrl = $fotoramaDiv.data('fotorama').activeFrame._html;
+                            var route = '#/images/' + imgUrl;
+                            context.redirect(route);
+                        });
 
-                $('#seeCurrentPhoto').on('click', function() {
-                    var $fotoramaDiv = $('#fotorama').fotorama();
-                    var imgUrl = $fotoramaDiv.data('fotorama').activeFrame._html;
-                    var route = '#/images/' + imgUrl;
-                    context.redirect(route);
-                });
-
-                $('#addNewPhoto').on('click', function() {
-                    context.redirect('#/createImages');
-                });
-
-                // userData.users.getUser(currentUsername)
-                //     .then(function(userData) {
-                //         $container.html(template(userData));
-                //         scrollFixedHelper.switchToScroll();
-
-                //         $('#deleteProfile').on('click', function() {
-                //              return alertHelper.getChioseAlert('Are you sure you want to delete your profile?', context, currentUsername);
-                //         });
-
-                //         $('#changeProfile').on('click', function() {
-                //             context.redirect('#/user/change/' + currentUsername);
-                //         });
-                //     });
+                        $('#addNewPhoto').on('click', function() {
+                            context.redirect('#/createImages');
+                        });
+                    }, function(err) {
+                        return alertHelper.getOkAlert('User ' + err.statusText);
+                    });
             });
     };
 
     var deleteUser = function(context) {
-        console.log('we are in!');
-        var $container = $('#container');
-
         if (!localStorage.AUTHENTICATION_KEY) {
             return alertHelper.getGoHomeAlert('You must be logged in order delete your profile.', context);
         }
 
-        userData.users.delete()
+        userData.delete()
             .then(function() {
                 logout(context);
             }, function(err) {
@@ -206,90 +191,93 @@ var userController = (function() {
     var changeDetails = function(context) {
         var $container = $('#container');
         var currentUsername = this.params['username'];
-        var currentUser = userData.users.getUser(currentUsername);
 
-        if (localStorage.USERNAME_KEY != currentUsername) {
-            return alertHelper.getGoHomeAlert('You are not allowed to edit other users profiles!', context);
-        }
+        userData.getUser(currentUsername)
+            .then(function(currentUser) {
+                if (localStorage.USERNAME_KEY != currentUsername) {
+                    return alertHelper.getGoHomeAlert('You are not allowed to edit other users profiles!', context);
+                }
 
-        templates.get('ChangeDetailsTemplate')
-            .then(function(template) {
-                $container.html(template(currentUser));
-                scrollFixedHelper.switchToFixed();
+                templates.get('ChangeDetailsTemplate')
+                    .then(function(template) {
+                        $container.html(template(currentUser));
+                        scrollFixedHelper.switchToFixed();
 
-                $('#changeDetails').on('click', function() {
-                    var firstName = $('#firstName').val();
-                    var lastName = $('#lastName').val();
-                    var email = $('#email').val();
+                        $('#changeDetails').on('click', function() {
+                            var firstName = $('#firstName').val();
+                            var lastName = $('#lastName').val();
+                            var email = $('#email').val();
 
-                    var userToSend = {
-                        firstName,
-                        lastName,
-                        email,
-                        ChangePasswordBindingModel: null
-                    };
+                            var userToSend = {
+                                firstName,
+                                lastName,
+                                email,
+                                ChangePasswordBindingModel: null
+                            };
 
-                    if (!firstName || firstName.length < 2) {
-                        userToSend.firstName = null;
-                    }
+                            if (!firstName || firstName.length < 2) {
+                                userToSend.firstName = null;
+                            }
 
-                    if (!lastName || lastName.length < 2) {
-                        userToSend.lastName = null;
-                    }
+                            if (!lastName || lastName.length < 2) {
+                                userToSend.lastName = null;
+                            }
 
-                    // If you have time - iplement full checks for the pass!
-                    if (!email || email.length < 6) {
-                        userToSend.email = null;
-                    }
+                            // If you have time - iplement full checks for the pass!
+                            if (!email || email.length < 6) {
+                                userToSend.email = null;
+                            }
 
-                    userData.users.changeUser(userToSend)
-                        .then(function() {
-                            return alertHelper.getOkAlert('You have successfully changed your profile details.');
-                        }, function(err) {
-                            return alertHelper.getOkAlert('User ' + err.statusText);
+                            userData.changeUser(userToSend)
+                                .then(function() {
+                                    return alertHelper.getOkAlert('You have successfully changed your profile details.');
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('User ' + err.statusText);
+                                });
                         });
-                });
 
-                $('#changeAll').on('click', function() {
-                    var firstName = $('#firstName').val();
-                    var lastName = $('#lastName').val();
-                    var email = $('#email').val();
-                    var password = $('#userPassword').val();
-                    var repeatedPassword = $('#repeateUserPassword').val();
-                    var oldPass = $('#oldPass').val();
+                        $('#changeAll').on('click', function() {
+                            var firstName = $('#firstName').val();
+                            var lastName = $('#lastName').val();
+                            var email = $('#email').val();
+                            var password = $('#userPassword').val();
+                            var repeatedPassword = $('#repeateUserPassword').val();
+                            var oldPass = $('#oldPass').val();
 
-                    var userToSend = {
-                        firstName,
-                        lastName,
-                        email,
-                        password,
-                        repeatedPassword,
-                        oldPass
-                    };
+                            var userToSend = {
+                                firstName,
+                                lastName,
+                                email,
+                                password,
+                                repeatedPassword,
+                                oldPass
+                            };
 
-                    var validUserInput = validateUserInput($container, userToSend, false);
+                            var validUserInput = validateUserInput($container, userToSend, false);
 
-                    if (!validUserInput) {
-                        return;
-                    }
+                            if (!validUserInput) {
+                                return;
+                            }
 
-                    if (!firstName || firstName.length < 2) {
-                        userToSend.firstName = null;
-                    }
+                            if (!firstName || firstName.length < 2) {
+                                userToSend.firstName = null;
+                            }
 
-                    if (!lastName || lastName.length < 2) {
-                        userToSend.lastName = null;
-                    }
+                            if (!lastName || lastName.length < 2) {
+                                userToSend.lastName = null;
+                            }
 
-                    userData.users.changeUser(userToSend)
-                        .then(function() {
-                            return alertHelper.getOkAlert('You have successfully changed your profile details.');
-                        }, function(err) {
-                            return alertHelper.getOkAlert('User ' + err.statusText);
+                            userData.changeUser(userToSend)
+                                .then(function() {
+                                    return alertHelper.getOkAlert('You have successfully changed your profile details.');
+                                }, function(err) {
+                                    return alertHelper.getOkAlert('User ' + err.statusText);
+                                });
                         });
-                });
+                    });
+            }, function(err) {
+                return alertHelper.getGoHomeAlert('User ' + err.statusText, context);
             });
-
     };
 
     var validateUserInput = function($container, user, validateUsername) {
