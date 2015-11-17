@@ -7,6 +7,7 @@
     using Common.Constants;
     using DataTransferModels.Marks;
     using Microsoft.AspNet.Identity;
+    using PSher.Api.Validation;
     using PSher.Services.Data.Contracts;
 
     [EnableCors("*", "*", "*")]
@@ -21,13 +22,9 @@
         }
 
         [Authorize]
+        [ValidateModel]
         public async Task<IHttpActionResult> Post(MarkRequestModel model)
         {
-            if (!this.ModelState.IsValid || model == null)
-            {
-                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "MarkRequestModel"));
-            }
-
             var autenticatedUserId = this.User.Identity.GetUserId();
 
             var markId = await this.marksService.Add(

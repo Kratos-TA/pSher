@@ -1,11 +1,15 @@
 ﻿namespace PSher.Services.Data.Contracts
 {
+    using System.Threading.Tasks;
+
     public interface ICommentsService
     {
-        int AddComment(int authorId, string text, int idImage);
+        Task<int> AddComment(int authorId, string text, int idImage);
 
-        bool AddLikeDislike(int commentId, bool isLiked);
+        Task<bool> AddLikeDislike(int commentId, bool isLiked);
 
-        int DeleteComment(int id);
+        Task<int> DeleteComment(int id);
+
+        Task<string> GetMarkAuthorIdById(int id);
     }
 }

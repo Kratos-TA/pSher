@@ -51,5 +51,7 @@
             RawFile rawImage,
             IEnumerable<Tag> imageTags = null,
             IEnumerable<Album> imageAlbums = null);
+
+        Task<string> GetImageAuthorIdById(int id);
     }
 }

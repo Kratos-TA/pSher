@@ -1,6 +1,9 @@
 ﻿namespace PSher.Services.Data
 {
     using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using Contracts;
     using Models;
@@ -27,17 +30,17 @@
             this.notifier = notifier;
         }
 
-        public int AddComment(int authorId, string text, int idImage)
+        public async Task<int> AddComment(int authorId, string text, int idImage)
         {
             var imageToAddCommentTo = this.images.GetById(idImage);
             var author = this.users.GetById(authorId);
 
             if (imageToAddCommentTo == null || author == null)
             {
-                return GlobalConstants.ErrorCodeComment;
+                return GlobalConstants.ItemNotFoundReturnValue;
             }
 
-            var currentComment = new Comment()
+            var newComment = new Comment()
             {
                 Author = author,
                 Dislikes = 0,
@@ -45,17 +48,15 @@
                 PostedOn = DateTime.Now,
                 Text = text
             };
+            
+            imageToAddCommentTo.Comments.Add(newComment);
 
-            this.comments.Add(currentComment);
-            imageToAddCommentTo.Comments.Add(currentComment);
+            await this.images.SaveChangesAsync();
 
-            this.comments.SaveChanges();
-            this.images.SaveChanges();
-
-            return currentComment.Id;
+            return newComment.Id;
         }
 
-        public bool AddLikeDislike(int commentId, bool isLiked)
+        public async Task<bool> AddLikeDislike(int commentId, bool isLiked)
         {
             var commentToRate = this.comments.GetById(commentId);
 
@@ -66,29 +67,43 @@
 
             if (isLiked)
             {
-                commentToRate.Likes++;
+                ++commentToRate.Likes;
             }
             else
             {
-                commentToRate.Dislikes++;
+                ++commentToRate.Dislikes;
             }
 
-            this.comments.Update(commentToRate);
-            this.comments.SaveChanges();
+            await this.comments.SaveChangesAsync();
 
             return true;
         }
 
-        public int DeleteComment(int id)
+        public async Task<int> DeleteComment(int id)
         {
             var commentToDelete = this.comments.GetById(id);
 
+            if (commentToDelete == null)
+            {
+                return GlobalConstants.ItemNotFoundReturnValue;
+            }
+
             commentToDelete.IsDeleted = true;
 
-            this.comments.Update(commentToDelete);
-            this.comments.SaveChanges();
+            await this.comments.SaveChangesAsync();
 
             return commentToDelete.Id;
+        }
+
+        public async Task<string> GetMarkAuthorIdById(int id)
+        {
+            var imageAuthor = await this.comments
+                .All()
+                .Where(i => (i.IsDeleted == false) && i.Id == id)
+                .Select(i => i.Author.Id)
+                .FirstOrDefaultAsync();
+
+            return imageAuthor;
         }
     }
 }

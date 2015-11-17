@@ -24,7 +24,7 @@
 
         public string Description { get; set; }
 
-        public bool IsPrvate { get; set; }
+        public bool IsPrivate { get; set; }
 
         public string AuthorId { get; set; }
 

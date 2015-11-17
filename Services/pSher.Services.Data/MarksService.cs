@@ -1,8 +1,9 @@
 ﻿namespace PSher.Services.Data
 {
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
-    
+
     using Contracts;
     using Models;
     using PSher.Common.Constants;
@@ -17,8 +18,8 @@
         private INotificationService notifier;
 
         public MarksService(
-            IRepository<Mark> marksRepo, 
-            IRepository<User> usersRepo, 
+            IRepository<Mark> marksRepo,
+            IRepository<User> usersRepo,
              IRepository<Image> imagesRepo,
              INotificationService notifier)
         {
@@ -95,6 +96,17 @@
             await this.marks.SaveChangesAsync();
 
             return markToChange.Id;
+        }
+
+        public async Task<string> GetMarkAuthorIdById(int id)
+        {
+            var imageAuthor = await this.marks
+           .All()
+           .Where(i => (i.IsDeleted == false) && i.Id == id)
+           .Select(i => i.GivenBy.Id)
+           .FirstOrDefaultAsync();
+
+            return imageAuthor;
         }
     }
 }

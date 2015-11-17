@@ -7,8 +7,7 @@ from '../requester.js';
 var userData = (function() {
     /* use strict */
 
-    // For local test purposes
-    /* var users = [{
+    var users = [{
         firstName: "veso",
         lastName: "tsve",
         passHash: "c8f56e5c7fec26b5d99177a658d6204e923eed7f",
@@ -59,10 +58,12 @@ var userData = (function() {
         }]
     }];
 
-    var userId = 0; */
+    var userId = 0;
 
     const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
         LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
+
+    /* Users */
 
     function register(user) {
         var reqUser = {
@@ -71,15 +72,25 @@ var userData = (function() {
             LastName: user.lastName,
             Email: user.email,
             Password: CryptoJS.SHA1(user.username + user.password).toString(),
-            ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString()
+            ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString(),
 
-            // for test
-            // userId: ++userId
+            // remove this in the production code!!!
+            userId: ++userId
         };
 
-        return jsonRequester.post('/api/account/register', {
-            data: reqUser
+        // return jsonRequester.post('/api/account/register', {
+        //         data: reqUser
+        //     });
+
+        // Remove this!
+        var promise = new Promise(function(resolve, reject) {
+            users.push(reqUser);
+            localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
+            localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
+            resolve(reqUser.username);
         });
+
+        return promise;
     }
 
 
@@ -90,17 +101,16 @@ var userData = (function() {
             grant_type: 'password'
         };
 
-        // for test
-        // localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
-        // localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
-        // return reqUser;
+        localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
+        localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
+        return reqUser;
 
-        return jsonRequester.sendLogIn('/api/users/login', reqUser)
-            .then(function(resp) {
-                localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.userName);
-                localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.access_token);
-                return resp.userName;
-            });
+        // return jsonRequester.sendLogIn('/api/users/login', reqUser)
+        //     .then(function(resp) {
+        //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.data.userName); // should I use data here????
+        //         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.data.access_token);
+        //         return user;
+        //     });
     }
 
     function logout() {
@@ -113,14 +123,26 @@ var userData = (function() {
     }
 
     function getUser(currentUsername) {
-        return jsonRequester.get('/api/users/' + currentUsername)
-            .then(function(res) {
-                return res.result; // Check what it turns!
-            });
+        return users[0];
+
+        // var options = {
+        //     headers: {
+        //         'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+        //     }
+        // };
+        // return jsonRequester.get('/api/users/' + currentUsername, options)
+        //     .then(function(res) {
+        //         return res.result;
+        //     });
     }
 
     function userDelete() {
-        return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY)
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+        return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY, options)
             .then(function(res) {
                 return res.result;
             });
@@ -157,12 +179,14 @@ var userData = (function() {
     }
 
     return {
-        login: login,
-        logout: logout,
-        register: register,
-        delete: userDelete,
-        getUser: getUser,
-        changeUser: changeUser
+        users: {
+            login: login,
+            logout: logout,
+            register: register,
+            delete: userDelete,
+            getUser: getUser,
+            changeUser: changeUser
+        }
     };
 }());
 

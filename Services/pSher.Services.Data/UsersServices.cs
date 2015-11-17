@@ -18,11 +18,11 @@
             this.users = usersRepo;
         }
 
-        public IQueryable<User> GetById(string userId)
+        public IQueryable<User> GetByUserName(string username)
         {
             var resultUser = this.users
                 .All()
-                .Where(user => user.Id == userId && user.IsDeleted == false);
+                .Where(user => user.UserName == username && user.IsDeleted == false);
 
             return resultUser;
         }

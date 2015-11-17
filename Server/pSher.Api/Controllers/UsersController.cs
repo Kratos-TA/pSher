@@ -1,7 +1,6 @@
 ﻿namespace PSher.Api.Controllers
 {
     using System.Data.Entity;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Cors;
@@ -9,11 +8,12 @@
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
     using PSher.Api.DataTransferModels.Users;
+    using PSher.Api.Validation;
     using PSher.Common.Constants;
     using PSher.Services.Data.Contracts;
-
-    [EnableCors("*", "*", "*")]
+    
     [RoutePrefix("api/users")]
+    [EnableCors("*", "*", "*")]
     public class UsersController : ApiController
     {
         private readonly IUsersServices usersServices;
@@ -23,25 +23,27 @@
             this.usersServices = usersServices;
         }
 
-        public async Task<IHttpActionResult> Get(string id)
+        [HttpGet]
+        public async Task<IHttpActionResult> Get(string username)
         {
-            var result = await this.usersServices
-                .GetById(id)
+            var resultUser = await this.usersServices
+                .GetByUserName(username)
                 .ProjectTo<UserResponseModel>()
-                .ToArrayAsync();
+                .FirstOrDefaultAsync();
 
-            return this.Ok(result);
-        }
-
-        [Authorize]
-        [EnableCors("*", "*", "*")]
-        public async Task<IHttpActionResult> Put(UpdateUserRequestModel model)
-        {
-            if (!this.ModelState.IsValid || model == null)
+            if (resultUser == null)
             {
-                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "UpdateUserRequestModel"));
+                return this.NotFound();
             }
 
+            return this.Ok(resultUser);
+        }
+
+        [HttpPut]
+        [Authorize]
+        [ValidateModel]
+        public async Task<IHttpActionResult> Put(UpdateUserRequestModel model)
+        {
             var authenticatedUser = this.User.Identity.GetUserId();
 
             var updateUserResult = await this.usersServices.Update(
@@ -53,6 +55,8 @@
             return this.Ok(updateUserResult);
         }
 
+        [HttpDelete]
+        [Authorize]
         public async Task<IHttpActionResult> Delete()
         {
             var authenticatedUser = this.User.Identity.GetUserId();

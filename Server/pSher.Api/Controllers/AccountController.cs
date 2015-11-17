@@ -22,6 +22,7 @@ namespace PSher.Api.Controllers
     using PSher.Api.DataTransferModels.Account;
     using PSher.Api.Providers;
     using PSher.Api.Results;
+    using PSher.Api.Validation;
     using PSher.Models;
 
     [EnableCors("*", "*", "*")]
@@ -124,13 +125,9 @@ namespace PSher.Api.Controllers
 
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
+        [ValidateModel]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
             IdentityResult result = await this.UserManager
                 .ChangePasswordAsync(
                 this.User.Identity.GetUserId(),
@@ -147,13 +144,9 @@ namespace PSher.Api.Controllers
 
         // POST api/Account/SetPassword
         [Route("SetPassword")]
+        [ValidateModel]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
             IdentityResult result = await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
 
             if (!result.Succeeded)
@@ -166,13 +159,9 @@ namespace PSher.Api.Controllers
 
         // POST api/Account/AddExternalLogin
         [Route("AddExternalLogin")]
+        [ValidateModel]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
             this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
             AuthenticationTicket ticket = this.AccessTokenFormat.Unprotect(model.ExternalAccessToken);
@@ -205,13 +194,9 @@ namespace PSher.Api.Controllers
 
         // POST api/Account/RemoveLogin
         [Route("RemoveLogin")]
+        [ValidateModel]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
             IdentityResult result;
 
             if (model.LoginProvider == LocalLoginProvider)
@@ -341,13 +326,9 @@ namespace PSher.Api.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
+        [ValidateModel]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
             var user = new User() { UserName = model.UserName, Email = model.Email };
 
             IdentityResult result = await this.UserManager.CreateAsync(user, model.Password);
@@ -364,13 +345,9 @@ namespace PSher.Api.Controllers
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]
+        [ValidateModel]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
             var info = await this.Authentication.GetExternalLoginInfoAsync();
             if (info == null)
             {

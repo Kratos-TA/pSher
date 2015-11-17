@@ -112,9 +112,13 @@
 
             var allAlbums = this.albums
                 .All()
-                .Where(a => (a.IsDeleted == false) &&
-                    (a.IsPrivate == false || (a.Creator.Id == currentUser.Id && isAuthorizedAccess == true)) &&
-                    (a.Tags.Any(t => albumTags.Contains(t.Name)) || a.Name.Contains(albumName) || a.Creator.UserName.Contains(albumCreator)))
+                .Where(a => (a.IsDeleted == false) 
+                    && (a.IsPrivate == false 
+                        || (a.Creator.Id == currentUser.Id 
+                            && isAuthorizedAccess == true)) 
+                    && (a.Tags.Any(t => albumTags.Contains(t.Name)) 
+                        || a.Name.Contains(albumName) 
+                            || a.Creator.UserName.Contains(albumCreator)))
                 .OrderBy(a => a.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
@@ -122,20 +126,22 @@
             return allAlbums;
         }
 
-        public IQueryable<Album> GetAlbumById(
-            int id,
-            bool isAuthorizedAccess = false,
-            string authenticatedUserId = "")
+        public async Task<string> GetAlbumCreatorIdById(int id)
         {
-            var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
+            var imageAuthor = await this.albums
+            .All()
+            .Where(i => (i.IsDeleted == false) && i.Id == id)
+            .Select(i => i.Creator.Id)
+            .FirstOrDefaultAsync();
 
+            return imageAuthor;
+        }
+
+        public IQueryable<Album> GetAlbumById(int id)
+        {
             var albumById = this.albums
                 .All()
-                .Where(a => (a.IsDeleted == false) &&
-                        a.Id == id &&
-                            (a.IsPrivate == false ||
-                                (a.Creator.Id == currentUser.Id &&
-                                    isAuthorizedAccess == true)));
+                .Where(a => (a.IsDeleted == false) && a.Id == id);
 
             return albumById;
         }
@@ -196,7 +202,7 @@
 
             if (albumToUpdate == null)
             {
-                return 0;
+                return GlobalConstants.ItemNotFoundReturnValue;
             }
 
             if (!string.IsNullOrEmpty(newName))
@@ -229,14 +235,14 @@
 
             if (albumToDelete != null)
             {
-                return 0;
+                return GlobalConstants.ItemNotFoundReturnValue;
             }
 
             albumToDelete.IsDeleted = true;
 
-            var result = await this.albums.SaveChangesAsync();
+            await this.albums.SaveChangesAsync();
 
-            return result;
+            return id;
         }
     }
 }

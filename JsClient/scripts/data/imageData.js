@@ -7,8 +7,7 @@ from '../requester.js';
 var imageData = (function() {
     /* use strict */
 
-    // Just for test
-    /* var images = [{
+    var images = [{
         url: './images/galeries/galery%20%28' + '1' + '%29.jpg',
         imageId: '1',
         name: 'fdsdfsfsd'
@@ -66,6 +65,9 @@ var imageData = (function() {
         name: 'ddddddd'
     }];
 
+    const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
+        LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
+
     var imageExample = {
         id: 23,
         name: 'Chosen image',
@@ -82,56 +84,84 @@ var imageData = (function() {
             commentId: 2
         }],
         user: 'veselin'
-    }; */
-
-    const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
-        LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
+    };
 
     function getImage(imageId) {
-        return jsonRequester.get('/api/images/' + imageId)
+        return imageExample;
+
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+
+        return jsonRequester.get('/api/images/' + imageId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function getAllImages(queryString) {
-        return jsonRequester.get('/api/images' + queryString)
+        return images;
+
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+
+        return jsonRequester.get('/api/images' + queryString, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function uploadImage(imageDetails) {
         var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            },
             data: imageDetails
         };
 
         return jsonRequester.post('/api/images', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function changeImage(imageDetails) {
         var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            },
             data: imageDetails
         };
 
         return jsonRequester.put('/api/images/' + imageDetails.imageId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function deleteImage(imageId) {
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+
         return jsonRequester.delete('/api/images/' + imageId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function rateImage(mark, currentImageId) {
         var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            },
             data: {
                 'user': localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY),
                 'imageId': currentImageId,
@@ -141,12 +171,15 @@ var imageData = (function() {
 
         return jsonRequester.post('/api/marks', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function commentImage(comment, currentImageId) {
         var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            },
             data: {
                 'user': localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY),
                 'imageId': currentImageId,
@@ -156,12 +189,15 @@ var imageData = (function() {
 
         return jsonRequester.post('/api/comments', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function changeComment(comment, commentId) {
         var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            },
             data: {
                 'user': localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY),
                 'commentId': commentId,
@@ -171,14 +207,20 @@ var imageData = (function() {
 
         return jsonRequester.put('/api/comments', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
     function deleteComment(commentId) {
+        var options = {
+            headers: {
+                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+            }
+        };
+
         return jsonRequester.delete('/api/comments/' + commentId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res.result;
             });
     }
 
@@ -188,9 +230,7 @@ var imageData = (function() {
         upload: uploadImage,
         change: changeImage,
         delete: deleteImage,
-
         rateImage: rateImage,
-        
         commentImage: commentImage,
         changeComment: changeComment,
         deleteComment: deleteComment
