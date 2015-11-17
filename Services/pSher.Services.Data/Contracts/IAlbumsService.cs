@@ -17,10 +17,7 @@
             bool isAuthorizedAccess = false,
             string authenticatedUserId = "");
 
-        IQueryable<Album> GetAlbumById(
-            int id,
-            bool isAutorizedAcces = false,
-            string authenticatedUserId = "");
+        IQueryable<Album> GetAlbumById(int id);
 
         Task<int> Add(
             string name,
@@ -47,5 +44,7 @@
             int pageSize,
             bool isAuthorizedAccess = false,
             string authenticatedUserId = "");
+
+        Task<string> GetAlbumCreatorIdById(int id);
     }
 }

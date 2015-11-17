@@ -7,7 +7,7 @@
 
     public interface IUsersServices : IService
     {
-        IQueryable<User> GetById(string userId);
+        IQueryable<User> GetByUserName(string userId);
 
         Task<string> Delete(string userId);
 

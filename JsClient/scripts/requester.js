@@ -15,7 +15,7 @@ var jsonRequester = (function() {
 
         var promise = new Promise(function(resolve, reject) {
             $.ajax({
-                url: url,
+                url:  url,
                 method: method,
                 contentType: 'application/json; charset=utf-8',
                 headers: headers,

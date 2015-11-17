@@ -137,6 +137,17 @@
             return imageById;
         }
 
+        public async Task<string> GetImageAuthorIdById(int id)
+        {
+            var imageAuthor = await this.images
+                .All()
+                .Where(i => (i.IsDeleted == false) && i.Id == id)
+                .Select(i => i.Author.Id)
+                .FirstOrDefaultAsync();
+
+            return imageAuthor;
+        }
+
         // TODO: Fix update
         public async Task<int> Update(
             int id,
@@ -183,7 +194,7 @@
 
             return 1;
         }
-       
+
         public async Task<int> Add(
             string title,
             string autenticatedUserId,
@@ -226,7 +237,7 @@
             string fileNameWithExtension = newImage.Id + "." + rawImage.FileExtension;
             await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
 
-            string path = "/" + DropboxConstants.Collection + "/" + newImage.Id + "." + rawImage.FileExtension;
+            string path = "/" + DropboxConstants.Collection + "/" + "2" + "." + "png";
             string dropboxUrl = await this.dropbox.GetImageUrl(path);
 
             newImage.DropboxUrl = dropboxUrl;

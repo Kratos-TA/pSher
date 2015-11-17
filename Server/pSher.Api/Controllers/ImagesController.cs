@@ -8,11 +8,13 @@
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
     using PSher.Api.DataTransferModels.Images;
+    using PSher.Api.Validation;
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
     using PSher.Services.Data.Contracts;
 
     [RoutePrefix("api/images")]
+    [EnableCors("*", "*", "*")]
     public class ImagesController : ApiController
     {
         private readonly IAlbumsService albumssService;
@@ -29,6 +31,7 @@
             this.albumssService = albumssService;
         }
 
+        [HttpGet]
         public async Task<IHttpActionResult> Get(
             string name,
             string user = null,
@@ -48,7 +51,7 @@
             return this.Ok(result);
         }
 
-        [EnableCors("*", "*", "*")]
+        [HttpGet]
         public async Task<IHttpActionResult> Get(int page = 1, int pageSize = 10)
         {
             var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
@@ -62,30 +65,38 @@
             return this.Ok(result);
         }
 
-        [EnableCors("*", "*", "*")]
+        [HttpGet]
         public async Task<IHttpActionResult> Get(string id)
         {
             var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
-            var result = await this.imagesService
+            var resultImage = await this.imagesService
                 .GetImageById(int.Parse(id), isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .ToListAsync();
+                .FirstOrDefaultAsync();
 
-            return this.Ok(result);
-        }
-
-        [EnableCors("*", "*", "*")]
-        [Authorize]
-        [HttpPut]
-        public async Task<IHttpActionResult> Put(int id, SaveImageRequestModel model)
-        {
-            if (!this.ModelState.IsValid)
+            if (resultImage == null)
             {
-                return this.BadRequest(this.ModelState);
+                return this.NotFound();
             }
 
+            if (resultImage.IsPrivate
+               && !isAuthorizedAccess
+               && currentUserId == null
+                   || currentUserId != resultImage.AuthorId)
+            {
+                return this.Unauthorized();
+            }
+
+            return this.Ok(resultImage);
+        }
+
+        [HttpPut]
+        [Authorize]
+        [ValidateModel]
+        public async Task<IHttpActionResult> Put(int id, SaveImageRequestModel model)
+        {
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
 
             var isUpdated = await this.imagesService
@@ -105,6 +116,7 @@
             }
         }
 
+        [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id)
         {
             var isDeleted = await this.imagesService.DeleteImage(id);
@@ -119,15 +131,11 @@
             }
         }
 
+        [HttpPost]
         [Authorize]
-        [EnableCors("*", "*", "*")]
+        [ValidateModel]
         public async Task<IHttpActionResult> Post(SaveImageRequestModel model)
         {
-            if (!this.ModelState.IsValid || model == null)
-            {
-                return this.BadRequest(string.Format(ErrorMessages.InvalidRequestModel, "SaveImageRequestModel"));
-            }
-
             var autenticatedUserId = this.User.Identity.GetUserId();
             var imageTags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var imageAlbums = await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, autenticatedUserId);

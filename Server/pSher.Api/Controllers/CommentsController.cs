@@ -1,11 +1,14 @@
 ﻿namespace PSher.Api.Controllers
 {
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Cors;
 
     using Common.Constants;
+    using Microsoft.AspNet.Identity;
     using Services.Data.Contracts;
 
+    [EnableCors("*", "*", "*")]
     [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {
@@ -17,12 +20,11 @@
         }
 
         [Authorize]
-        [EnableCors("*", "*", "*")]
-        public IHttpActionResult Post(int authorId, string text, int idImage)
+        public async Task<IHttpActionResult> Post(int authorId, string text, int idImage)
         {
-            int commentId = this.commentsService.AddComment(authorId, text, idImage);
+            int commentId =  await this.commentsService.AddComment(authorId, text, idImage);
 
-            if (commentId == GlobalConstants.ErrorCodeComment)
+            if (commentId == GlobalConstants.ItemNotFoundReturnValue)
             {
                 return this.BadRequest();
             }
@@ -31,10 +33,19 @@
         }
 
         [Authorize]
-        [EnableCors("*", "*", "*")]
-        public IHttpActionResult Put(int commentId, bool isLiked)
+        public async Task<IHttpActionResult> Put(int commentId, bool isLiked)
         {
-            bool isDone = this.commentsService.AddLikeDislike(commentId, isLiked);
+            var currentUserId = this.User.Identity.GetUserId();
+            var imageAuthorId = await this.commentsService.GetMarkAuthorIdById(commentId);
+
+            var isCurrenUserComment = currentUserId == imageAuthorId;
+
+            if (!isCurrenUserComment)
+            {
+                return this.Unauthorized();
+            }
+
+            var isDone =  await this.commentsService.AddLikeDislike(commentId, isLiked);
 
             if (isDone)
             {
@@ -47,11 +58,21 @@
         }
 
         [Authorize]
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Delete(int commentId)
         {
-            this.commentsService.DeleteComment(id);
+            var currentUserId = this.User.Identity.GetUserId();
+            var imageAuthorId = await this.commentsService.GetMarkAuthorIdById(commentId);
 
-            return this.Ok();
+            var isCurrenUserComment = currentUserId == imageAuthorId;
+
+            if (!isCurrenUserComment)
+            {
+                return this.Unauthorized();
+            }
+
+            var result = await this.commentsService.DeleteComment(commentId);
+
+            return this.Ok(result);
         }
     }
 }

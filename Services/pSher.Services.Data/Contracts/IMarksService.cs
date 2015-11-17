@@ -9,5 +9,7 @@
         Task<int> UpdateMarkValue(int id, int value, string autenticatedUserId);
 
         Task<int> DeleteMark(int id, string autenticatedUserId);
+
+        Task<string> GetMarkAuthorIdById(int id);
     }
 }
