@@ -170,7 +170,7 @@ var userController = (function() {
                             context.redirect('#/createImages');
                         });
                     }, function(err) {
-                        return alertHelper.getGoHomeAlert('User ' + err.statusText, context);
+                        return alertHelper.getOkAlert('User ' + err.statusText);
                     });
             });
     };
