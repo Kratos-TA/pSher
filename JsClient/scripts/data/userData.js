@@ -114,14 +114,14 @@ var userData = (function() {
     function getUser(currentUsername) {
         return jsonRequester.get('/api/users/' + currentUsername)
             .then(function(res) {
-                return res.result; // Check what it turns!
+                return res; // Check what it turns!
             });
     }
 
     function userDelete() {
         return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY)
             .then(function(res) {
-                return res.result;
+                return res;
             });
     }
 
@@ -146,11 +146,11 @@ var userData = (function() {
                 headers: headers
             })
             .then(function(resp) {
-                var user = resp.result;
+                var user = resp;
                 localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
                 localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
                 return {
-                    username: resp.result.username
+                    username: resp.username
                 };
             });
     }

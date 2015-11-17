@@ -2,13 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
 
     using AutoMapper;
 
     using PSher.Api.Infrastructure.Mapping;
     using PSher.Models;
-
+   
     public class ImageResponseModel : IMapFrom<Image>, IHaveCustomMappings
     {
         private ICollection<string> tags;
@@ -29,7 +30,7 @@
         public string AuthorId { get; set; }
 
         public string AuthorName { get; set; }
-
+        
         public string Url { get; set; }
 
         public DateTime UploadedOn { get; set; }

@@ -89,15 +89,15 @@ var imageData = (function() {
     function getImage(imageId) {
         return jsonRequester.get('/api/images/' + imageId)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
     function getAllImages(queryString) {
         return jsonRequester.get('/api/images' + queryString)
             .then(function(res) {
-                console.log(res);
-                return res.result; // Check what to pass
+                // console.log(res);
+                return res; // Check what to pass
             });
     }
 
@@ -108,7 +108,7 @@ var imageData = (function() {
 
         return jsonRequester.post('/api/images', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
@@ -119,14 +119,14 @@ var imageData = (function() {
 
         return jsonRequester.put('/api/images/' + imageDetails.imageId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
     function deleteImage(imageId) {
         return jsonRequester.delete('/api/images/' + imageId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
@@ -141,7 +141,7 @@ var imageData = (function() {
 
         return jsonRequester.post('/api/marks', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
@@ -156,7 +156,7 @@ var imageData = (function() {
 
         return jsonRequester.post('/api/comments', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
@@ -171,14 +171,14 @@ var imageData = (function() {
 
         return jsonRequester.put('/api/comments', options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 
     function deleteComment(commentId) {
         return jsonRequester.delete('/api/comments/' + commentId, options)
             .then(function(res) {
-                return res.result; // Check what to pass
+                return res; // Check what to pass
             });
     }
 

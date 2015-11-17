@@ -1,7 +1,8 @@
-﻿using AutoMapper;
-
-namespace PSher.Api.DataTransferModels.Images
+﻿namespace PSher.Api.DataTransferModels.Images
 {
+    using System.ComponentModel;
+    using AutoMapper;
+
     using PSher.Api.Infrastructure.Mapping;
     using PSher.Models;
 
@@ -12,8 +13,9 @@ namespace PSher.Api.DataTransferModels.Images
         public string Title { get; set; }
 
         public bool IsPrivate { get; set; }
+        
+        public string Url { get; set; }
 
-        public string DropboxUrl { get; set; }
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<Image, ImageResponseModel>()
