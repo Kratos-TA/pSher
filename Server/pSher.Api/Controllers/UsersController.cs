@@ -24,10 +24,11 @@
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> Get(string username)
+        [Route("{name}")]
+        public async Task<IHttpActionResult> Get(string name)
         {
             var resultUser = await this.usersServices
-                .GetByUserName(username)
+                .GetByUserName(name)
                 .ProjectTo<UserResponseModel>()
                 .FirstOrDefaultAsync();
 

@@ -96,6 +96,7 @@ var imageData = (function() {
     function getAllImages(queryString) {
         return jsonRequester.get('/api/images' + queryString)
             .then(function(res) {
+                console.log(res);
                 return res.result; // Check what to pass
             });
     }

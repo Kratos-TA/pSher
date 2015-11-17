@@ -30,7 +30,7 @@
 
         public string AuthorName { get; set; }
 
-        public string DropboxUrl { get; set; }
+        public string Url { get; set; }
 
         public DateTime UploadedOn { get; set; }
 
@@ -47,6 +47,7 @@
             config.CreateMap<Image, ImageResponseModel>()
                 .ForMember(i => i.AuthorId, opts => opts.MapFrom(i => i.Author.Id))
                 .ForMember(i => i.AuthorName, opts => opts.MapFrom(i => i.Author.UserName))
+                .ForMember(i => i.Url, opt => opt.MapFrom(i => i.DropboxUrl))
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(so => so.Tags.Select(t => t.Name).ToList()));
         }
     }

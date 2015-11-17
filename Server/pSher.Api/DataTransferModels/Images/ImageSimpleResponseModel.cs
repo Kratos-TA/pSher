@@ -1,9 +1,11 @@
-﻿namespace PSher.Api.DataTransferModels.Images
+﻿using AutoMapper;
+
+namespace PSher.Api.DataTransferModels.Images
 {
     using PSher.Api.Infrastructure.Mapping;
     using PSher.Models;
 
-    public class ImageSimpleResponseModel : IMapFrom<Image>
+    public class ImageSimpleResponseModel : IMapFrom<Image>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -12,5 +14,10 @@
         public bool IsPrivate { get; set; }
 
         public string DropboxUrl { get; set; }
+        public void CreateMappings(IConfiguration config)
+        {
+            config.CreateMap<Image, ImageResponseModel>()
+                .ForMember(i => i.Url, opt => opt.MapFrom(i => i.DropboxUrl));
+        }
     }
 }
