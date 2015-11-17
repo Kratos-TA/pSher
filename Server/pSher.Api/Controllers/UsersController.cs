@@ -11,7 +11,7 @@
     using PSher.Api.Validation;
     using PSher.Common.Constants;
     using PSher.Services.Data.Contracts;
-
+    
     [RoutePrefix("api/users")]
     [EnableCors("*", "*", "*")]
     public class UsersController : ApiController

@@ -12,7 +12,7 @@
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
     using PSher.Services.Data.Contracts;
-
+    
     [RoutePrefix("api/albums")]
     [EnableCors("*", "*", "*")]
     public class AlbumsController : ApiController
