@@ -1,4 +1,6 @@
-﻿namespace PSher.Services.Data
+﻿using PSher.Common.Extensions;
+
+namespace PSher.Services.Data
 {
     using System.Data.Entity;
     using System.Linq;
@@ -38,6 +40,12 @@
             }
 
             userToDelete.IsDeleted = true;
+            userToDelete.Albums.ForEach(a => a.IsDeleted = true);
+            userToDelete.Images.ForEach(i =>
+            {
+                i.IsDeleted = true;
+                i.Tags.Clear();
+            });
 
             this.users.Update(userToDelete);
 

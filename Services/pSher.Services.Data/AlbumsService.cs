@@ -239,6 +239,8 @@
             }
 
             albumToDelete.IsDeleted = true;
+            albumToDelete.Images.Clear();
+            albumToDelete.Tags.Clear();
 
             await this.albums.SaveChangesAsync();
 
