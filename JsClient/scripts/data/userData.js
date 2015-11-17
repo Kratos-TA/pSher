@@ -4,192 +4,198 @@ import {
 }
 from '../requester.js';
 
-var userData = (function() {
+var imageData = (function() {
     /* use strict */
 
-    var users = [{
-        firstName: "veso",
-        lastName: "tsve",
-        passHash: "c8f56e5c7fec26b5d99177a658d6204e923eed7f",
-        userId: 1,
-        username: "veselin",
-        images: [{
-            url: './images/galeries/galery%20%28' + '1' + '%29.jpg',
-            imageId: '1'
-        }, {
-            url: './images/galeries/galery%20%28' + '2' + '%29.jpg',
-            imageId: '2'
-        }, {
-            url: './images/galeries/galery%20%28' + '3' + '%29.jpg',
-            imageId: '3'
-        }, {
-            url: './images/galeries/galery%20%28' + '4' + '%29.jpg',
-            imageId: '4'
-        }, {
-            url: './images/galeries/galery%20%28' + '5' + '%29.jpg',
-            imageId: '5'
-        }, {
-            url: './images/galeries/galery%20%28' + '6' + '%29.jpg',
-            imageId: '6'
-        }, {
-            url: './images/galeries/galery%20%28' + '7' + '%29.jpg',
-            imageId: '7'
-        }, {
-            url: './images/galeries/galery%20%28' + '8' + '%29.jpg',
-            imageId: '8'
-        }, {
-            url: './images/galeries/galery%20%28' + '9' + '%29.jpg',
-            imageId: '9'
-        }, {
-            url: './images/galeries/galery%20%28' + '10' + '%29.jpg',
-            imageId: '10'
-        }, {
-            url: './images/galeries/galery%20%28' + '11' + '%29.jpg',
-            imageId: '11'
-        }, {
-            url: './images/galeries/galery%20%28' + '12' + '%29.jpg',
-            imageId: '12'
-        }, {
-            url: './images/galeries/galery%20%28' + '13' + '%29.jpg',
-            imageId: '13'
-        }, {
-            url: './images/galeries/galery%20%28' + '14' + '%29.jpg',
-            imageId: '14'
-        }]
+    // Just for test
+    /* var images = [{
+        url: './images/galeries/galery%20%28' + '1' + '%29.jpg',
+        imageId: '1',
+        name: 'fdsdfsfsd'
+    }, {
+        url: './images/galeries/galery%20%28' + '2' + '%29.jpg',
+        imageId: '2',
+        name: 'photo 3'
+    }, {
+        url: './images/galeries/galery%20%28' + '3' + '%29.jpg',
+        imageId: '3',
+        name: 'photo some'
+    }, {
+        url: './images/galeries/galery%20%28' + '4' + '%29.jpg',
+        imageId: '4',
+        name: 'photo kurami'
+    }, {
+        url: './images/galeries/galery%20%28' + '5' + '%29.jpg',
+        imageId: '5',
+        name: 'yasabi photo'
+    }, {
+        url: './images/galeries/galery%20%28' + '6' + '%29.jpg',
+        imageId: '6',
+        name: 'ohala'
+    }, {
+        url: './images/galeries/galery%20%28' + '7' + '%29.jpg',
+        imageId: '7',
+        name: 'tydrsayt'
+    }, {
+        url: './images/galeries/galery%20%28' + '8' + '%29.jpg',
+        imageId: '8',
+        name: 'koki'
+    }, {
+        url: './images/galeries/galery%20%28' + '9' + '%29.jpg',
+        imageId: '9',
+        name: 'e typ'
+    }, {
+        url: './images/galeries/galery%20%28' + '10' + '%29.jpg',
+        imageId: '10',
+        name: 'sd'
+    }, {
+        url: './images/galeries/galery%20%28' + '11' + '%29.jpg',
+        imageId: '11',
+        name: 'fsdfs'
+    }, {
+        url: './images/galeries/galery%20%28' + '12' + '%29.jpg',
+        imageId: '12',
+        name: 'dsfs'
+    }, {
+        url: './images/galeries/galery%20%28' + '13' + '%29.jpg',
+        imageId: '13',
+        name: 'fsdsdfs'
+    }, {
+        url: './images/galeries/galery%20%28' + '14' + '%29.jpg',
+        imageId: '14',
+        name: 'ddddddd'
     }];
-
-    var userId = 0;
+    var imageExample = {
+        id: 23,
+        name: 'Chosen image',
+        description: 'Beacause reasons I chose this one!',
+        url: './images/1_75/image3.jpg',
+        tags: 'sea,cool,summer',
+        rating: 4.6,
+        currentUserRating: 2,
+        comments: [{
+            text: 'Ebasi qkata snimka',
+            commentId: 1
+        }, {
+            text: 'Da be da, super tupa e!',
+            commentId: 2
+        }],
+        user: 'veselin'
+    }; */
 
     const LOCAL_STORAGE_USERNAME_KEY = 'USERNAME_KEY',
         LOCAL_STORAGE_AUTHKEY_KEY = 'AUTHENTICATION_KEY';
 
-    /* Users */
-
-    function register(user) {
-        var reqUser = {
-            UserName: user.username,
-            FirstName: user.firstName,
-            LastName: user.lastName,
-            Email: user.email,
-            Password: CryptoJS.SHA1(user.username + user.password).toString(),
-            ConfirmPassword: CryptoJS.SHA1(user.username + user.repeatedPassword).toString(),
-
-            // remove this in the production code!!!
-            userId: ++userId
-        };
-
-        // return jsonRequester.post('/api/account/register', {
-        //         data: reqUser
-        //     });
-
-        // Remove this!
-        var promise = new Promise(function(resolve, reject) {
-            users.push(reqUser);
-            localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-            localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
-            resolve(reqUser.username);
-        });
-
-        return promise;
-    }
-
-
-    function login(user) {
-        var reqUser = {
-            username: user.username,
-            password: CryptoJS.SHA1(user.username + user.password).toString(),
-            grant_type: 'password'
-        };
-
-        localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, reqUser.username);
-        localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, reqUser.passHash);
-        return reqUser;
-
-        // return jsonRequester.sendLogIn('/api/users/login', reqUser)
-        //     .then(function(resp) {
-        //         localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, resp.data.userName); // should I use data here????
-        //         localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, resp.data.access_token);
-        //         return user;
-        //     });
-    }
-
-    function logout() {
-        var promise = new Promise(function(resolve, reject) {
-            localStorage.removeItem(LOCAL_STORAGE_USERNAME_KEY);
-            localStorage.removeItem(LOCAL_STORAGE_AUTHKEY_KEY);
-            resolve();
-        });
-        return promise;
-    }
-
-    function getUser(currentUsername) {
-        return users[0];
-
-        // var options = {
-        //     headers: {
-        //         'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
-        //     }
-        // };
-        // return jsonRequester.get('/api/users/' + currentUsername, options)
-        //     .then(function(res) {
-        //         return res.result;
-        //     });
-    }
-
-    function userDelete() {
-        var options = {
-            headers: {
-                'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
-            }
-        };
-        return jsonRequester.delete('/api/users/' + localStorage.USERNAME_KEY, options)
+    function getImage(imageId) {
+        return jsonRequester.get('/api/images/' + imageId)
             .then(function(res) {
-                return res.result;
+                return res.result; // Check what to pass
             });
     }
 
-    function changeUser(user) {
-        var headers = {
-            'x-auth-key': localStorage.getItem(LOCAL_STORAGE_AUTHKEY_KEY)
+    function getAllImages(queryString) {
+        return jsonRequester.get('/api/images' + queryString)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function uploadImage(imageDetails) {
+        var options = {
+            data: imageDetails
         };
 
-        var reqUser = {
-            FirstName: user.firstName,
-            LastName: user.lastName,
-            Email: user.email,
-            ChangePasswordBindingModel: {
-                OldPassword: CryptoJS.SHA1(user.username + user.oldPass).toString(),
-                NewPassword: CryptoJS.SHA1(user.username + user.password).toString(),
-                ConfirmPassword: CryptoJS.SHA1(user.username + user.password).toString()
+        return jsonRequester.post('/api/images', options)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function changeImage(imageDetails) {
+        var options = {
+            data: imageDetails
+        };
+
+        return jsonRequester.put('/api/images/' + imageDetails.imageId, options)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function deleteImage(imageId) {
+        return jsonRequester.delete('/api/images/' + imageId, options)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function rateImage(mark, currentImageId) {
+        var options = {
+            data: {
+                'user': localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY),
+                'imageId': currentImageId,
+                'mark': mark
             }
         };
 
-        return jsonRequester.put('/api/users', {
-                data: reqUser,
-                headers: headers
-            })
-            .then(function(resp) {
-                var user = resp.result;
-                localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-                localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
-                return {
-                    username: resp.result.username
-                };
+        return jsonRequester.post('/api/marks', options)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function commentImage(comment, currentImageId) {
+        var options = {
+            data: {
+                'user': localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY),
+                'imageId': currentImageId,
+                'comment': comment
+            }
+        };
+
+        return jsonRequester.post('/api/comments', options)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function changeComment(comment, commentId) {
+        var options = {
+            data: {
+                'user': localStorage.getItem(LOCAL_STORAGE_USERNAME_KEY),
+                'commentId': commentId,
+                'comment': comment
+            }
+        };
+
+        return jsonRequester.put('/api/comments', options)
+            .then(function(res) {
+                return res.result; // Check what to pass
+            });
+    }
+
+    function deleteComment(commentId) {
+        return jsonRequester.delete('/api/comments/' + commentId, options)
+            .then(function(res) {
+                return res.result; // Check what to pass
             });
     }
 
     return {
-        users: {
-            login: login,
-            logout: logout,
-            register: register,
-            delete: userDelete,
-            getUser: getUser,
-            changeUser: changeUser
-        }
+        getImage: getImage,
+        getAll: getAllImages,
+        upload: uploadImage,
+        change: changeImage,
+        delete: deleteImage,
+
+        rateImage: rateImage,
+        
+        commentImage: commentImage,
+        changeComment: changeComment,
+        deleteComment: deleteComment
     };
 }());
 
 export {
-    userData
+    imageData
 };
