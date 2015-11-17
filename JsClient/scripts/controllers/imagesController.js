@@ -47,6 +47,9 @@ var imagesController = (function() {
             .then(function(template) {
                 imageData.getAll(queryString)
                     .then(function(images) {
+                        for (var i = 0; i < images.length; i++) {
+                            images[i].link = '#/images/' + images[i].Id;
+                        }
                         $container.html(template(images));
                         scrollFixedHelper.switchToScroll();
 
