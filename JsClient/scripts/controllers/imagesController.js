@@ -59,7 +59,7 @@ var imagesController = (function() {
                         // }
 
                     }, function(err) {
-                        return alertHelper.getOkAlert('Images ' + err.statusText);
+                        return alertHelper.getGoHomeAlert('Images ' + err.statusText, context);
                     });
 
             });
