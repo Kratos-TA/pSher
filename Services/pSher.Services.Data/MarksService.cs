@@ -97,12 +97,12 @@
         public async Task<string> GetMarkAuthorIdById(int id)
         {
             var imageAuthor = await this.marks
-           .All()
-           .Where(i => (i.IsDeleted == false) && i.Id == id)
-            .Select(i => i.GivenBy)
-            .Where(u => u.IsDeleted == false)
-            .Select(u => u.Id)
-            .FirstOrDefaultAsync();
+            .All()
+                .Where(m => m.Id == id
+                    && m.IsDeleted == false
+                    && m.GivenBy.IsDeleted == false)
+                .Select(i => i.GivenBy.Id)
+                .FirstOrDefaultAsync();
 
             return imageAuthor;
         }

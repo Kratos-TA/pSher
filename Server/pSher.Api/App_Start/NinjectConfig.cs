@@ -57,15 +57,14 @@ namespace PSher.Api.App_Start
                 .InSingletonScope();
 
             kernel
+                .Bind(typeof (IWebStorageService))
+                .To(typeof (DropboxService));
+
+            kernel
                 .Bind(b => b.From(Assemblies.DataServices)
                     .SelectAllClasses()
                     .BindDefaultInterface());
-
-            kernel
-                .Bind(b => b.From(Assemblies.CommonServices)
-                    .SelectAllClasses()
-                    .BindDefaultInterface());
-
+            
             kernel
              .Bind(b => b.From(Assemblies.LogicServices)
                  .SelectAllClasses()

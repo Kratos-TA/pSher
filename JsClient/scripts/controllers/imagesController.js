@@ -261,15 +261,15 @@ var imagesController = (function() {
                     var Tags = $('#imageTags').val();
                     var Title = $('#imageName').val();
                     var Description = $('#imageDescription').val();
-
                     var IsPrivate = document.getElementById('isPrivate').checked;
+                    var Id = currentImage.Id;
 
                     var image = {
                         Tags,
                         Title,
                         Description,
                         IsPrivate,
-                        imageId: currentImage.id
+                        Id
                     };
 
                     imageData.change(image)

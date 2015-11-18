@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Assemblies.cs" />
-    <Compile Include="Constants\DropboxConstants.cs" />
+    <Compile Include="Constants\WebStorageConstants.cs" />
     <Compile Include="Constants\ErrorMessages.cs" />
     <Compile Include="Constants\GlobalConstants.cs" />
     <Compile Include="Constants\Messages.cs" />

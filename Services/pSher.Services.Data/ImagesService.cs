@@ -25,7 +25,7 @@
         private readonly IRepository<Tag> tags;
         private readonly IRepository<Album> albums;
         private readonly IImageProcessorService imageProcessor;
-        private readonly IDropboxService dropbox;
+        private readonly IWebStorageService dropbox;
         private readonly INotificationService notifier;
 
         public ImagesService(
@@ -34,7 +34,7 @@
             IRepository<Tag> tagsRepo,
             IRepository<Album> albumRepo,
             IImageProcessorService imageProcessor,
-            IDropboxService dropbox,
+            IWebStorageService dropbox,
             INotificationService notifier)
             : base(usersRepo)
         {
@@ -143,10 +143,10 @@
         {
             var imageAuthor = await this.images
                 .All()
-                .Where(i => (i.IsDeleted == false) && i.Id == id)
-                .Select(i => i.Author)
-                .Where(u => u.IsDeleted == false)
-                .Select(u => u.Id)
+                .Where(i => i.Id == id
+                    && i.IsDeleted == false
+                    && i.Author.IsDeleted == false)
+                .Select(i => i.Author.Id)
                 .FirstOrDefaultAsync();
 
             return imageAuthor;
@@ -244,13 +244,13 @@
             await this.images.SaveChangesAsync();
 
             newImage.Url = await this.GetDropBoxUrl(
-                rawImage.Content, 
-                rawImage.OriginalFileName, 
+                rawImage.Content,
+                rawImage.OriginalFileName,
                 rawImage.FileExtension);
 
             newImage.ThumbnailUrl = await this.GetDropBoxUrl(
-                rawImage.PreviewContent, 
-                rawImage.OriginalFileName + ThumbnailExtension, 
+                rawImage.PreviewContent,
+                rawImage.OriginalFileName + ThumbnailExtension,
                 rawImage.FileExtension);
 
             if (imageTags != null)
@@ -272,8 +272,16 @@
             this.images.Update(newImage);
             await this.images.SaveChangesAsync();
 
-            string notification = string.Format("{0} added picture {1}", currentUser.UserName, title);
-            this.notifier.Notify(notification);
+            try
+            {
+                string notification = string.Format("{0} added picture {1}", currentUser.UserName, title);
+                this.notifier.Notify(notification);
+            }
+            catch (Exception ex)
+            {
+            }
+
+
 
             return newImage.Id;
         }
@@ -283,7 +291,7 @@
             var fileToUpload = new ByteArrayResource(content);
             string fileNameWithExtension = fileName + "." + extension;
             await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
-            string path = "/" + DropboxConstants.Collection + "/" + fileNameWithExtension;
+            string path = "/" + WebStorageConstants.Collection + "/" + fileNameWithExtension;
 
             return await this.dropbox.GetImageUrl(path);
         }

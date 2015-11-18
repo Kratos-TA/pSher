@@ -5,7 +5,7 @@
     using Spring.IO;
     using Spring.Social.Dropbox.Api;
 
-    public interface IDropboxService
+    public interface IWebStorageService
     {
         Task<Entry> UploadImageToCloud(IResource resource, string fileName);
 
