@@ -3,9 +3,7 @@
     </br>
     <textarea id="imageDescription" class="form-control">{{Description}}</textarea>
     </br>
-    <input type="text" id="imageTags" class="form-control" value="{{#each Tags}}
-            {{this}}, 
-        {{/each}}">
+    <input type="text" id="imageTags" class="form-control" value="{{#each Tags}}{{this}}, {{/each}}">
     </br>
     <span>Check if the photo is private:</span>
     <input type="checkbox" id="isPrivate" class="form-control">
