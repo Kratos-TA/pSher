@@ -195,9 +195,9 @@ var imagesController = (function() {
 
                 // Upload images functionality!!!!!!
                 $('#sendImage').on('click', function() {
-                    var Tags = $('#imageTags').val();
-                    var Title = $('#imageName').val();
-                    var Description = $('#imageDescription').val();
+                    var Tags = $('#imageTags').val().trim();
+                    var Title = $('#imageName').val().trim();
+                    var Description = $('#imageDescription').val().trim();
                     var file = document.getElementById('fileinput').files[0];
 
                     if (!file || !file.type.match('image.*')) {
@@ -247,6 +247,9 @@ var imagesController = (function() {
     };
 
     var editImage = function(context, currentImage) {
+
+        console.log(currentImage);
+
         var $container = $('#container');
         activeLink.toggle('#imagesLink');
 
@@ -258,9 +261,9 @@ var imagesController = (function() {
                 $('#sendImage').on('click', function() {
 
                     // Implement checks here!!!
-                    var Tags = $('#imageTags').val();
-                    var Title = $('#imageName').val();
-                    var Description = $('#imageDescription').val();
+                    var Tags = $('#imageTags').val().trim();
+                    var Title = $('#imageName').val().trim();
+                    var Description = $('#imageDescription').val().trim();
                     var IsPrivate = document.getElementById('isPrivate').checked;
                     var Id = currentImage.Id;
 
@@ -274,7 +277,7 @@ var imagesController = (function() {
 
                     imageData.change(image)
                         .then(function() {
-                            return alertHelper.getOkAlert('You have uploaded successfully this image.');
+                            return alertHelper.getOkAlert('You have edited successfully this image.');
                         }, function(err) {
                             return alertHelper.getOkAlert('Image ' + err.statusText);
                         });

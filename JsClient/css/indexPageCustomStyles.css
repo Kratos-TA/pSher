@@ -98,15 +98,32 @@ a:hover {
     width: 110px;
 }
 
+
 /*Styling search results*/
 
-#imageCell p {
-    position: relative;
-    top: -20px;
-    width: 100%;
-    background-color: rgba(0,0,0,0.2);
-    display: inline-block;
+.imageCell {
+    position:relative;
+    width: 32.7%;
+    height: 20vh;
+    padding-bottom: 10% ; /* % of width, defines aspect ratio*/
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 2px;
+    padding: 0;
+    border: 0;
 }
+
+.imageCell p {
+  position: absolute;
+  bottom:0;
+  background-color: rgba(50, 50, 50, 0.5);
+  width: 100%;
+  margin: 0;
+  padding: 5px;
+  border: 0;
+}
+
 
 /*Styling background slider*/
 
