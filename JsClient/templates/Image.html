@@ -17,13 +17,7 @@
         <h4>Avarage rating: </h4>
         <p>{{Rating.Average}} </p>
         <h4>Your rating: </h4>
-        <input id="markInput" type="range" name="mark" min="1" max="6" step="1" 
-			{{#if CurrentUserRating}}
-			  	value={{CurrentUserRating}}
-			{{else}}
-			  	value="0"
-			{{/if}}
-        >
+        <input id="markInput" type="range" name="mark" min="1" max="6" step="1" value="{{userMark}}">
     </div>
     <div id="comments">
         <h4>Comments</h4> {{#each Comments}}
@@ -31,7 +25,7 @@
         {{/each}}
     </div>
     <div id="editLink">
-    	{{#if AuthorName}}
+    	{{#if editLink}}
     		<a id="editLink" type="button" class="pshareBtn">edit image</a>
     	{{/if}}
     </div>
