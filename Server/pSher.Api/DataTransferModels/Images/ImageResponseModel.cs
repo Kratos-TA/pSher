@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
     using AutoMapper;
-
+    using Common.Constants;
     using PSher.Api.Infrastructure.Mapping;
     using PSher.Models;
    
@@ -30,7 +30,8 @@
         public string AuthorId { get; set; }
 
         public string AuthorName { get; set; }
-        
+
+        [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
         public string Url { get; set; }
 
         public DateTime UploadedOn { get; set; }
