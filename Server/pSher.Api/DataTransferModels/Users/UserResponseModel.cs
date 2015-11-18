@@ -25,6 +25,8 @@
 
         public string LastName { get; set; }
 
+        public string Email { get; set; }
+
         public virtual ICollection<ImageSimpleResponseModel> Images
         {
             get { return this.images; }
