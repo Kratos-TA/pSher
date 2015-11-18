@@ -11,11 +11,11 @@
         <h4>Tags: </h4>
         <p>
         {{#each Tags}}
-        <span>{{this}}</p>
+        <span>{{this}}; </span>
         {{/each}}
         </p>
         <h4>Avarage rating: </h4>
-        <p>{{Rating}} </p>
+        <p>{{Rating.Average}} </p>
         <h4>Your rating: </h4>
         <input id="markInput" type="range" name="mark" min="1" max="6" step="1" 
 			{{#if CurrentUserRating}}
