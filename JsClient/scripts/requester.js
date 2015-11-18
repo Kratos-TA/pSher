@@ -8,6 +8,8 @@ var jsonRequester = (function() {
     function _send(method, url, options) {
         options = options || {};
 
+        console.log(method);
+
         var headers = options.headers || {},
             data = options.data || undefined;
 

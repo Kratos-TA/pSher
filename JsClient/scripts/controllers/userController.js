@@ -61,7 +61,7 @@ var userController = (function() {
                         .then(function(username) {
                             $('#log').attr('href', '#/logout');
                             $('#log').html('Logout');
-                            return alertHelper.getGoHomeAlert(username + 'successfully logged.', context);
+                            return alertHelper.getGoHomeAlert(username + ' successfully logged.', context);
                         }, function(err) {
                             return alertHelper.getOkAlert('User ' + err.statusText);
                         });
@@ -148,6 +148,7 @@ var userController = (function() {
             .then(function(template) {
                 userData.getUser(currentUsername)
                     .then(function(currentUser) {
+                        console.log(currentUser);
                         scrollFixedHelper.switchToUserFixed();
                         $container.html(template(currentUser));
 
@@ -194,6 +195,7 @@ var userController = (function() {
 
         userData.getUser(currentUsername)
             .then(function(currentUser) {
+
                 if (localStorage.USERNAME_KEY != currentUsername) {
                     return alertHelper.getGoHomeAlert('You are not allowed to edit other users profiles!', context);
                 }
@@ -230,7 +232,7 @@ var userController = (function() {
 
                             userData.changeUser(userToSend)
                                 .then(function() {
-                                    return alertHelper.getOkAlert('You have successfully changed your profile details.');
+                                    return alertHelper.getGoHomeAlert('You have successfully changed your profile details.', context);
                                 }, function(err) {
                                     return alertHelper.getOkAlert('User ' + err.statusText);
                                 });
@@ -266,10 +268,10 @@ var userController = (function() {
                             if (!lastName || lastName.length < 2) {
                                 userToSend.lastName = null;
                             }
-
+                            
                             userData.changeUser(userToSend)
                                 .then(function() {
-                                    return alertHelper.getOkAlert('You have successfully changed your profile details.');
+                                    return alertHelper.getGoHomeAlert('You have successfully changed your profile details.', context);
                                 }, function(err) {
                                     return alertHelper.getOkAlert('User ' + err.statusText);
                                 });

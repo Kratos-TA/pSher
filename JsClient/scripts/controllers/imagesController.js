@@ -47,11 +47,15 @@ var imagesController = (function() {
             .then(function(template) {
                 imageData.getAll(queryString)
                     .then(function(images) {
+
+
                         for (var i = 0; i < images.length; i++) {
                             images[i].link = '#/images/' + images[i].Id;
+                            console.log(images[i].Url);
                         }
                         $container.html(template(images));
                         scrollFixedHelper.switchToScroll();
+                        console.log('after swithc');
 
                         // For test only
                         // var images = imageData.getAll(queryString);
@@ -77,6 +81,7 @@ var imagesController = (function() {
             .then(function(template) {
                 imageData.getImage(currentImageId)
                     .then(function(currentImage) {
+                        console.log(currentImage);
                         if (currentImage.user != localStorage.USERNAME_KEY) {
                             currentImage.user = false;
                         }
@@ -165,7 +170,7 @@ var imagesController = (function() {
                             editImage(context, currentImage);
                         });
                     }, function(err) {
-                        return alertHelper.getOkAlert('Image ' + err.statusText);
+                        return alertHelper.getGoHomeAlert('Images ' + err.statusText, context)
                     });
             });
     };

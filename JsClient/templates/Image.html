@@ -1,33 +1,37 @@
 <!-- How the image will look like -->
 <div id="imagePage">
     <div id="imageContainer">
-        <img src={{url}} alt={{name}}>
+        <img src="{{Url}}" alt="{{Title}}">
     </div>
     <div id="additionalInfo">
-        <h2>{{name}}</h2>
-        <p>{{description}}</p>
+        <h2>{{Title}}</h2>
+        <p>{{Description}}</p>
     </div>
     <div id="tagsAndRatings">
         <h4>Tags: </h4>
-        <p>{{tags}} </p>
+        <p>
+        {{#each Tags}}
+        <span>{{this}}</p>
+        {{/each}}
+        </p>
         <h4>Avarage rating: </h4>
-        <p>{{rating}} </p>
+        <p>{{Rating}} </p>
         <h4>Your rating: </h4>
         <input id="markInput" type="range" name="mark" min="1" max="6" step="1" 
-			{{#if currentUserRating}}
-			  	value={{currentUserRating}}
+			{{#if CurrentUserRating}}
+			  	value={{CurrentUserRating}}
 			{{else}}
 			  	value="0"
 			{{/if}}
         >
     </div>
     <div id="comments">
-        <h4>Comments</h4> {{#each comments}}
-        <p commentId={{commentId}}>{{text}}</p>
+        <h4>Comments</h4> {{#each Comments}}
+        <p commentId={{Id}}>{{Text}}</p>
         {{/each}}
     </div>
     <div id="editLink">
-    	{{#if user}}
+    	{{#if AuthorName}}
     		<a id="editLink" type="button" class="pshareBtn">edit image</a>
     	{{/if}}
     </div>
