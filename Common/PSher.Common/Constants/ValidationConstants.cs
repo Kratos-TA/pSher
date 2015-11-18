@@ -11,7 +11,7 @@
         public const int MinImageTitle = 2;
         public const int MaxImageTitle = 128;
         public const int MaxImageDescription = 128;
-        public const int MaxImageDropBoxUrlLength = 2048;
+        public const int MaxImageUrlLength = 2048;
         public const int MinImageInfoFileExtension = 1;
         public const int MaxImageInfoFileExtension = 6;
         public const int MaxImageInfoOriginalName = 248;

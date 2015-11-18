@@ -13,9 +13,9 @@
 
     public class ImageProcessorService : IImageProcessorService
     {
-        public Task<byte[]> Resize(byte[] originalImage, int width)
+        public async Task<byte[]> Resize(byte[] originalImage, int width)
         {
-            return Task.Run(() =>
+            return await Task.Run(() =>
             {
                 using (var originalImageStream = new MemoryStream(originalImage))
                 {
@@ -25,12 +25,9 @@
                         {
                             var createdImage = imageFactory
                                 .Load(originalImageStream);
-
-                            if (createdImage.Image.Width > width)
-                            {
+                         
                                 createdImage = createdImage
                                     .Resize(new ResizeLayer(new Size(width, 0), ResizeMode.Max));
-                            }
 
                             createdImage
                                 .Format(new JpegFormat { Quality = GlobalConstants.ImageQuality })

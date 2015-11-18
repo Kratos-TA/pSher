@@ -12,6 +12,8 @@
 
         public const int ResizedImageWidth = 1920;
 
+        public const int ResizedImageThumbnailWidth = 240;
+
         public const int ItemNotFoundReturnValue = -1;
     }
 }

@@ -39,8 +39,11 @@
         public virtual User Author { get; set; }
 
         // [Required]
-        [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
-        public string DropboxUrl { get; set; }
+        [MaxLength(ValidationConstants.MaxImageUrlLength)]
+        public string Url { get; set; }
+
+        [MaxLength(ValidationConstants.MaxImageUrlLength)]
+        public string ThumbnailUrl { get; set; }
 
         public DateTime UploadedOn { get; set; }
 

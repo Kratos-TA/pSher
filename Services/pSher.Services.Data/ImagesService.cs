@@ -19,6 +19,8 @@
 
     public class ImagesService : UserAutenticationDependService, IImagesService
     {
+        public const string ThumbnailExtension = "-thumbnail";
+
         private readonly IRepository<Image> images;
         private readonly IRepository<Tag> tags;
         private readonly IRepository<Album> albums;
@@ -241,31 +243,30 @@
             this.images.Add(newImage);
             await this.images.SaveChangesAsync();
 
-            var fileToUpload = new ByteArrayResource(rawImage.Content);
+            newImage.Url = await this.GetDropBoxUrl(
+                rawImage.Content, 
+                rawImage.OriginalFileName, 
+                rawImage.FileExtension);
 
-            string fileNameWithExtension = newImage.Id + "." + rawImage.FileExtension;
-            await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
-
-            // TODO: check it here.
-            string path = "/" + DropboxConstants.Collection + "/" + fileNameWithExtension;
-            string dropboxUrl = await this.dropbox.GetImageUrl(path);
-
-            newImage.DropboxUrl = dropboxUrl;
+            newImage.ThumbnailUrl = await this.GetDropBoxUrl(
+                rawImage.PreviewContent, 
+                rawImage.OriginalFileName + ThumbnailExtension, 
+                rawImage.FileExtension);
 
             if (imageTags != null)
             {
                 imageTags.ForEach(t =>
-            {
-                newImage.Tags.Add(t);
-            });
+                    {
+                        newImage.Tags.Add(t);
+                    });
             }
 
             if (imageAlbums != null)
             {
                 imageAlbums.ForEach(a =>
-            {
-                newImage.Albums.Add(a);
-            });
+                    {
+                        newImage.Albums.Add(a);
+                    });
             }
 
             this.images.Update(newImage);
@@ -277,9 +278,22 @@
             return newImage.Id;
         }
 
+        private async Task<string> GetDropBoxUrl(byte[] content, string fileName, string extension)
+        {
+            var fileToUpload = new ByteArrayResource(content);
+            string fileNameWithExtension = fileName + "." + extension;
+            await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
+            string path = "/" + DropboxConstants.Collection + "/" + fileNameWithExtension;
+
+            return await this.dropbox.GetImageUrl(path);
+        }
+
         public async Task<RawFile> ProcessImage(RawFile rawImage)
         {
-            rawImage.Content = await this.imageProcessor.Resize(rawImage.Content, GlobalConstants.ResizedImageWidth);
+            rawImage.Content = await this.imageProcessor
+                .Resize(rawImage.Content, GlobalConstants.ResizedImageWidth);
+            rawImage.PreviewContent = await this.imageProcessor
+                .Resize(rawImage.Content, GlobalConstants.ResizedImageThumbnailWidth);
 
             return rawImage;
         }

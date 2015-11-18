@@ -21,7 +21,7 @@
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<Album, AlbumResponseModel>()
-                .ForMember(a => a.UrlOfPicture, opts => opts.MapFrom(a => a.Images.FirstOrDefault().DropboxUrl))
+                .ForMember(a => a.UrlOfPicture, opts => opts.MapFrom(a => a.Images.FirstOrDefault().Url))
                 .ForMember(a => a.CreatorName, opts => opts.MapFrom(a => a.Creator.UserName));
         }
     }

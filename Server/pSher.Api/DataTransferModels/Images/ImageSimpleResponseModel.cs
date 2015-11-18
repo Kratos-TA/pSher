@@ -14,14 +14,16 @@
 
         public bool IsPrivate { get; set; }
 
-        [MaxLength(ValidationConstants.MaxImageDropBoxUrlLength)]
-
+        [MaxLength(ValidationConstants.MaxImageUrlLength)]
         public string Url { get; set; }
+
+        [MaxLength(ValidationConstants.MaxImageUrlLength)]
+        public string ThumbnailUrl { get; set; }
 
         public void CreateMappings(IConfiguration config)
         {
             config.CreateMap<Image, ImageSimpleResponseModel>()
-                .ForMember(i => i.Url, opt => opt.MapFrom(i => i.DropboxUrl));
+                .ForMember(i => i.Url, opt => opt.MapFrom(i => i.Url));
         }
     }
 }

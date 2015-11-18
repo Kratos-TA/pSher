@@ -156,13 +156,13 @@
 
         [HttpPost]
         [Authorize]
-       // [ValidateModel]
+        [ValidateModel]
         public async Task<IHttpActionResult> Post(SaveImageRequestModel model)
         {
             var autenticatedUserId = this.User.Identity.GetUserId();
             var imageTags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var imageAlbums = await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, autenticatedUserId);
-            var resizedRawFile = model.ImageInfo.ToRawFile();  // await this.imagesService.ProcessImage(model.ImageInfo.ToRawFile());
+            var resizedRawFile = await this.imagesService.ProcessImage(model.ImageInfo.ToRawFile());
 
             var addedImageId = await this.imagesService.Add(
                 model.Title,

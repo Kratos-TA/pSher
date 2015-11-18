@@ -7,5 +7,7 @@
         public string FileExtension { get; set; }
       
         public byte[] Content { get; set; }
+
+        public byte[] PreviewContent { get; set; }
     }
 }
