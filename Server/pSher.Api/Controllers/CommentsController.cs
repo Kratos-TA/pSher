@@ -2,13 +2,11 @@
 {
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Cors;
 
     using Common.Constants;
     using Microsoft.AspNet.Identity;
     using Services.Data.Contracts;
-
-    [EnableCors("*", "*", "*")]
+    
     [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PSher.Common.Constants
+﻿namespace PSher.Common.Constants
 {
     public class ErrorMessages
     {

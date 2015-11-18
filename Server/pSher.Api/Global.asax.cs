@@ -11,7 +11,6 @@
         protected void Application_Start()
         {
             DatabaseConfig.Initialize();
-            AutoMapperConfig.RegisterMappings(Assembly.Load(Assemblies.WebApi));
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

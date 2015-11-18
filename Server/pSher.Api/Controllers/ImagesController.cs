@@ -3,7 +3,6 @@
     using System.Data.Entity;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Cors;
 
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
@@ -14,7 +13,6 @@
     using PSher.Services.Data.Contracts;
     
     [RoutePrefix("api/images")]
-    [EnableCors("*", "*", "*")]
     public class ImagesController : ApiController
     {
         private readonly IAlbumsService albumssService;

@@ -1,4 +1,5 @@
-﻿using System.Web.Http.Cors;
+﻿using System.Web.Configuration;
+using System.Web.Http.Cors;
 
 namespace PSher.Api
 {
@@ -14,8 +15,6 @@ namespace PSher.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            //config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-            
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

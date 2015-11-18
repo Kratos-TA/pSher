@@ -1,13 +1,9 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(PSher.Api.App_Start.NinjectConfig), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(PSher.Api.App_Start.NinjectConfig), "Stop")]
-
 namespace PSher.Api.App_Start
 {
     using System;
     using System.Data.Entity;
     using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+    
     using Ninject;
     using Ninject.Extensions.Conventions;
     using Ninject.Web.Common;
@@ -20,31 +16,19 @@ namespace PSher.Api.App_Start
 
     public static class NinjectConfig
     {
-        private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
-
-        /// <summary>
-        /// Starts the application
-        /// </summary>
-        public static void Start()
+        public static Action<IKernel> DependenciesRegistration = kernel =>
         {
-            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            Bootstrapper.Initialize(CreateKernel);
-        }
+            kernel
+                .Bind<DbContext>()
+                .To<PSherDbContext>()
+                .InRequestScope();
 
-        /// <summary>
-        /// Stops the application.
-        /// </summary>
-        public static void Stop()
-        {
-            Bootstrapper.ShutDown();
-        }
+            kernel
+                .Bind(typeof(IRepository<>))
+                .To(typeof(EfGenericRepository<>));
+        };
 
-        /// <summary>
-        /// Creates the kernel that will manage your application.
-        /// </summary>
-        /// <returns>The created kernel.</returns>
-        private static IKernel CreateKernel()
+        public static IKernel CreateKernel()
         {
             var kernel = new StandardKernel();
             try
@@ -63,20 +47,9 @@ namespace PSher.Api.App_Start
             }
         }
 
-        /// <summary>
-        /// Load your modules or register your services here!
-        /// </summary>
-        /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel
-                .Bind<DbContext>()
-                .To<PSherDbContext>()
-                .InRequestScope();
-
-            kernel
-                .Bind(typeof(IRepository<>))
-                .To(typeof(EfGenericRepository<>));
+            DependenciesRegistration(kernel);
 
             kernel
                 .Bind(typeof(INotificationService))

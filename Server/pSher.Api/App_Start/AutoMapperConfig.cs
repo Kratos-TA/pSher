@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Web.Mvc;
+
     using Api.Infrastructure.Mapping;
     using AutoMapper;
 
@@ -11,6 +13,8 @@
     {
         public static void RegisterMappings(params Assembly[] assemblies)
         {
+            Mapper.Configuration.ConstructServicesUsing(t => DependencyResolver.Current.GetService(t));
+
             var types = new List<Type>();
             foreach (var assembly in assemblies)
             {

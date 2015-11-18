@@ -233,7 +233,7 @@
                 .All()
                 .FirstOrDefault(a => a.Id == id && a.Creator.Id == userId);
 
-            if (albumToDelete != null)
+            if (albumToDelete == null)
             {
                 return GlobalConstants.ItemNotFoundReturnValue;
             }

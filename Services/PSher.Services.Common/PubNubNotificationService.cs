@@ -19,7 +19,7 @@
 
         public void Notify(string notification)
         {
-            pubnub.Publish(PubNubConstants.Channel, notification, (x) => LastMessage = x.ToString(), (e) => LastError = e.ToString());
+            this.pubnub.Publish(PubNubConstants.Channel, notification, (x) => LastMessage = x.ToString(), (e) => LastError = e.ToString());
         }
     }
 }
