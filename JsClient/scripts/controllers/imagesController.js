@@ -222,7 +222,7 @@ var imagesController = (function() {
                         var ImageInfo = {
                             OriginalName: fileName,
                             OriginalExtension: fileName.split('.').pop(),
-                            ByteArrayContent: b64encoded
+                            Base64Content: b64encoded
                         };
 
                         var image = {
