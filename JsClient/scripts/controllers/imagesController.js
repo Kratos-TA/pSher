@@ -216,19 +216,13 @@ var imagesController = (function() {
                         // console.log(fileAsBinary);
                         // console.log(b64encoded);
 
-                        var IsPrivate = $('#isPrivate').val();
-                        if (IsPrivate === 'on') {
-                            IsPrivate = true;
-                        } else {
-                            IsPrivate = false;
-                        }
-
+                        var IsPrivate = document.getElementById('isPrivate').checked;
                         var fileName = file.name;
 
                         var ImageInfo = {
                             OriginalName: fileName,
                             OriginalExtension: fileName.split('.').pop(),
-                            Base64Content: b64encoded
+                            ByteArrayContent: b64encoded
                         };
 
                         var image = {
@@ -264,22 +258,17 @@ var imagesController = (function() {
                 $('#sendImage').on('click', function() {
 
                     // Implement checks here!!!
-                    var tags = $('#imageTags').val();
-                    var name = $('#imageName').val();
-                    var description = $('#imageDescription').val();
+                    var Tags = $('#imageTags').val();
+                    var Title = $('#imageName').val();
+                    var Description = $('#imageDescription').val();
 
-                    var isPrivate = $('#isPrivate').val();
-                    if (isPrivate === 'on') {
-                        isPrivate = true;
-                    } else {
-                        isPrivate = false;
-                    }
+                    var IsPrivate = document.getElementById('isPrivate').checked;
 
                     var image = {
-                        tags,
-                        name,
-                        description,
-                        isPrivate,
+                        Tags,
+                        Title,
+                        Description,
+                        IsPrivate,
                         imageId: currentImage.id
                     };
 
