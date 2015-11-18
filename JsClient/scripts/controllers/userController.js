@@ -210,9 +210,9 @@ var userController = (function() {
                             var email = $('#email').val();
 
                             var userToSend = {
-                                firstName,
-                                lastName,
-                                email,
+                                FirstName,
+                                LastName,
+                                Email,
                                 ChangePasswordBindingModel: null
                             };
 
