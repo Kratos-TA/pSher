@@ -252,15 +252,21 @@
 
             newImage.DropboxUrl = dropboxUrl;
 
-            imageTags?.ForEach(t =>
+            if (imageTags != null)
+            {
+                imageTags.ForEach(t =>
             {
                 newImage.Tags.Add(t);
             });
+            }
 
-            imageAlbums?.ForEach(a =>
+            if (imageAlbums != null)
+            {
+                imageAlbums.ForEach(a =>
             {
                 newImage.Albums.Add(a);
             });
+            }
 
             this.images.Update(newImage);
             await this.images.SaveChangesAsync();

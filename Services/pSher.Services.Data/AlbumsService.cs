@@ -112,12 +112,12 @@
 
             var allAlbums = this.albums
                 .All()
-                .Where(a => (a.IsDeleted == false) 
-                    && (a.IsPrivate == false 
-                        || (a.Creator.Id == currentUser.Id 
-                            && isAuthorizedAccess == true)) 
-                    && (a.Tags.Any(t => albumTags.Contains(t.Name)) 
-                        || a.Name.Contains(albumName) 
+                .Where(a => (a.IsDeleted == false)
+                    && (a.IsPrivate == false
+                        || (a.Creator.Id == currentUser.Id
+                            && isAuthorizedAccess == true))
+                    && (a.Tags.Any(t => albumTags.Contains(t.Name))
+                        || a.Name.Contains(albumName)
                             || a.Creator.UserName.Contains(albumCreator)))
                 .OrderBy(a => a.Name)
                 .Skip((page - 1) * pageSize)
@@ -172,15 +172,21 @@
                 CreatedOn = DateTime.Now
             };
 
-            albumTags?.ForEach(t =>
+            if (albumTags != null)
+            {
+                albumTags.ForEach(t =>
             {
                 newAlbum.Tags.Add(t);
             });
-
-            albumImages?.ForEach(i =>
+            }
+            
+            if (albumImages != null)
+            {
+                albumImages.ForEach(i =>
             {
                 newAlbum.Images.Add(i);
             });
+            }
 
             this.albums.Add(newAlbum);
             await this.albums.SaveChangesAsync();
@@ -219,7 +225,7 @@
 
             albumToUpdate.Images.Clear();
             newAlbumImages.ForEach(i => albumToUpdate.Images.Add(i));
-            
+
             var result = await this.albums.SaveChangesAsync();
 
             return result;
