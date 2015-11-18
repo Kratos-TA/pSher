@@ -1,7 +1,9 @@
 ﻿namespace PSher.Api.Controllers
 {
     using System.Data.Entity;
+    using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using System.Web.Http.Cors;
     using System.Web.Http;
 
     using AutoMapper.QueryableExtensions;
@@ -13,8 +15,11 @@
     using PSher.Services.Data.Contracts;
     
     [RoutePrefix("api/images")]
+    [EnableCors("*", "*", "*")]
     public class ImagesController : ApiController
     {
+        public const string EntityName = "Image";
+
         private readonly IAlbumsService albumssService;
         private readonly IImagesService imagesService;
         private readonly ITagsService tagsService;
@@ -93,40 +98,60 @@
         [HttpPut]
         [Authorize]
         [ValidateModel]
-        public async Task<IHttpActionResult> Put(int id, SaveImageRequestModel model)
+        public async Task<IHttpActionResult> Put(int id, UpdateImageRequestModel model)
         {
-            var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
+            var currentUserId = this.User.Identity.GetUserId();
+            var imageAuthorId = await this.imagesService.GetImageAuthorIdById(id);
 
-            var isUpdated = await this.imagesService
-                .Update(
+            var isCurrenUserAlbum = currentUserId == imageAuthorId;
+
+            if (!isCurrenUserAlbum)
+            {
+                return this.Unauthorized(AuthenticationHeaderValue.
+                   Parse(string.Format(ErrorMessages.UnoutorizedAccess, EntityName)));
+            }
+
+            var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
+            var albus = await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, currentUserId);
+
+            var changesMade = await this.imagesService.Update(
                 id,
                 model.Title,
+                model.IsPrivate,
                 model.Description,
-                tags);
+                tags,
+                albus);
 
-            if (isUpdated != 0)
+            if (changesMade == GlobalConstants.ItemNotFoundReturnValue)
             {
-                return this.Ok();
+                return this.NotFound();
             }
-            else
-            {
-                return this.BadRequest("Invalid id");
-            }
+
+            return this.Ok(changesMade);
         }
 
         [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id)
         {
-            var isDeleted = await this.imagesService.DeleteImage(id);
+            var currentUserId = this.User.Identity.GetUserId();
+            var imageAuthorId = await this.imagesService.GetImageAuthorIdById(id);
 
-            if (isDeleted != 0)
+            var isCurrenUserImage = currentUserId == imageAuthorId;
+
+            if (!isCurrenUserImage)
             {
-                return this.Ok();
+                return this.Unauthorized(AuthenticationHeaderValue.
+                   Parse(string.Format(ErrorMessages.UnoutorizedAccess, EntityName)));
             }
-            else
+
+            var changesMade = await this.imagesService.DeleteImage(id);
+
+            if (changesMade == GlobalConstants.ItemNotFoundReturnValue)
             {
-                return this.BadRequest("Invalid id");
+                return this.NotFound();
             }
+
+            return this.Ok(changesMade);
         }
 
         [HttpPost]

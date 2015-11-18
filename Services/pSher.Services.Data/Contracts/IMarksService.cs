@@ -6,9 +6,9 @@
     {
         Task<int> Add(string authorId, int imageId, int value);
 
-        Task<int> UpdateMarkValue(int id, int value, string autenticatedUserId);
+        Task<int> UpdateMarkValue(int id, int value);
 
-        Task<int> DeleteMark(int id, string autenticatedUserId);
+        Task<int> DeleteMark(int id);
 
         Task<string> GetMarkAuthorIdById(int id);
     }

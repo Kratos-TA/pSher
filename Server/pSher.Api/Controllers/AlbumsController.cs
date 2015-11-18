@@ -1,11 +1,14 @@
 ﻿namespace PSher.Api.Controllers
 {
     using System.Data.Entity;
+    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using System.Web.Http.Cors;
 
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
+
     using PSher.Api.DataTransferModels.Album;
     using PSher.Api.Validation;
     using PSher.Common.Constants;
@@ -13,8 +16,11 @@
     using PSher.Services.Data.Contracts;
     
     [RoutePrefix("api/albums")]
+    [EnableCors("*", "*", "*")]
     public class AlbumsController : ApiController
     {
+        public const string EntityName = "Album";
+
         private readonly IAlbumsService albumsService;
         private readonly ITagsService tagsService;
         private readonly IImagesService imagesService;
@@ -76,7 +82,8 @@
                 && currentUserId == null
                     || currentUserId != resultAlbum.CreatorId)
             {
-                return this.Unauthorized();
+                return this.Unauthorized(AuthenticationHeaderValue.
+                    Parse(string.Format(ErrorMessages.UnoutorizedAccess, EntityName)));
             }
 
             return this.Ok(resultAlbum);
@@ -98,6 +105,11 @@
                 tags,
                 images);
 
+            if (addedAlbumId == GlobalConstants.ItemNotFoundReturnValue)
+            {
+                return this.BadRequest(ErrorMessages.InvalidUser);
+            }
+
             return this.Ok(addedAlbumId);
         }
 
@@ -112,26 +124,26 @@
 
             if (!isCurrenUserAlbum)
             {
-                return this.Unauthorized();
+                return this.Unauthorized(AuthenticationHeaderValue.
+                 Parse(string.Format(ErrorMessages.UnoutorizedAccess, EntityName)));
             }
 
             var tags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
             var images = await this.imagesService.ImagesFromCommaSeparatedIds(model.ImagesIds);
 
-            var changedAlbumChangesMade = await this.albumsService.UpdateAll(
+            var changesMade = await this.albumsService.Update(
                 id,
                 model.Name,
-                currentUserId,
                 model.IsPrivate,
                 tags,
                 images);
 
-            if (changedAlbumChangesMade == GlobalConstants.ItemNotFoundReturnValue)
+            if (changesMade == GlobalConstants.ItemNotFoundReturnValue)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(changedAlbumChangesMade);
+            return this.Ok(changesMade);
         }
 
         [Authorize]
@@ -144,17 +156,18 @@
 
             if (!isCurrenUserAlbum)
             {
-                return this.Unauthorized();
+                return this.Unauthorized(AuthenticationHeaderValue.
+                   Parse(string.Format(ErrorMessages.UnoutorizedAccess, EntityName)));
             }
 
-            var deletedAlbumDeletedItems = await this.albumsService.Delete(id, currentUserId);
+            var changesMade = await this.albumsService.Delete(id);
 
-            if (deletedAlbumDeletedItems == GlobalConstants.ItemNotFoundReturnValue)
+            if (changesMade == GlobalConstants.ItemNotFoundReturnValue)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(deletedAlbumDeletedItems);
+            return this.Ok(changesMade);
         }
     }
 }

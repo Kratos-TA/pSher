@@ -37,9 +37,11 @@
 
         Task<int> Update(
             int id, 
-            string title, 
+            string title,
+            bool? isPrivate,
             string description, 
-            IEnumerable<Tag> tags);
+            IEnumerable<Tag> tags,
+            IEnumerable<Album> newImageAlbums);
 
         Task<int> DeleteImage(int id);
        

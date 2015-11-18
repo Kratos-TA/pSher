@@ -53,20 +53,18 @@
 
             imageToAttachMarkTo.Rating.Marks.Add(markToAdd);
 
-            this.marks.Add(markToAdd);
             this.images.Update(imageToAttachMarkTo);
 
-            await this.marks.SaveChangesAsync();
             await this.images.SaveChangesAsync();
 
             return markToAdd.Id;
         }
 
-        public async Task<int> UpdateMarkValue(int id, int value, string autenticatedUserId)
+        public async Task<int> UpdateMarkValue(int id, int value)
         {
             var markToChange = this.marks
                 .All()
-                .FirstOrDefault(m => m.Id == id && m.IsDeleted == false && m.GivenBy.Id == autenticatedUserId);
+                .FirstOrDefault(m => m.Id == id && m.IsDeleted == false);
 
             if (markToChange == null)
             {
@@ -74,28 +72,26 @@
             }
 
             markToChange.Value = value;
-            this.marks.Update(markToChange);
-            await this.marks.SaveChangesAsync();
+            var changesMade = await this.marks.SaveChangesAsync();
 
-            return markToChange.Id;
+            return changesMade;
         }
 
-        public async Task<int> DeleteMark(int id, string autenticatedUserId)
+        public async Task<int> DeleteMark(int id)
         {
-            var markToChange = this.marks
+            var markToDelete = this.marks
                 .All()
-                .FirstOrDefault(m => m.Id == id && m.IsDeleted == false && m.GivenBy.Id == autenticatedUserId);
+                .FirstOrDefault(m => m.Id == id && m.IsDeleted == false);
 
-            if (markToChange == null)
+            if (markToDelete == null)
             {
                 return GlobalConstants.InvalidDbObjectReturnValue;
             }
 
-            markToChange.IsDeleted = true;
-            this.marks.Update(markToChange);
-            await this.marks.SaveChangesAsync();
+            markToDelete.IsDeleted = true;
+            var result = await this.marks.SaveChangesAsync();
 
-            return markToChange.Id;
+            return result;
         }
 
         public async Task<string> GetMarkAuthorIdById(int id)
@@ -103,8 +99,10 @@
             var imageAuthor = await this.marks
            .All()
            .Where(i => (i.IsDeleted == false) && i.Id == id)
-           .Select(i => i.GivenBy.Id)
-           .FirstOrDefaultAsync();
+            .Select(i => i.GivenBy)
+            .Where(u => u.IsDeleted == false)
+            .Select(u => u.Id)
+            .FirstOrDefaultAsync();
 
             return imageAuthor;
         }

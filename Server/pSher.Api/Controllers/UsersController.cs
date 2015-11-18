@@ -3,6 +3,7 @@
     using System.Data.Entity;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using System.Web.Http.Cors;
 
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
@@ -12,6 +13,7 @@
     using PSher.Services.Data.Contracts;
     
     [RoutePrefix("api/users")]
+    [EnableCors("*", "*", "*")]
     public class UsersController : ApiController
     {
         private readonly IUsersServices usersServices;

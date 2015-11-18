@@ -100,7 +100,9 @@
             var imageAuthor = await this.comments
                 .All()
                 .Where(i => (i.IsDeleted == false) && i.Id == id)
-                .Select(i => i.Author.Id)
+                .Select(i => i.Author)
+                .Where(u => u.IsDeleted == false)
+                .Select(u => u.Id)
                 .FirstOrDefaultAsync();
 
             return imageAuthor;

@@ -10,7 +10,8 @@
         [StringInCommaSepatatedCollectionLength(ValidationConstants.MinTagName, ValidationConstants.MaxTagName, "Tags")]
         public string Tags { get; set; }
 
-        [Required]
+        public string Albums { get; set; }
+
         [MinLength(ValidationConstants.MinImageTitle)]
         [MaxLength(ValidationConstants.MaxImageTitle)]
         public string Title { get; set; }
@@ -19,8 +20,5 @@
         public string Description { get; set; }
 
         public bool IsPrivate { get; set; }
-
-        // TODO: Set the ImageInfo !!!
-        // public ImageInfo ImageInfo { get; set; }
     }
 }

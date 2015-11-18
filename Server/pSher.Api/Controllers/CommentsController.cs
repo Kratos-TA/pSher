@@ -27,7 +27,7 @@
                 return this.BadRequest();
             }
 
-            return this.Ok("Comment with id " + commentId + " added.");
+            return this.Ok(commentId);
         }
 
         [Authorize]

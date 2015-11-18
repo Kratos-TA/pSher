@@ -129,10 +129,12 @@
         public async Task<string> GetAlbumCreatorIdById(int id)
         {
             var imageAuthor = await this.albums
-            .All()
-            .Where(i => (i.IsDeleted == false) && i.Id == id)
-            .Select(i => i.Creator.Id)
-            .FirstOrDefaultAsync();
+                .All()
+                .Where(i => (i.IsDeleted == false) && i.Id == id)
+                .Select(i => i.Creator)
+                .Where(u => u.IsDeleted == false)
+                .Select(u => u.Id)
+                .FirstOrDefaultAsync();
 
             return imageAuthor;
         }
@@ -159,7 +161,7 @@
 
             if (currentUser == null)
             {
-                return 0;
+                return GlobalConstants.InvalidDbObjectReturnValue;
             }
 
             var newAlbum = new Album()
@@ -170,12 +172,12 @@
                 CreatedOn = DateTime.Now
             };
 
-            albumTags.ForEach(t =>
+            albumTags?.ForEach(t =>
             {
                 newAlbum.Tags.Add(t);
             });
 
-            albumImages.ForEach(i =>
+            albumImages?.ForEach(i =>
             {
                 newAlbum.Images.Add(i);
             });
@@ -186,19 +188,16 @@
             return newAlbum.Id;
         }
 
-        public async Task<int> UpdateAll(
+        public async Task<int> Update(
             int id,
-            string newName,
-            string authenticatedUserId,
-            bool? isPrivate,
+            string newName = null,
+            bool? isPrivate = null,
             IEnumerable<Tag> newAlbumTags = null,
             IEnumerable<Image> newAlbumImages = null)
         {
             var albumToUpdate = this.albums
                 .All()
-                .FirstOrDefault(a => a.Id == id &&
-                    a.IsDeleted == false &&
-                    a.Creator.Id == authenticatedUserId);
+                .FirstOrDefault(a => a.Id == id);
 
             if (albumToUpdate == null)
             {
@@ -220,18 +219,17 @@
 
             albumToUpdate.Images.Clear();
             newAlbumImages.ForEach(i => albumToUpdate.Images.Add(i));
-
-            this.albums.Update(albumToUpdate);
+            
             var result = await this.albums.SaveChangesAsync();
 
             return result;
         }
 
-        public async Task<int> Delete(int id, string userId)
+        public async Task<int> Delete(int id)
         {
             var albumToDelete = this.albums
                 .All()
-                .FirstOrDefault(a => a.Id == id && a.Creator.Id == userId);
+                .FirstOrDefault(a => a.Id == id);
 
             if (albumToDelete == null)
             {
@@ -242,9 +240,9 @@
             albumToDelete.Images.Clear();
             albumToDelete.Tags.Clear();
 
-            await this.albums.SaveChangesAsync();
+            var result = await this.albums.SaveChangesAsync();
 
-            return id;
+            return result;
         }
     }
 }

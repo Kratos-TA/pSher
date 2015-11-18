@@ -1,12 +1,11 @@
-﻿using PSher.Common.Extensions;
-
-namespace PSher.Services.Data
+﻿namespace PSher.Services.Data
 {
     using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
 
     using PSher.Common.Constants;
+    using PSher.Common.Extensions;
     using PSher.Data.Contracts;
     using PSher.Models;
     using PSher.Services.Data.Contracts;

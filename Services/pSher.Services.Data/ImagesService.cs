@@ -142,57 +142,66 @@
             var imageAuthor = await this.images
                 .All()
                 .Where(i => (i.IsDeleted == false) && i.Id == id)
-                .Select(i => i.Author.Id)
+                .Select(i => i.Author)
+                .Where(u => u.IsDeleted == false)
+                .Select(u => u.Id)
                 .FirstOrDefaultAsync();
 
             return imageAuthor;
         }
 
-        // TODO: Fix update
         public async Task<int> Update(
             int id,
-            string title,
-            string description,
-            IEnumerable<Tag> tags)
+            string newTitle = null,
+            bool? isPrivate = null,
+            string newDescription = null,
+            IEnumerable<Tag> newImageTags = null,
+            IEnumerable<Album> newImageAlbums = null)
         {
-            var image = this.images
-                .GetById(id);
+            var imageToUpdate = this.images
+                  .All()
+                  .FirstOrDefault(i => i.Id == id);
 
-            image.Title = title;
-
-            // For some reason this is necessary
-            image.Author = image.Author;
-
-            if (!string.IsNullOrEmpty(description))
+            if (imageToUpdate == null)
             {
-                image.Description = description;
+                return GlobalConstants.ItemNotFoundReturnValue;
             }
 
-            if (tags.Count() > 0)
+            if (!string.IsNullOrEmpty(newTitle))
             {
-                image.Tags = tags.ToList();
+                imageToUpdate.Title = newTitle;
             }
 
-            this.images.Update(image);
+            if (isPrivate != null)
+            {
+                imageToUpdate.IsPrivate = (bool)isPrivate;
+            }
 
-            this.images.SaveChanges();
+            imageToUpdate.Tags.Clear();
+            newImageTags.ForEach(t => imageToUpdate.Tags.Add(t));
 
-            return 1;
+            var result = await this.images.SaveChangesAsync();
+
+            return result;
         }
 
-        // TODO: Fix delete
         public async Task<int> DeleteImage(int id)
         {
-            var image = this.images
-                .GetById(id);
+            var imageToDelete = this.images
+                .All()
+                .FirstOrDefault(a => a.Id == id);
 
-            image.IsDeleted = true;
+            if (imageToDelete == null)
+            {
+                return GlobalConstants.ItemNotFoundReturnValue;
+            }
 
-            this.images.Update(image);
+            imageToDelete.IsDeleted = true;
+            imageToDelete.Tags.Clear();
 
-            this.images.SaveChanges();
+            var result = await this.albums.SaveChangesAsync();
 
-            return 1;
+            return result;
         }
 
         public async Task<int> Add(
@@ -210,7 +219,7 @@
 
             if (currentUser == null)
             {
-                throw new ArgumentException(ErrorMessages.InvalidUser);
+                return GlobalConstants.ItemNotFoundReturnValue;
             }
 
             var newImageInfo = new ImageInfo()
@@ -237,17 +246,18 @@
             string fileNameWithExtension = newImage.Id + "." + rawImage.FileExtension;
             await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
 
-            string path = "/" + DropboxConstants.Collection + "/" + "2" + "." + "png";
+            // TODO: check it here.
+            string path = "/" + DropboxConstants.Collection + "/" + fileNameWithExtension;
             string dropboxUrl = await this.dropbox.GetImageUrl(path);
 
             newImage.DropboxUrl = dropboxUrl;
 
-            imageTags.ForEach(t =>
+            imageTags?.ForEach(t =>
             {
                 newImage.Tags.Add(t);
             });
 
-            imageAlbums.ForEach(a =>
+            imageAlbums?.ForEach(a =>
             {
                 newImage.Albums.Add(a);
             });
