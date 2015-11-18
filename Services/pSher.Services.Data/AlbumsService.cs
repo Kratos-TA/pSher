@@ -130,10 +130,10 @@
         {
             var imageAuthor = await this.albums
                 .All()
-                .Where(i => (i.IsDeleted == false) && i.Id == id)
-                .Select(i => i.Creator)
-                .Where(u => u.IsDeleted == false)
-                .Select(u => u.Id)
+                .Where(a => a.Id == id
+                    && a.IsDeleted == false
+                    && a.Creator.IsDeleted == false)
+                .Select(i => i.Creator.Id)
                 .FirstOrDefaultAsync();
 
             return imageAuthor;

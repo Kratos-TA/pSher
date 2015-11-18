@@ -98,10 +98,10 @@
         [HttpPut]
         [Authorize]
         [ValidateModel]
-        public async Task<IHttpActionResult> Put(int id, UpdateImageRequestModel model)
+        public async Task<IHttpActionResult> Put(UpdateImageRequestModel model)
         {
             var currentUserId = this.User.Identity.GetUserId();
-            var imageAuthorId = await this.imagesService.GetImageAuthorIdById(id);
+            var imageAuthorId = await this.imagesService.GetImageAuthorIdById(model.Id);
 
             var isCurrenUserAlbum = currentUserId == imageAuthorId;
 
@@ -115,7 +115,7 @@
             var albus = await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, currentUserId);
 
             var changesMade = await this.imagesService.Update(
-                id,
+                model.Id,
                 model.Title,
                 model.IsPrivate,
                 model.Description,

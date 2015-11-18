@@ -10,7 +10,7 @@
     using Spring.Social.Dropbox.Connect;
     using Spring.Social.OAuth1;
 
-    public class DropboxService : IDropboxService
+    public class DropboxService : IWebStorageService
     {
         private string dropboxAppKey;
         private string dropboxAppSecret;
@@ -19,14 +19,14 @@
 
         public DropboxService()
         {
-            this.dropboxAppKey = DropboxConstants.DropboxAppKey;
-            this.dropboxAppSecret = DropboxConstants.DropboxAppSecret;
+            this.dropboxAppKey = WebStorageConstants.DropboxAppKey;
+            this.dropboxAppSecret = WebStorageConstants.DropboxAppSecret;
             this.dropboxApi = this.GetDropboxApi();
         }
 
         public async Task<Entry> UploadImageToCloud(IResource resource, string fileName)
         {
-            string path = "/" + DropboxConstants.Collection + "/" + fileName;
+            string path = "/" + WebStorageConstants.Collection + "/" + fileName;
             Entry uploadFileEntry = await this.dropboxApi.UploadFileAsync(resource, path);
 
             return uploadFileEntry;
@@ -58,7 +58,7 @@
 
         private OAuthToken LoadOAuthToken()
         {
-            this.oauthAccessToken = new OAuthToken(DropboxConstants.OAuth1, DropboxConstants.OAuth2);
+            this.oauthAccessToken = new OAuthToken(WebStorageConstants.DropBoxOAuth1, WebStorageConstants.DropBoxOAuth2);
 
             return this.oauthAccessToken;
         }

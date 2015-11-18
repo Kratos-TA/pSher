@@ -86,12 +86,12 @@ var userController = (function() {
                 scrollFixedHelper.switchToFixed();
 
                 $('#registerBtn').on('click', function() {
-                    var username = $('#usernameInput').val().trim();
-                    var firstName = $('#firstName').val().trim();
-                    var lastName = $('#lastName').val().trim();
-                    var email = $('#email').val().trim();
-                    var password = $('#userPassword').val().trim();
-                    var repeatedPassword = $('#repeateUserPassword').val().trim();
+                    var username = $('#usernameInput').val();
+                    var firstName = $('#firstName').val();
+                    var lastName = $('#lastName').val();
+                    var email = $('#email').val();
+                    var password = $('#userPassword').val();
+                    var repeatedPassword = $('#repeateUserPassword').val();
 
                     var userToSend = {
                         username,
@@ -205,9 +205,9 @@ var userController = (function() {
                         scrollFixedHelper.switchToFixed();
 
                         $('#changeDetails').on('click', function() {
-                            var firstName = $('#firstName').val().trim();
-                            var lastName = $('#lastName').val().trim();
-                            var email = $('#email').val().trim();
+                            var firstName = $('#firstName').val();
+                            var lastName = $('#lastName').val();
+                            var email = $('#email').val();
 
                             var userToSend = {
                                 FirstName,
@@ -238,12 +238,12 @@ var userController = (function() {
                         });
 
                         $('#changeAll').on('click', function() {
-                            var firstName = $('#firstName').val().trim();
-                            var lastName = $('#lastName').val().trim();
-                            var email = $('#email').val().trim();
-                            var password = $('#userPassword').val().trim();
-                            var repeatedPassword = $('#repeateUserPassword').val().trim();
-                            var oldPass = $('#oldPass').val().trim();
+                            var firstName = $('#firstName').val();
+                            var lastName = $('#lastName').val();
+                            var email = $('#email').val();
+                            var password = $('#userPassword').val();
+                            var repeatedPassword = $('#repeateUserPassword').val();
+                            var oldPass = $('#oldPass').val();
 
                             var userToSend = {
                                 firstName,

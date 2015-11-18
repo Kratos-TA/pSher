@@ -7,6 +7,9 @@
 
     public class UpdateImageRequestModel
     {
+        [Required]
+        public int Id { get; set; }
+
         [StringInCommaSepatatedCollectionLength(ValidationConstants.MinTagName, ValidationConstants.MaxTagName, "Tags")]
         public string Tags { get; set; }
 

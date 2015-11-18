@@ -46,9 +46,9 @@ var searchController = (function() {
                 scrollFixedHelper.switchToFixed();
 
                 $('#advancedSearchPhotoBtn').on('click', function() {
-                    var name = $('#photoSearcherByName').val().trim();
-                    var user = $('#photoSearcherByUser').val().trim();
-                    var tags = $('#photoSearcherByTags').val().trim();
+                    var name = $('#photoSearcherByName').val();
+                    var user = $('#photoSearcherByUser').val();
+                    var tags = $('#photoSearcherByTags').val();
 
                     if (!name || name.length < 3) {
                         name = '';

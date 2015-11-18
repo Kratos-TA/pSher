@@ -1,8 +1,8 @@
 {{#each this}}
-<a class="imageLink" href={{link}}>
-    <div class="imageCell col-lg-3 col-md-4 col-sm-6 col-xs-12" imageId="{{id}}" style="background-image:url('{{Url}}')">
-        <!-- <img class="img-responsive imageImage" src="{{Url}}"> -->
-        <p>{{Title}}</p>
-    </div>
-</a>
+<div id="imageCell" class="col-lg-2 col-md-3 col-sm-4 col-xs-6" imageId="{{id}}">
+    <a href={{link}}>
+        <img class="img-responsive" src="{{Url}}">
+        {{Title}}
+    </a>
+</div>
 {{/each}}
