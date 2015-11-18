@@ -26,6 +26,7 @@ var jsonRequester = (function() {
                 data: JSON.stringify(data),
                 success: function(res) {
                     resolve(res);
+                    console.log(res);
                 },
                 error: function(err) {
                     reject(err);
@@ -44,9 +45,9 @@ var jsonRequester = (function() {
                 data: data,
                 success: function(res) {
                     resolve(res);
+                    console.log(res);
                 },
                 error: function(err) {
-                    console.log(err);
                     reject(err);
                 }
             });

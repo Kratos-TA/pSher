@@ -51,11 +51,9 @@ var imagesController = (function() {
 
                         for (var i = 0; i < images.length; i++) {
                             images[i].link = '#/images/' + images[i].Id;
-                            console.log(images[i].Url);
                         }
                         $container.html(template(images));
                         scrollFixedHelper.switchToScroll();
-                        console.log('after swithc');
 
                         // For test only
                         // var images = imageData.getAll(queryString);
@@ -186,9 +184,9 @@ var imagesController = (function() {
 
                 // Upload images functionality!!!!!!
                 $('#sendImage').on('click', function() {
-                    var tags = $('#imageTags').val();
-                    var name = $('#imageName').val();
-                    var description = $('#imageDescription').val();
+                    var Tags = $('#imageTags').val();
+                    var Title = $('#imageName').val();
+                    var Description = $('#imageDescription').val();
                     var file = document.getElementById('fileinput').files[0];
 
                     if (!file || !file.type.match('image.*')) {
@@ -198,24 +196,33 @@ var imagesController = (function() {
                     $('#sendImage').html('uploading...');
 
                     var reader = new FileReader();
-                    reader.readAsBinaryString(file);
+                    reader.readAsArrayBuffer(file);
 
                     reader.onload = function() {
-                        var binary = reader.result;
+                        var fileAsBinary = reader.result;
+                        console.log(fileAsBinary);
 
-                        var isPrivate = $('#isPrivate').val();
-                        if (isPrivate === 'on') {
-                            isPrivate = true;
+                        var IsPrivate = $('#isPrivate').val();
+                        if (IsPrivate === 'on') {
+                            IsPrivate = true;
                         } else {
-                            isPrivate = false;
+                            IsPrivate = false;
                         }
 
+                        var fileName = file.name;
+
+                        var ImageInfo = {
+                            OriginalName: fileName,
+                            OriginalExtension: fileName.split('.').pop(),
+                            ByteArrayContent: fileAsBinary
+                        };
+
                         var image = {
-                            tags,
-                            name,
-                            description,
-                            binary,
-                            isPrivate
+                            Tags,
+                            Title,
+                            Description,
+                            IsPrivate,
+                            ImageInfo
                         };
 
                         imageData.upload(image)

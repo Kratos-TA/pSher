@@ -148,7 +148,6 @@ var userController = (function() {
             .then(function(template) {
                 userData.getUser(currentUsername)
                     .then(function(currentUser) {
-                        console.log(currentUser);
                         scrollFixedHelper.switchToUserFixed();
                         $container.html(template(currentUser));
 
