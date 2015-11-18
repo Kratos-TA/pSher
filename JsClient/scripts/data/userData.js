@@ -146,9 +146,6 @@ var userData = (function() {
                 headers: headers
             })
             .then(function(resp) {
-                var user = resp;
-                localStorage.setItem(LOCAL_STORAGE_USERNAME_KEY, user.username);
-                localStorage.setItem(LOCAL_STORAGE_AUTHKEY_KEY, user.authKey);
                 return {
                     username: resp.username
                 };
