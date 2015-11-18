@@ -80,8 +80,19 @@ var imagesController = (function() {
                 imageData.getImage(currentImageId)
                     .then(function(currentImage) {
                         console.log(currentImage);
-                        if (currentImage.user != localStorage.USERNAME_KEY) {
-                            currentImage.user = false;
+                        if (currentImage.AuthorName === localStorage.USERNAME_KEY) {
+                            currentImage.editLink = true;
+                        }
+
+                        currentImage.userMark = 0;
+                        if (currentImage.Rating) {
+                            var marks = currentImage.Rating.Marks;
+
+                            for (var i = 0; i < marks.length; i++) {
+                                if (marks[i].GivenBy === localStorage.USERNAME_KEY) {
+                                    currentImage.userMark = marks[i].Value;
+                                }
+                            }
                         }
 
                         $container.html(template(currentImage));
@@ -200,7 +211,7 @@ var imagesController = (function() {
 
                     reader.onload = function() {
                         var fileAsBinary = reader.result;
-                        var u8 = new  Uint8Array(fileAsBinary);
+                        var u8 = new Uint8Array(fileAsBinary);
                         var b64encoded = btoa(String.fromCharCode.apply(null, u8));
                         // console.log(fileAsBinary);
                         // console.log(b64encoded);
