@@ -200,7 +200,8 @@ var imagesController = (function() {
 
                     reader.onload = function() {
                         var fileAsBinary = reader.result;
-                        console.log(fileAsBinary);
+                        var array = new Int8Array(fileAsBinary);
+                        console.log(array);
 
                         var IsPrivate = $('#isPrivate').val();
                         if (IsPrivate === 'on') {
@@ -214,7 +215,7 @@ var imagesController = (function() {
                         var ImageInfo = {
                             OriginalName: fileName,
                             OriginalExtension: fileName.split('.').pop(),
-                            ByteArrayContent: fileAsBinary
+                            ByteArrayContent: array
                         };
 
                         var image = {
