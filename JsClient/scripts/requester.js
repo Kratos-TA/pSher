@@ -3,11 +3,8 @@
 var jsonRequester = (function() {
     /* use strict */
 
-<<<<<<< HEAD
-    const BASE_URL = 'http://localhost:4380';
-=======
     const BASE_URL = "http://localhost:4380"; //'http://psher.azurewebsites.net';
->>>>>>> 02ada11f8e5ddf3a399e492ef7c392af9abc0af7
+
 
     function _send(method, url, options) {
         options = options || {};
