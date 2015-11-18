@@ -10,7 +10,7 @@
         // Api
         public const string PropertyNameLength = "The {0} length must be between {1} and {2} symbols!";
         public const string IntegerId = "The {0} is invalid Id, could not be parsed to integer!";
-        public const string InvalidRequestModel = "The request model of {0} is invalid!";
+        public const string InvalidRequestModel = "Invalid request model, there is a big chance the problem is in you. Check you JSON string";
         public const string RequestCannotBeEmpty = "Request cannot by empty!";
 
         public const string UnoutorizedAccess =

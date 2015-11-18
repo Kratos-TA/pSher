@@ -200,8 +200,10 @@ var imagesController = (function() {
 
                     reader.onload = function() {
                         var fileAsBinary = reader.result;
-                        var array = new Int8Array(fileAsBinary);
-                        console.log(array);
+                        var u8 = new  Uint8Array(fileAsBinary);
+                        var b64encoded = btoa(String.fromCharCode.apply(null, u8));
+                        // console.log(fileAsBinary);
+                        // console.log(b64encoded);
 
                         var IsPrivate = $('#isPrivate').val();
                         if (IsPrivate === 'on') {
@@ -215,7 +217,7 @@ var imagesController = (function() {
                         var ImageInfo = {
                             OriginalName: fileName,
                             OriginalExtension: fileName.split('.').pop(),
-                            ByteArrayContent: array
+                            Base64Content: b64encoded
                         };
 
                         var image = {

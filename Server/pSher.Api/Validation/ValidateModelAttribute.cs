@@ -2,10 +2,11 @@
 {
     using System;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
-
+    using MyTested.WebApi.Common.Extensions;
     using PSher.Common.Constants;
 
     [AttributeUsage(AttributeTargets.Method)]
@@ -26,7 +27,12 @@
                     .SelectMany(v => v.Errors.Select(er => er.ErrorMessage))
                     .First();
 
-                actionContext.Response = actionContext.Request.CreateResponse(new ResultObject(false, error));
+                if (string.IsNullOrEmpty(error))
+                {
+                    error = string.Format(ErrorMessages.InvalidRequestModel);
+                }
+
+                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
         }
     }

@@ -156,7 +156,7 @@
 
         [HttpPost]
         [Authorize]
-        [ValidateModel]
+       // [ValidateModel]
         public async Task<IHttpActionResult> Post(SaveImageRequestModel model)
         {
             var autenticatedUserId = this.User.Identity.GetUserId();
