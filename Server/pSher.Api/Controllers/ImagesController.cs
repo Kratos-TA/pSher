@@ -84,7 +84,10 @@
                 return this.NotFound();
             }
 
-            if (resultImage.IsPrivate && !isAuthorizedAccess && (currentUserId == null || currentUserId != resultImage.AuthorId))
+            if (resultImage.IsPrivate
+               && !isAuthorizedAccess
+               && currentUserId == null
+                   || currentUserId != resultImage.AuthorId)
             {
                 return this.Unauthorized();
             }

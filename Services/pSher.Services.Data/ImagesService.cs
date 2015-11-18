@@ -87,7 +87,7 @@
                     (i.IsPrivate == false ||
                         (i.Author.Id == currentUser.Id &&
                             isAuthorizedAccess == true)))
-                .OrderBy(a => a.UploadedOn)
+                .OrderByDescending(a => a.UploadedOn)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
 
@@ -105,7 +105,7 @@
         {
             var currentUser = this.GetCurrentOrEmptyUserById(authenticatedUserId);
 
-            var allAlbums = this.images
+            var allImages = this.images
                 .All()
                 .Where(i => (i.IsDeleted == false) &&
                     (i.IsPrivate == false || (i.Author.Id == currentUser.Id && isAuthorizedAccess == true)) &&
@@ -114,11 +114,11 @@
                         i.Author.FirstName.Contains(imageAuthor) ||
                         i.Author.LastName.Contains(imageAuthor) ||
                         i.Title.Contains(imageTitle)))
-                .OrderBy(i => i.UploadedOn)
+                .OrderByDescending(i => i.UploadedOn)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
 
-            return allAlbums;
+            return allImages;
         }
 
         public IQueryable<Image> GetImageById(
@@ -217,7 +217,7 @@
         {
             var currentUser = this.Users
                .All()
-               .FirstOrDefault(u => u.Id == autenticatedUserId || u.IsDeleted == false);
+               .FirstOrDefault(u => u.Id == autenticatedUserId && u.IsDeleted == false);
 
             if (currentUser == null)
             {

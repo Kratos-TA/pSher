@@ -18,7 +18,7 @@
         {
             var currentUser = this.Users
                 .All()
-                .FirstOrDefault(u => u.UserName == userId) ??
+                .FirstOrDefault(u => u.Id == userId) ??
                     new User()
                     {
                         UserName = string.Empty

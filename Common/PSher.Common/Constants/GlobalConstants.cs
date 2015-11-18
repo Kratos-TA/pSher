@@ -2,7 +2,7 @@
 {
     public class GlobalConstants
     {
-        public const int DefaultPageSize = 10;
+        public const int DefaultPageSize = 30;
 
         public const char CommaSeparatedCollectionSeparator = ',';
 
