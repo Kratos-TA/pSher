@@ -11,7 +11,7 @@ var jsonRequester = (function() {
 
         var headers = options.headers || {},
             data = options.data || undefined;
-
+            console.log(data);
         headers.Authorization = 'Bearer ' + localStorage.AUTHENTICATION_KEY;
         // Check how to implement this as it wont work like that!!!    
         // headers.x-auth-key = localStorage.getItem('AUTHENTICATION_KEY');
