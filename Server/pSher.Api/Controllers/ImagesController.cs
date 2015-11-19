@@ -86,8 +86,7 @@
 
             if (resultImage.IsPrivate
                && !isAuthorizedAccess
-               && currentUserId == null
-                   || currentUserId != resultImage.AuthorId)
+               && (currentUserId == null || currentUserId != resultImage.AuthorId))
             {
                 return this.Unauthorized();
             }

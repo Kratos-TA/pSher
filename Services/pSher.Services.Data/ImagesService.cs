@@ -238,20 +238,19 @@
                 ImageInfo = newImageInfo,
             };
 
-            this.images.Add(newImage);
-            await this.images.SaveChangesAsync();
+            var guid = Guid.NewGuid().ToString();
 
             newImage.Url = await this.webSrorageService
                 .UploadImageToCloud(
                 rawImage.Content,
-                rawImage.OriginalFileName,
+                guid,
                 rawImage.FileExtension,
                 currentUser.Id);
 
             newImage.ThumbnailUrl = await this.webSrorageService
                 .UploadImageToCloud(
                 rawImage.PreviewContent,
-                rawImage.OriginalFileName + ThumbnailExtension,
+                guid + ThumbnailExtension,
                 rawImage.FileExtension,
                 currentUser.Id);
 
@@ -271,7 +270,7 @@
                     });
             }
 
-            this.images.Update(newImage);
+            this.images.Add(newImage);
             await this.images.SaveChangesAsync();
 
             try

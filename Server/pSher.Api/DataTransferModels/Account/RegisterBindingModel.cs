@@ -1,6 +1,7 @@
 namespace PSher.Api.DataTransferModels.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using Common.Constants;
 
     public class RegisterBindingModel
     {
@@ -8,6 +9,16 @@ namespace PSher.Api.DataTransferModels.Account
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
         [Display(Name = "UserName")]
         public string UserName { get; set; }
+      
+        [MaxLength(ValidationConstants.MaxUserRealName)]
+        [MinLength(ValidationConstants.MinUserRealName)]
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; }
+        
+        [MaxLength(ValidationConstants.MaxUserRealName)]
+        [MinLength(ValidationConstants.MinUserRealName)]
+        [Display(Name = "LastName")]
+        public string LastName { get; set; }
 
         [Required]
         [Display(Name = "Email")]
