@@ -69,3 +69,5 @@
 - **api/marks/{id} - DELETE** - Deletes the mark with the specified id(not from the database).
 
 ## GitHub repository link - [pSher](https://github.com/Kratos-TA/pSher)
+
+## [Original task requirements and description](https://github.com/TelerikAcademy/Web-Services-and-Cloud/tree/master/Teamwork)
