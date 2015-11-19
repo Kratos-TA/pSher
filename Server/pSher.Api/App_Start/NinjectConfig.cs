@@ -58,7 +58,8 @@ namespace PSher.Api.App_Start
 
             kernel
                 .Bind(typeof (IWebStorageService))
-                .To(typeof (DropboxService));
+                .To(typeof (GoogleDriveService))
+                .InSingletonScope();
 
             kernel
                 .Bind(b => b.From(Assemblies.DataServices)

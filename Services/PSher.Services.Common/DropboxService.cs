@@ -24,16 +24,15 @@
             this.dropboxApi = this.GetDropboxApi();
         }
 
-        public async Task<Entry> UploadImageToCloud(IResource resource, string fileName)
+        public async Task<string> UploadImageToCloud(
+            byte[] byteArrayContent,
+            string fileName,
+            string fileExstension,
+            string parentPath = WebStorageConstants.Collection)
         {
-            string path = "/" + WebStorageConstants.Collection + "/" + fileName;
-            Entry uploadFileEntry = await this.dropboxApi.UploadFileAsync(resource, path);
-
-            return uploadFileEntry;
-        }
-
-        public async Task<string> GetImageUrl(string path)
-        {
+            string path = "/" + parentPath + "/" + fileName + "." + fileExstension;
+            var resource = new ByteArrayResource(byteArrayContent);
+            await this.dropboxApi.UploadFileAsync(resource, path);
             var mediaLink = await this.dropboxApi.GetMediaLinkAsync(path);
 
             return mediaLink.Url;

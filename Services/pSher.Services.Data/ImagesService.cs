@@ -15,8 +15,6 @@
     using PSher.Services.Common.Contracts;
     using PSher.Services.Logic.Contracts;
 
-    using Spring.IO;
-
     public class ImagesService : UserAutenticationDependService, IImagesService
     {
         public const string ThumbnailExtension = "-thumbnail";
@@ -25,7 +23,7 @@
         private readonly IRepository<Tag> tags;
         private readonly IRepository<Album> albums;
         private readonly IImageProcessorService imageProcessor;
-        private readonly IWebStorageService dropbox;
+        private readonly IWebStorageService webSrorageService;
         private readonly INotificationService notifier;
 
         public ImagesService(
@@ -34,7 +32,7 @@
             IRepository<Tag> tagsRepo,
             IRepository<Album> albumRepo,
             IImageProcessorService imageProcessor,
-            IWebStorageService dropbox,
+            IWebStorageService webSrorageService,
             INotificationService notifier)
             : base(usersRepo)
         {
@@ -42,7 +40,7 @@
             this.tags = tagsRepo;
             this.albums = albumRepo;
             this.imageProcessor = imageProcessor;
-            this.dropbox = dropbox;
+            this.webSrorageService = webSrorageService;
             this.notifier = notifier;
         }
 
@@ -243,15 +241,19 @@
             this.images.Add(newImage);
             await this.images.SaveChangesAsync();
 
-            newImage.Url = await this.GetDropBoxUrl(
+            newImage.Url = await this.webSrorageService
+                .UploadImageToCloud(
                 rawImage.Content,
                 rawImage.OriginalFileName,
-                rawImage.FileExtension);
+                rawImage.FileExtension,
+                currentUser.Id);
 
-            newImage.ThumbnailUrl = await this.GetDropBoxUrl(
+            newImage.ThumbnailUrl = await this.webSrorageService
+                .UploadImageToCloud(
                 rawImage.PreviewContent,
                 rawImage.OriginalFileName + ThumbnailExtension,
-                rawImage.FileExtension);
+                rawImage.FileExtension,
+                currentUser.Id);
 
             if (imageTags != null)
             {
@@ -279,21 +281,10 @@
             }
             catch (Exception ex)
             {
+                throw new Exception(ex.Message);
             }
 
-
-
             return newImage.Id;
-        }
-
-        private async Task<string> GetDropBoxUrl(byte[] content, string fileName, string extension)
-        {
-            var fileToUpload = new ByteArrayResource(content);
-            string fileNameWithExtension = fileName + "." + extension;
-            await this.dropbox.UploadImageToCloud(fileToUpload, fileNameWithExtension);
-            string path = "/" + WebStorageConstants.Collection + "/" + fileNameWithExtension;
-
-            return await this.dropbox.GetImageUrl(path);
         }
 
         public async Task<RawFile> ProcessImage(RawFile rawImage)
