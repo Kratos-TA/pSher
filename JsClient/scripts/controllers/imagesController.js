@@ -207,12 +207,11 @@ var imagesController = (function() {
                     $('#sendImage').html('uploading...');
 
                     var reader = new FileReader();
-                    reader.readAsArrayBuffer(file);
+                    reader.readAsBinaryString(file);
 
                     reader.onload = function() {
                         var fileAsBinary = reader.result;
-                        var u8 = new Uint8Array(fileAsBinary);
-                        var b64encoded = btoa(String.fromCharCode.apply(null, u8));
+                        var b64encoded = btoa(fileAsBinary);
                         // console.log(fileAsBinary);
                         // console.log(b64encoded);
 
