@@ -102,10 +102,11 @@ a:hover {
 /*Styling search results*/
 
 .imageCell {
-    position:relative;
+    position: relative;
     width: 32.7%;
     height: 20vh;
-    padding-bottom: 10% ; /* % of width, defines aspect ratio*/
+    padding-bottom: 10%;
+    /* % of width, defines aspect ratio*/
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -115,13 +116,13 @@ a:hover {
 }
 
 .imageCell p {
-  position: absolute;
-  bottom:0;
-  background-color: rgba(50, 50, 50, 0.5);
-  width: 100%;
-  margin: 0;
-  padding: 5px;
-  border: 0;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(50, 50, 50, 0.5);
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    border: 0;
 }
 
 
@@ -214,20 +215,23 @@ a.control_next {
     padding-top: 20px;
 }
 
-.searchSubmitForm input,
-.searchSubmitForm div {
+.searchSubmitForm #photoSearcher {
     vertical-align: middle;
     margin-bottom: 20px;
 }
 
-.searchSubmitForm a {
+.searchSubmitForm a,
+.editProfile a,
+.pShareForm #registerBtn {
     display: block;
-    padding-top: 10px;
+    padding: 10px;
+    margin: 0 auto 50px;
+    width: 260px;
 }
 
-.searchSubmitForm input {
+.searchSubmitForm #photoSearcher {
     display: inline-block;
-    margin-right: 0px;
+    margin: 0px;
 }
 
 .pShareForm input,
@@ -301,8 +305,9 @@ a.control_next {
 .edits .double {
     height: 65px;
     margin: 20px 5px;
-    width: 120px;
+    width: 40%;
     padding: 7px;
+    vertical-align: middle;
 }
 
 #noBtn {
@@ -343,10 +348,7 @@ a.control_next {
 .site-wrapper {
     width: 100%;
     height: 100%;
-    /* For at least Firefox */
     min-height: 100%;
-    /*-webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
-    box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);*/
 }
 
 .site-wrapper-inner {
@@ -507,7 +509,7 @@ a.control_next {
     .masthead-nav > li + li {
         margin-left: 10px;
     }
-    .searchSubmitForm input {
+    .searchSubmitForm #photoSearcher {
         margin-right: 20px;
     }
     #container .cover-heading {
