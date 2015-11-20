@@ -15,16 +15,13 @@
     public class AlbumsService : UserAutenticationDependService, IAlbumsService
     {
         private readonly IRepository<Album> albums;
-        private readonly IRepository<Tag> tags;
 
         public AlbumsService(
             IRepository<Album> albumsRepo,
-            IRepository<User> userRepo,
-            IRepository<Tag> tagsRepo)
+            IRepository<User> userRepo)
             : base(userRepo)
         {
             this.albums = albumsRepo;
-            this.tags = tagsRepo;
         }
 
         public async Task<IEnumerable<Album>> AlbumsFromCommaSeparatedValuesAndUserId(string albumsAsCommaSeparatedValues, string userId)

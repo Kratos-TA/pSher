@@ -20,7 +20,6 @@
         public const string ThumbnailExtension = "-thumbnail";
 
         private readonly IRepository<Image> images;
-        private readonly IRepository<Tag> tags;
         private readonly IRepository<Album> albums;
         private readonly IImageProcessorService imageProcessor;
         private readonly IWebStorageService webSrorageService;
@@ -29,7 +28,6 @@
         public ImagesService(
             IRepository<Image> imagesRepo,
             IRepository<User> usersRepo,
-            IRepository<Tag> tagsRepo,
             IRepository<Album> albumRepo,
             IImageProcessorService imageProcessor,
             IWebStorageService webSrorageService,
@@ -37,7 +35,6 @@
             : base(usersRepo)
         {
             this.images = imagesRepo;
-            this.tags = tagsRepo;
             this.albums = albumRepo;
             this.imageProcessor = imageProcessor;
             this.webSrorageService = webSrorageService;

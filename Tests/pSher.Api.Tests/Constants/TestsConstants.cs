@@ -4,7 +4,8 @@
 
     public class TestsConstants
     {
-        public const int EntitiesPerRepesitory = GlobalConstants.DefaultPageSize * 2;
+        // To be sure when testing for non private items that there enough items to fill default page size
+        public const int EntitiesPerRepesitory = GlobalConstants.DefaultPageSize * 3; 
         public const int TagsPerImage = 3;
         public const int TagsPerAlbum = 5;
         public const int AlbumsPerImage = 2;
