@@ -16,13 +16,14 @@
         [AssemblyInitialize]
         public static void Init(TestContext testContext)
         {
-            //var repositories =  Repositories.Instance;
+            /*
+            var repositories =  Repositories.Instance;
 
-            //NinjectConfig.DependenciesRegistration = kernel =>
-            //{
-            //    kernel.Bind<IRepository<User>>()
-            //    .ToConstant(repositories.GetUsersRepository());
-            //};
+            NinjectConfig.DependenciesRegistration = kernel =>
+            {
+                kernel.Bind<IRepository<User>>()
+                .ToConstant(repositories.GetUsersRepository());
+            */
 
             AutoMapperConfig.RegisterMappings(Assembly.Load(Assemblies.WebApi));
             MyWebApi.IsRegisteredWith(WebApiConfig.Register);

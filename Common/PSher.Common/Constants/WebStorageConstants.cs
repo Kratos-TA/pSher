@@ -13,7 +13,7 @@
         public const string GoogleDriveApplicationName = "pSher";
         public const string GoogleDriveApplicationUserName = "Kratos";
         public const string GoogleDriveId = "167261169564-rl4p5lo72n8r871afqi7kmgngss3qruq.apps.googleusercontent.com";
-        public const string GoogleDriveSecret= "81lQvG3DrIe8IXoWCnqXDqc6";
+        public const string GoogleDriveSecret = "81lQvG3DrIe8IXoWCnqXDqc6";
         public const string GoogleDriveAccessToken = "ya29.MQJe0rkb8-ivKxD8mJUkQDpN2IYR6aLjuBgOBKe-BpEMm8Z6mfDrKODiRIeMLZkAFvEL";
         public const string GoogleRefreshToken = "1/Ol_douBSBZZi6lDTWiGCFNsFmCuC1F_NVrB4FSXWHZ8";
         public const string GoogleDriveEmail = "kratos.telerik@gmail.com";

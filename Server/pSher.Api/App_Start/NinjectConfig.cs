@@ -3,7 +3,7 @@ namespace PSher.Api.App_Start
     using System;
     using System.Data.Entity;
     using System.Web;
-    
+
     using Ninject;
     using Ninject.Extensions.Conventions;
     using Ninject.Web.Common;
@@ -57,15 +57,15 @@ namespace PSher.Api.App_Start
                 .InSingletonScope();
 
             kernel
-                .Bind(typeof (IWebStorageService))
-                .To(typeof (GoogleDriveService))
+                .Bind(typeof(IWebStorageService))
+                .To(typeof(GoogleDriveService))
                 .InSingletonScope();
 
             kernel
                 .Bind(b => b.From(Assemblies.DataServices)
                     .SelectAllClasses()
                     .BindDefaultInterface());
-            
+
             kernel
              .Bind(b => b.From(Assemblies.LogicServices)
                  .SelectAllClasses()

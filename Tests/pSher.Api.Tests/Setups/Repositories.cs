@@ -33,12 +33,12 @@
 
         private Repositories()
         {
-            this.users = GetCollectionOfUsers(TestsConstants.EntitiesPerRepesitory);
-            this.marks = GetCollectionOfMarks(TestsConstants.EntitiesPerRepesitory);
-            this.tags = GetCollectionOfTags(TestsConstants.EntitiesPerRepesitory);
-            this.images = GetCollectionOfImages(TestsConstants.EntitiesPerRepesitory);
-            this.albums = GetCollectionOfAlbums(TestsConstants.EntitiesPerRepesitory);
-            this.comments = GetCollectionOfComments(TestsConstants.EntitiesPerRepesitory);
+            this.users = this.GetCollectionOfUsers(TestsConstants.EntitiesPerRepesitory);
+            this.marks = this.GetCollectionOfMarks(TestsConstants.EntitiesPerRepesitory);
+            this.tags = this.GetCollectionOfTags(TestsConstants.EntitiesPerRepesitory);
+            this.images = this.GetCollectionOfImages(TestsConstants.EntitiesPerRepesitory);
+            this.albums = this.GetCollectionOfAlbums(TestsConstants.EntitiesPerRepesitory);
+            this.comments = this.GetCollectionOfComments(TestsConstants.EntitiesPerRepesitory);
         }
 
         public IRepository<Album> GetAlbumsRepository()
@@ -120,7 +120,7 @@
 
             for (int i = 1; i <= count; i++)
             {
-                collection.Add(GetSingleAlbum(i));
+                collection.Add(this.GetSingleAlbum(i));
             }
 
             return collection;
@@ -144,10 +144,10 @@
             {
                 Id = id,
                 Name = TestsConstants.AlbumBaseName + id,
-                IsDeleted = GetOddNumberAsFalse(id),
+                IsDeleted = this.GetOddNumberAsFalse(id),
                 Tags = this.GetCollectionOfExistingTags(TestsConstants.TagsPerImage),
                 Images = this.GetCollectionOfExistingImages(TestsConstants.ImagesPerAlbum),
-                IsPrivate = GetOddNumberAsFalse(id)
+                IsPrivate = this.GetOddNumberAsFalse(id)
             };
         }
 
@@ -157,7 +157,7 @@
 
             for (int i = 1; i <= count; i++)
             {
-                collection.Add(GetSingleImage(i));
+                collection.Add(this.GetSingleImage(i));
             }
 
             return collection;
@@ -192,7 +192,7 @@
                     Id = id,
                     OriginalExtension = TestsConstants.ImageBaseExstnsion,
                     OriginalName = TestsConstants.ImageInfoBaseOriginalName + id,
-                    IsDeleted = GetOddNumberAsFalse(id),
+                    IsDeleted = this.GetOddNumberAsFalse(id),
                     CreatedOn = DateTime.Now.AddDays(id)
                 },
                 IsDeleted = GetOddNumberAsFalse(id),
@@ -205,8 +205,8 @@
             return new Rating()
             {
                 Id = id,
-                IsDeleted = GetOddNumberAsFalse(id),
-                Marks = GetCollectionOfMarks(TestsConstants.MarksPerImage)
+                IsDeleted = this.GetOddNumberAsFalse(id),
+                Marks = this.GetCollectionOfMarks(TestsConstants.MarksPerImage)
             };
         }
 
@@ -231,7 +231,7 @@
                 FirstName = TestsConstants.UserBaseFirstName + id,
                 LastName = TestsConstants.UserBaseLastName + id,
                 Email = string.Format(TestsConstants.UserBaseEmail, id),
-                IsDeleted = GetOddNumberAsFalse(id)
+                IsDeleted = this.GetOddNumberAsFalse(id)
             };
         }
 
@@ -241,7 +241,7 @@
 
             for (int i = 1; i <= count; i++)
             {
-                collection.Add(GetSingleMark(i));
+                collection.Add(this.GetSingleMark(i));
             }
 
             return collection;
@@ -253,7 +253,7 @@
             {
                 Id = id,
                 GivenBy = this.users[id % this.users.Count],
-                IsDeleted = GetOddNumberAsFalse(id),
+                IsDeleted = this.GetOddNumberAsFalse(id),
                 Value = id % ValidationConstants.MaxMarkValue
             };
         }
@@ -264,7 +264,7 @@
 
             for (int i = 1; i <= count; i++)
             {
-                collection.Add(GetSingleComment(i));
+                collection.Add(this.GetSingleComment(i));
             }
 
             return collection;
@@ -280,7 +280,7 @@
                 Author = this.users[id % this.users.Count],
                 Likes = id % TestsConstants.CommonModulDivisor,
                 Dislikes = (id % TestsConstants.CommonModulDivisor) / 2,
-                IsDeleted = GetOddNumberAsFalse(id)
+                IsDeleted = this.GetOddNumberAsFalse(id)
             };
         }
 
@@ -314,7 +314,7 @@
             {
                 Id = id,
                 Name = TestsConstants.TagBaseName + id,
-                IsDeleted = GetOddNumberAsFalse(id)
+                IsDeleted = this.GetOddNumberAsFalse(id)
             };
         }
 

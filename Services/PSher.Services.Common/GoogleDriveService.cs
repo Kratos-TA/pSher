@@ -1,19 +1,20 @@
 ﻿namespace PSher.Services.Common
 {
-    using System;
-    using System.IO;
     using System.Threading.Tasks;
-
     using Contracts;
+
     using Google.Apis.Auth.OAuth2;
-    using Google.Apis.Auth.OAuth2.Flows;
-    using Google.Apis.Auth.OAuth2.Responses;
     using Google.Apis.Drive.v2;
+    using Google.Apis.Drive.v2.Data;
     using Google.Apis.Services;
     using Google.Apis.Util.Store;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
 
+    using Google.Apis.Auth.OAuth2.Flows;
+    using Google.Apis.Auth.OAuth2.Responses;
     using PSher.Common.Constants;
-   
     using File = Google.Apis.Drive.v2.Data.File;
 
     public class GoogleDriveService : IWebStorageService
@@ -25,15 +26,23 @@
             this.service = this.CreateServie();
         }
 
-        public async Task<string> UploadImageToCloud(byte[] byteArrayContent, string fileName, string fileExstension, string parentPath = WebStorageConstants.Collection)
+        public async Task<string> UploadImageToCloud(byte[] byteArrayContent, string fileName, string fileExstension,
+            string parentPath = WebStorageConstants.Collection)
         {
             // var parentId = await this.CreateDirectory(parentPath);
 
+            Permission permission = new Permission()
+            {
+                Role = "reader",
+                Type = "anyone",
+                WithLink = true
+            };
 
             File body = new File
             {
                 Title = fileName,
-                // Parents = new List<ParentReference>() { new ParentReference() { Id = parentId } }
+                Shared = true,
+                Permissions = new List<Permission>() { permission }
             };
 
             MemoryStream stream = new MemoryStream(byteArrayContent);
@@ -73,33 +82,33 @@
         }
 
         private DriveService CreateServie()
-        { 
-                var tokenResponse = new TokenResponse
+        {
+            var tokenResponse = new TokenResponse
+            {
+                AccessToken = WebStorageConstants.GoogleDriveAccessToken,
+                RefreshToken = WebStorageConstants.GoogleRefreshToken,
+            };
+
+            var apiCodeFlow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
+            {
+                ClientSecrets = new ClientSecrets
                 {
-                    AccessToken = WebStorageConstants.GoogleDriveAccessToken,
-                    RefreshToken = WebStorageConstants.GoogleRefreshToken,
-                };
+                    ClientId = WebStorageConstants.GoogleDriveId,
+                    ClientSecret = WebStorageConstants.GoogleDriveSecret
+                },
+                Scopes = new[] { DriveService.Scope.Drive },
+                DataStore = new FileDataStore(WebStorageConstants.GoogleDriveApplicationName)
+            });
 
-                var apiCodeFlow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
-                {
-                    ClientSecrets = new ClientSecrets
-                    {
-                        ClientId = WebStorageConstants.GoogleDriveId,
-                        ClientSecret = WebStorageConstants.GoogleDriveSecret
-                    },
-                    Scopes = new[] { DriveService.Scope.Drive },
-                    DataStore = new FileDataStore(WebStorageConstants.GoogleDriveApplicationName)
-                });
+            var credential = new UserCredential(apiCodeFlow, WebStorageConstants.GoogleDriveEmail, tokenResponse);
 
-                var credential = new UserCredential(apiCodeFlow, WebStorageConstants.GoogleDriveEmail, tokenResponse);
+            var newService = new DriveService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = WebStorageConstants.GoogleDriveApplicationName
+            });
 
-                var newService = new DriveService(new BaseClientService.Initializer
-                {
-                    HttpClientInitializer = credential,
-                    ApplicationName = WebStorageConstants.GoogleDriveApplicationName
-                });
-
-                return newService;
+            return newService;
         }
     }
 }

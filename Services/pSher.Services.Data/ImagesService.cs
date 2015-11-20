@@ -267,8 +267,18 @@
                     });
             }
 
-            this.images.Add(newImage);
-            await this.images.SaveChangesAsync();
+            try
+            {
+                this.images.Add(newImage);
+                await this.images.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+              var er =  e.Message;
+            }
+
+     
 
             try
             {

@@ -1,6 +1,8 @@
 ﻿namespace PSher.Api.Controllers
 {
+    using System;
     using System.Data.Entity;
+    using System.Data.Entity.Validation;
     using System.Linq;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
@@ -47,10 +49,10 @@
             var currentUserId = this.User.Identity.GetUserId();
             var selectedTags = tags.GetEnumerableFromCommSeparatedString();
 
-            var result = this.imagesService
+            var result = await this.imagesService
                 .AllByParamethers(name, user, selectedTags, page, pageSize, isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .ToList(); // Not async because of unit testing issue
+                .ToListAsync();
 
             return this.Ok(result);
         }
@@ -61,10 +63,10 @@
             var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
-            var result = this.imagesService
+            var result = await this.imagesService
                 .All(page, pageSize, isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .ToList(); // Not async because of unit testing issue
+                .ToListAsync();
 
             return this.Ok(result);
         }
@@ -75,10 +77,10 @@
             var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
-            var resultImage = this.imagesService
+            var resultImage = await this.imagesService
                 .GetImageById(int.Parse(id), isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .FirstOrDefault(); // Not async because of unit testing issue
+                .FirstOrDefaultAsync();
 
             if (resultImage == null)
             {
@@ -161,7 +163,8 @@
         {
             var autenticatedUserId = this.User.Identity.GetUserId();
             var imageTags = await this.tagsService.TagsFromCommaSeparatedValues(model.Tags);
-            var imageAlbums = await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, autenticatedUserId);
+            var imageAlbums =
+                await this.albumssService.AlbumsFromCommaSeparatedValuesAndUserId(model.Albums, autenticatedUserId);
             var resizedRawFile = await this.imagesService.ProcessImage(model.ImageInfo.ToRawFile());
 
             var addedImageId = await this.imagesService.Add(
@@ -173,7 +176,7 @@
                 imageTags,
                 imageAlbums);
 
-            return this.Ok(addedImageId);
+            return this.Ok();
         }
     }
 }

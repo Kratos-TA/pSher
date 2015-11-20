@@ -32,7 +32,7 @@
         [TestMethod]
         public void GetWithPageParamrtersShoudReturnDefautPageSizeImages()
         {
-            controller
+            this.controller
                 .CallingAsync(c => c.Get(1, GlobalConstants.DefaultPageSize))
                 .ShouldReturn()
                 .Ok()
@@ -46,7 +46,7 @@
         [TestMethod]
         public void GetWithIdShoudReturnExaxtImage()
         {
-            controller
+            this.controller
                 .CallingAsync(c => c.Get("3"))
                 .ShouldReturn()
                 .Ok()
@@ -63,7 +63,8 @@
             var name = TestsConstants.ImageBaseTitle;
             var user = TestsConstants.UserBaseUserName;
             var tags = TestsConstants.TagBaseName + "," + TestsConstants.TagBaseName;
-            controller
+
+            this.controller
                 .CallingAsync(c => c.Get(name, user, tags, 1, 10))
                 .ShouldReturn()
                 .Ok()
@@ -99,7 +100,7 @@
             };
 
 
-            controller
+            this.controller
                 .CallingAsync(c => c.Post(imageRequestModel))
                 .ShouldReturn()
                 .HttpResponseMessage();
