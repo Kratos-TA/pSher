@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Runtime.CompilerServices;
     using Common.Constants;
     using Constants;
     using Data.Contracts;
@@ -11,91 +11,114 @@
 
     using PSher.Models;
 
-    public static class Repositories
+    public sealed class Repositories
     {
-        public static IRepository<Album> GetAlbumsRepository()
+        private List<User> users;
+        private List<Image> images;
+        private List<Album> albums;
+        private List<Tag> tags;
+        private List<Mark> marks;
+        private List<Comment> comments;
+
+        private static readonly Lazy<Repositories> lazy = 
+            new Lazy<Repositories>(() => new Repositories());
+
+        public static Repositories Instance
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
+
+        private Repositories()
+        {
+            this.users = GetCollectionOfUsers(TestsConstants.EntitiesPerRepesitory);
+            this.marks = GetCollectionOfMarks(TestsConstants.EntitiesPerRepesitory);
+            this.tags = GetCollectionOfTags(TestsConstants.EntitiesPerRepesitory);
+            this.images = GetCollectionOfImages(TestsConstants.EntitiesPerRepesitory);
+            this.albums = GetCollectionOfAlbums(TestsConstants.EntitiesPerRepesitory);
+            this.comments = GetCollectionOfComments(TestsConstants.EntitiesPerRepesitory);
+        }
+
+        public IRepository<Album> GetAlbumsRepository()
         {
             var repository = new Mock<IRepository<Album>>();
             repository.Setup(r => r.All())
                 .Returns(() =>
                 {
-                    var albums = GetCollectionOfAlbums(TestsConstants.EntitiesPerRepesitory);
-                    return albums.AsQueryable();
+
+                    return this.albums.AsQueryable();
                 });
 
             return repository.Object;
         }
 
-        public static IRepository<Image> GetImagesRepository()
+        public IRepository<Image> GetImagesRepository()
         {
             var repository = new Mock<IRepository<Image>>();
             repository.Setup(r => r.All())
                .Returns(() =>
                {
-                   var albums = GetCollectionOfImages(TestsConstants.EntitiesPerRepesitory);
-                   return albums.AsQueryable();
+                   return this.images.AsQueryable();
                });
 
             return repository.Object;
         }
 
-        public static IRepository<User> GetUsersRepository()
+        public IRepository<User> GetUsersRepository()
         {
             var repository = new Mock<IRepository<User>>();
             repository.Setup(r => r.All())
            .Returns(() =>
            {
-               var albums = GetCollectionOfUsers(TestsConstants.EntitiesPerRepesitory);
-               return albums.AsQueryable();
+               return this.users.AsQueryable();
            });
 
             return repository.Object;
         }
 
-        public static IRepository<Mark> GetMarksRepository()
+        public IRepository<Mark> GetMarksRepository()
         {
             var repository = new Mock<IRepository<Mark>>();
             repository.Setup(r => r.All())
                .Returns(() =>
                {
-                   var albums = GetCollectionOfMarks(TestsConstants.EntitiesPerRepesitory);
-                   return albums.AsQueryable();
+                   return this.marks.AsQueryable();
                });
 
             return repository.Object;
         }
 
-        public static IRepository<Comment> GetCommentsRepository()
+        public IRepository<Comment> GetCommentsRepository()
         {
             var repository = new Mock<IRepository<Comment>>();
             repository.Setup(r => r.All())
                .Returns(() =>
                {
-                   var albums = GetCollectionOfComments(TestsConstants.EntitiesPerRepesitory);
-                   return albums.AsQueryable();
+                   return this.comments.AsQueryable();
                });
 
             return repository.Object;
         }
 
-        public static IRepository<Tag> GetTagsRepository()
+        public IRepository<Tag> GetTagsRepository()
         {
             var repository = new Mock<IRepository<Tag>>();
             repository.Setup(r => r.All())
                .Returns(() =>
                {
-                   var albums = GetCollectionOfTags(TestsConstants.EntitiesPerRepesitory);
-                   return albums.AsQueryable();
+                   return this.tags.AsQueryable();
                });
 
             return repository.Object;
         }
 
-        private static List<Album> GetCollectionOfAlbums(int count = TestsConstants.EntitiesPerRepesitory, int startingId = 1)
+        private List<Album> GetCollectionOfAlbums(int count)
         {
             var collection = new List<Album>();
 
-            for (int i = startingId; i <= count + startingId; i++)
+            for (int i = 1; i <= count; i++)
             {
                 collection.Add(GetSingleAlbum(i));
             }
@@ -103,23 +126,36 @@
             return collection;
         }
 
-        private static Album GetSingleAlbum(int id)
+        private List<Album> GetCollectionOfExistingAlbums(int count)
+        {
+            var collection = new List<Album>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                collection.Add(this.albums[i % this.albums.Count]);
+            }
+
+            return collection;
+        }
+
+        private Album GetSingleAlbum(int id)
         {
             return new Album()
             {
                 Id = id,
-                Name = "Some Album " + id,
-                Tags = GetCollectionOfTags(TestsConstants.TagsPerAlbum, id * TestsConstants.TagsPerAlbum),
-                Images = GetCollectionOfImages(TestsConstants.ImagesPerAlbum, id * TestsConstants.ImagesPerAlbum),
+                Name = TestsConstants.AlbumBaseName + id,
                 IsDeleted = GetOddNumberAsFalse(id),
+                Tags = this.GetCollectionOfExistingTags(TestsConstants.TagsPerImage),
+                Images = this.GetCollectionOfExistingImages(TestsConstants.ImagesPerAlbum),
+                IsPrivate = GetOddNumberAsFalse(id)
             };
         }
 
-        private static List<Image> GetCollectionOfImages(int count = TestsConstants.EntitiesPerRepesitory, int startingId = 1)
+        private List<Image> GetCollectionOfImages(int count)
         {
             var collection = new List<Image>();
 
-            for (int i = startingId; i <= count + startingId; i++)
+            for (int i = 1; i <= count; i++)
             {
                 collection.Add(GetSingleImage(i));
             }
@@ -127,48 +163,58 @@
             return collection;
         }
 
-        private static Image GetSingleImage(int id)
+        private List<Image> GetCollectionOfExistingImages(int count)
+        {
+            var collection = new List<Image>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                collection.Add(this.images[i % this.images.Count]);
+            }
+
+            return collection;
+        }
+
+        private Image GetSingleImage(int id)
         {
             return new Image()
             {
                 Id = id,
-                Title = "Some Image " + id,
-                Description = "Some Description " + id,
+                Title = TestsConstants.ImageBaseTitle + id,
+                Description = TestsConstants.DescriptionBaseTextr + id,
                 UploadedOn = DateTime.Now.AddDays(id),
-                Url = "http://someurl.com/" + id + ".jpg",
-                ThumbnailUrl = "http://someurl.com/" + id + "-thmbnail.jpg",
-                Author = GetSingleUser(id),
-                Tags = GetCollectionOfTags(TestsConstants.TagsPerImage, id * TestsConstants.TagsPerImage),
-                Albums = GetCollectionOfAlbums(TestsConstants.AlbumsPerImage, id * TestsConstants.AlbumsPerImage),
+                Url = string.Format(TestsConstants.ImageBasyeUrl, id),
+                ThumbnailUrl = string.Format(TestsConstants.ImageBaseThumbnailUrl, id),
+                Author = this.users[id % users.Count],
+                Tags = this.GetCollectionOfExistingTags(TestsConstants.TagsPerImage),
                 ImageInfo = new ImageInfo()
                 {
                     Id = id,
-                    OriginalExtension = ".jpg",
-                    OriginalName = "some-image-name" + id,
+                    OriginalExtension = TestsConstants.ImageBaseExstnsion,
+                    OriginalName = TestsConstants.ImageInfoBaseOriginalName + id,
                     IsDeleted = GetOddNumberAsFalse(id),
                     CreatedOn = DateTime.Now.AddDays(id)
                 },
                 IsDeleted = GetOddNumberAsFalse(id),
-                Comments = GetCollectionOfComments(TestsConstants.CommentsPerImage, id * TestsConstants.CommentsPerImage),
                 Rating = GetSingleRating(id)
             };
         }
 
-        private static Rating GetSingleRating(int id)
+        private Rating GetSingleRating(int id)
         {
             return new Rating()
             {
                 Id = id,
                 IsDeleted = GetOddNumberAsFalse(id),
-                Marks = GetCollectionOfMarks(TestsConstants.MarksPerImage, id * TestsConstants.MarksPerImage)
+                Marks = GetCollectionOfMarks(TestsConstants.MarksPerImage)
             };
         }
 
-        private static List<User> GetCollectionOfUsers(int count = TestsConstants.EntitiesPerRepesitory, int startingId = 1)
+        private List<User> GetCollectionOfUsers(int count)
         {
             var collection = new List<User>();
 
-            for (int i = startingId; i <= count + startingId; i++)
+            for (int i = 1; i <= count; i++)
             {
                 collection.Add(GetSingleUser(i));
             }
@@ -176,26 +222,24 @@
             return collection;
         }
 
-        private static User GetSingleUser(int id)
+        private User GetSingleUser(int id)
         {
             return new User()
             {
                 Id = id.ToString(),
-                UserName = "Some UserName " + id,
-                FirstName = "Some FirstName " + id,
-                LastName = "Some LastName " + id,
-                Email = "some-mail" + id + "@pesho.net",
-                Albums = GetCollectionOfAlbums(TestsConstants.AlbumsPerUser, id * TestsConstants.AlbumsPerUser),
-                Images = GetCollectionOfImages(TestsConstants.ImagesPerUser, id * TestsConstants.ImagesPerUser),
+                UserName = TestsConstants.UserBaseUserName + id,
+                FirstName = TestsConstants.UserBaseFirstName + id,
+                LastName = TestsConstants.UserBaseLastName + id,
+                Email = string.Format(TestsConstants.UserBaseEmail, id),
                 IsDeleted = GetOddNumberAsFalse(id)
             };
         }
 
-        private static List<Mark> GetCollectionOfMarks(int count = TestsConstants.EntitiesPerRepesitory, int startingId = 1)
+        private List<Mark> GetCollectionOfMarks(int count)
         {
             var collection = new List<Mark>();
 
-            for (int i = startingId; i <= count + startingId; i++)
+            for (int i = 1; i <= count; i++)
             {
                 collection.Add(GetSingleMark(i));
             }
@@ -203,22 +247,22 @@
             return collection;
         }
 
-        private static Mark GetSingleMark(int id)
+        private Mark GetSingleMark(int id)
         {
             return new Mark()
             {
                 Id = id,
-                GivenBy = GetSingleUser(id),
+                GivenBy = this.users[id % this.users.Count],
                 IsDeleted = GetOddNumberAsFalse(id),
                 Value = id % ValidationConstants.MaxMarkValue
             };
         }
 
-        private static List<Comment> GetCollectionOfComments(int count = TestsConstants.EntitiesPerRepesitory, int startingId = 1)
+        private List<Comment> GetCollectionOfComments(int count)
         {
             var collection = new List<Comment>();
 
-            for (int i = startingId; i <= count + startingId; i++)
+            for (int i = 1; i <= count; i++)
             {
                 collection.Add(GetSingleComment(i));
             }
@@ -226,25 +270,25 @@
             return collection;
         }
 
-        private static Comment GetSingleComment(int id)
+        private Comment GetSingleComment(int id)
         {
             return new Comment()
             {
                 Id = id,
                 PostedOn = DateTime.Now.AddDays(id),
-                Text = "Some comment text " + id,
-                Author = GetSingleUser(id),
+                Text = TestsConstants.CommentBaseText + id,
+                Author = this.users[id % this.users.Count],
                 Likes = id % TestsConstants.CommonModulDivisor,
                 Dislikes = (id % TestsConstants.CommonModulDivisor) / 2,
                 IsDeleted = GetOddNumberAsFalse(id)
             };
         }
 
-        private static List<Tag> GetCollectionOfTags(int count = TestsConstants.EntitiesPerRepesitory, int startingId = 1)
+        private List<Tag> GetCollectionOfTags(int count)
         {
             var collection = new List<Tag>();
 
-            for (int i = startingId; i <= count + startingId; i++)
+            for (int i = 1; i <= count; i++)
             {
                 collection.Add(GetSingleTag(i));
             }
@@ -252,19 +296,29 @@
             return collection;
         }
 
-        private static Tag GetSingleTag(int id)
+        private List<Tag> GetCollectionOfExistingTags(int count)
+        {
+            var collection = new List<Tag>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                collection.Add(this.tags[i % this.tags.Count]);
+            }
+
+            return collection;
+        }
+
+        private Tag GetSingleTag(int id)
         {
             return new Tag()
             {
                 Id = id,
-                Name = "Some Tag " + id,
-                Albums = GetCollectionOfAlbums(TestsConstants.AlbumPerTag),
-                Images = GetCollectionOfImages(TestsConstants.ImagesPerTag),
+                Name = TestsConstants.TagBaseName + id,
                 IsDeleted = GetOddNumberAsFalse(id)
             };
         }
 
-        private static bool GetOddNumberAsFalse(int number)
+        private bool GetOddNumberAsFalse(int number)
         {
             return number % 2 == 0 ? true : false;
         }

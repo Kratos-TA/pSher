@@ -13,9 +13,8 @@
             service
                 .Setup(s => s.Resize(
                     It.IsAny<byte[]>(),
-                    It.IsAny<int>()
-                    ))
-                .Returns(Task<string>.FromResult(new byte[1000]));
+                    It.IsAny<int>()))
+                .Returns(Task<byte[]>.FromResult(new byte[1000]));
 
             return service.Object;
         }

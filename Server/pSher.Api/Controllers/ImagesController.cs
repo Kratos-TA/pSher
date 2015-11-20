@@ -1,6 +1,7 @@
 ﻿namespace PSher.Api.Controllers
 {
     using System.Data.Entity;
+    using System.Linq;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web.Http.Cors;
@@ -13,7 +14,7 @@
     using PSher.Common.Constants;
     using PSher.Common.Extensions;
     using PSher.Services.Data.Contracts;
-    
+
     [RoutePrefix("api/images")]
     [EnableCors("*", "*", "*")]
     public class ImagesController : ApiController
@@ -46,24 +47,24 @@
             var currentUserId = this.User.Identity.GetUserId();
             var selectedTags = tags.GetEnumerableFromCommSeparatedString();
 
-            var result = await this.imagesService
+            var result = this.imagesService
                 .AllByParamethers(name, user, selectedTags, page, pageSize, isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .ToListAsync();
+                .ToList(); // Not async because of unit testing issue
 
             return this.Ok(result);
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> Get(int page = 1, int pageSize = 10)
+        public async Task<IHttpActionResult> Get(int page = 1, int pageSize = GlobalConstants.DefaultPageSize)
         {
             var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
-            var result = await this.imagesService
+            var result = this.imagesService
                 .All(page, pageSize, isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .ToListAsync();
+                .ToList(); // Not async because of unit testing issue
 
             return this.Ok(result);
         }
@@ -74,10 +75,10 @@
             var isAuthorizedAccess = this.User.Identity.IsAuthenticated;
             var currentUserId = this.User.Identity.GetUserId();
 
-            var resultImage = await this.imagesService
+            var resultImage = this.imagesService
                 .GetImageById(int.Parse(id), isAuthorizedAccess, currentUserId)
                 .ProjectTo<ImageResponseModel>()
-                .FirstOrDefaultAsync();
+                .FirstOrDefault(); // Not async because of unit testing issue
 
             if (resultImage == null)
             {
