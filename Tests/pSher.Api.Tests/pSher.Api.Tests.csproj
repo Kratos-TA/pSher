@@ -67,6 +67,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MyTested.WebApi, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MyTested.WebApi.1.1.6\lib\net45\MyTested.WebApi.dll</HintPath>
       <Private>True</Private>
@@ -171,12 +175,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\TestsConstants.cs" />
+    <Compile Include="ControllersTests\AlbumsControllersTests.cs" />
+    <Compile Include="ControllersTests\CommentsControllersTests.cs" />
+    <Compile Include="ControllersTests\ImagesControllerTests.cs" />
+    <Compile Include="ControllersTests\MarksControllerTests.cs" />
+    <Compile Include="ControllersTests\UsersControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setups\Repositories.cs" />
+    <Compile Include="Setups\Services.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\PSher.Common\PSher.Common.csproj">
+      <Project>{f007c32e-43dc-448d-a1a6-a962a51930f0}</Project>
+      <Name>PSher.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Data\pSher.Data\PSher.Data.csproj">
       <Project>{6914eed5-adf6-41c8-9346-c1d34e43e5f4}</Project>
       <Name>PSher.Data</Name>
@@ -189,20 +205,25 @@
       <Project>{36db54c3-8e72-40f5-95a2-01985ca40e2c}</Project>
       <Name>PSher.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\PSher.Services.Common\PSher.Services.Common.csproj">
+      <Project>{dd22bafc-1b13-4ee2-be62-1c1f01ceed69}</Project>
+      <Name>PSher.Services.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\pSher.Services.Data\PSher.Services.Data.csproj">
       <Project>{fbe1c1a6-cccd-447a-9d45-cf9461a2e54b}</Project>
       <Name>PSher.Services.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\UI\WPF\pSher.UI.WPF\PSher.UI.WPF.csproj">
-      <Project>{9cbd0a88-5ead-4fe5-a1b8-b2e84eda8136}</Project>
-      <Name>PSher.UI.WPF</Name>
+    <ProjectReference Include="..\..\Services\PSher.Services.Logic\PSher.Services.Logic.csproj">
+      <Project>{65f105f7-ce10-43b0-978e-fa2aec454970}</Project>
+      <Name>PSher.Services.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="IntegrationsTests\" />
+    <Folder Include="RoutsTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
