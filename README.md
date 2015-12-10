@@ -1,11 +1,10 @@
-<p align="center"><img src="https://avatars2.githubusercontent.com/u/15660358?v=3&s=200" height="100" /></p>
+﻿<p align="center"><img src="https://avatars2.githubusercontent.com/u/15660358?v=3&s=200" height="100" /></p>
 
 ## Team Kratos
 
 - **Ivo Paunov** - @Github: [Ivo Paounov](https://github.com/IvoPaunov), @Telerik Academy: [ivo.paunov](https://telerikacademy.com/Users/ivo.paunov)
 -  **Veselin Tsvetanov** - @Github: [Veselin Tsvetanov](https://github.com/veselints), @Telerik Academy: [veselints](https://telerikacademy.com/Users/veselints)
 -  **Andrey Mitev** - @Github: [Andrey](https://github.com/AndrewMitev), @Telerik Academy: [AndreyMitev93](https://telerikacademy.com/Users/AndreyMitev93)
--  **Ventsislav Ivanov** - @Github: [DJBuro](https://github.com/DJBuro), @Telerik Academy: [ventsislav.a.ivanov](https://telerikacademy.com/Users/ventsislav.a.ivanov)
 -  **Tsvetan Razsolkov** - @Github: [Tsvetan Razsolkov](https://github.com/TsvetanRazsolkov), @Telerik Academy: [cecunqk](https://telerikacademy.com/Users/cecunqk)
 
 ## [pSher](https://github.com/Kratos-TA/pSher)
